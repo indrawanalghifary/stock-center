@@ -100,6 +100,10 @@ class Transaction(models.Model):
     def __str__(self):
         return f"TRX-{self.id} - {self.reseller.name}"
 
+    @property
+    def get_total(self):
+        return self.details.aggregate(total=models.Sum('subtotal'))['total'] or 0
+
 class TransactionDetail(models.Model):
     transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE, related_name='details')
     variant = models.ForeignKey(Variant, on_delete=models.CASCADE)
@@ -129,6 +133,10 @@ class Invoice(models.Model):
 
     def __str__(self):
         return f"INV-{self.id} - {self.reseller.name}"
+
+    @property
+    def remaining_balance(self):
+        return self.total_amount - self.paid_amount
 
 class Payment(models.Model):
     reseller = models.ForeignKey(Reseller, on_delete=models.CASCADE)

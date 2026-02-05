@@ -28,8 +28,7 @@
                 <td>Rp {{ invoice.total_amount|floatformat:0 }}</td>
                 <td class="text-success">Rp {{ invoice.paid_amount|floatformat:0 }}</td>
                 <td class="text-error font-bold">
-                    Rp {{ invoice.total_amount|add:invoice.paid_amount|floatformat:0 }} 
-                    <!-- Note: Django template math is limited. Ideally calculate balance in model/view -->
+                    Rp {{ invoice.remaining_balance|floatformat:0 }}
                 </td>
                 <td>
                     {% if invoice.status == 'PAID' %}

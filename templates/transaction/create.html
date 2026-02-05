@@ -10,9 +10,11 @@
         {% csrf_token %}
         
         <div class="form-control w-full mb-4">
+            {% if not form.reseller.is_hidden %}
             <label class="label">
                 <span class="label-text font-semibold">Pilih Reseller</span>
             </label>
+            {% endif %}
             {{ form.reseller }}
             <div class="text-error text-sm">{{ form.reseller.errors }}</div>
         </div>

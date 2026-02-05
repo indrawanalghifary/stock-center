@@ -63,7 +63,7 @@
                 <tfoot>
                      <tr>
                         <td colspan="3" class="text-right font-bold">Total</td>
-                        <td class="text-right font-bold">Rp {{ transaction.details.all|length|yesno:"0,0" }} <!-- Simple total calc needs template tag usually, but let's skip for now or do it in view --> </td> 
+                        <td class="text-right font-bold">Rp {{ transaction.get_total|floatformat:0 }}</td> 
                     </tr>
                 </tfoot>
             </table>

@@ -107,7 +107,8 @@ def return_finalized(sender, instance, **kwargs):
                 if not details.exists():
                      raise ValidationError("Cannot finalize a return with no items.")
 
-                total_return_value = 0 # Need to calculate value based on original price if possible, or just qty logic
+                total_return_value = 0
+                original_transaction = instance.invoice.transaction
 
                 for detail in details:
                     # 1. Get Stock
@@ -128,20 +129,32 @@ def return_finalized(sender, instance, **kwargs):
                         qty=detail.qty,
                         ref_type='RETURN',
                         ref_id=instance.id,
-                        # user=instance.user # ReturnHeader doesn't have user yet, assumed context
+                        user=None # Signal doesn't have easy access to request.user
                     )
                     
-                    # Calculate refund value? 
-                    # For now, let's assume we credit based on default price or logic needs price in ReturnDetail.
-                    # Since ReturnDetail doesn't have price, we might check original transaction or Variant default price.
-                    # Using Variant default price for now as safe fallback or 0 if strictly qty.
-                    # Backend.md says: "Retur FINAL -> StockMovement RETURN, tambah WarehouseStock, kurangi invoice"
-                    # But reducing specific invoice might be complex if invoice is already paid.
-                    # Let's credit the Reseller Balance directly for flexibility.
+                    # 4. Calculate Refund Value based on ORIGINAL Transaction Price
+                    # Find the specific item in the original transaction
+                    original_item = original_transaction.details.filter(variant=detail.variant).first()
                     
-                    value = detail.variant.default_price * detail.qty
+                    if original_item:
+                        price_to_refund = original_item.price
+                    else:
+                        # Fallback if not found (should be rare)
+                        price_to_refund = detail.variant.default_price
+                    
+                    value = price_to_refund * detail.qty
                     total_return_value += value
 
-                # 4. Update Reseller Balance (Credit/Reduce Debt)
-                instance.reseller.current_balance -= total_return_value
-                instance.reseller.save()
+                # 5. Create Payment Record (Treat Return as Payment)
+                # This ensures the Invoice status is updated to PAID/PARTIAL correctly
+                # and the Reseller Balance is reduced via the payment_received signal.
+                Payment.objects.create(
+                    reseller=instance.reseller,
+                    invoice=instance.invoice,
+                    amount=total_return_value,
+                    method="RETURN_ADJUSTMENT"
+                )
+
+                # Note: We removed the manual deduction of reseller.current_balance here
+                # because creating the Payment object triggers 'payment_received' 
+                # which handles the deduction. Prevents double counting.

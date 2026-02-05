@@ -4,12 +4,16 @@ from .models import Warehouse, Variant, StockMovement, Transaction, TransactionD
 class StockAdjustmentForm(forms.ModelForm):
     warehouse = forms.ModelChoiceField(queryset=Warehouse.objects.all(), empty_label="Select Warehouse")
     variant = forms.ModelChoiceField(queryset=Variant.objects.all(), empty_label="Select Product Variant")
-    qty = forms.IntegerField(min_value=1, label="Quantity")
-    notes = forms.CharField(widget=forms.Textarea(attrs={'rows': 3}), required=False)
+    qty = forms.IntegerField(min_value=1, label="Quantity", widget=forms.NumberInput(attrs={'class': 'input input-bordered w-full'}))
+    notes = forms.CharField(widget=forms.Textarea(attrs={'class': 'textarea textarea-bordered h-24', 'rows': 3}), required=False)
 
     class Meta:
         model = StockMovement
         fields = ['warehouse', 'variant', 'qty']
+        widgets = {
+            'warehouse': forms.Select(attrs={'class': 'select select-bordered w-full'}),
+            'variant': forms.Select(attrs={'class': 'select select-bordered w-full'}),
+        }
 
     def save(self, user=None, commit=True):
         # We don't save StockMovement directly via form save because we need custom logic

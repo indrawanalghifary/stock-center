@@ -35,7 +35,7 @@
             <label class="label">
                 <span class="label-text font-semibold">Jumlah (Qty)</span>
             </label>
-            <input type="number" name="qty" class="input input-bordered w-full" min="1" required>
+            {{ form.qty }}
             <div class="text-error text-sm">{{ form.qty.errors }}</div>
         </div>
         
@@ -43,7 +43,7 @@
              <label class="label">
                 <span class="label-text font-semibold">Catatan (Optional)</span>
             </label>
-            <textarea name="notes" class="textarea textarea-bordered h-24"></textarea>
+            {{ form.notes }}
         </div>
 
         <div class="flex gap-2">
