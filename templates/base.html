@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Stock Center{% endblock %}</title>
+    
+    <!-- Tailwind CSS & DaisyUI -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* Mobile-first adjustments if necessary */
+        body {
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-base-200">
+
+    <!-- Navbar -->
+    <div class="navbar bg-base-100 shadow-lg">
+        <div class="navbar-start">
+            <div class="dropdown">
+                <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+                    <i data-lucide="menu"></i>
+                </div>
+                <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                    <li><a href="/">Dashboard</a></li>
+                    <li><a href="#">Produk</a></li>
+                    <li><a href="#">Stok</a></li>
+                    <li><a href="#">Transaksi</a></li>
+                    <li><a href="#">Laporan</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="navbar-center">
+            <a class="btn btn-ghost text-xl">Stock Center</a>
+        </div>
+        <div class="navbar-end">
+            <button class="btn btn-ghost btn-circle">
+                <i data-lucide="search"></i>
+            </button>
+            <button class="btn btn-ghost btn-circle">
+                <div class="indicator">
+                    <i data-lucide="bell"></i>
+                    <span class="badge badge-xs badge-primary indicator-item"></span>
+                </div>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-4">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Bottom Navigation (Mobile) -->
+    <div class="btm-nav btm-nav-sm lg:hidden">
+        <button class="active">
+            <i data-lucide="home"></i>
+            <span class="btm-nav-label">Home</span>
+        </button>
+        <button>
+            <i data-lucide="package"></i>
+            <span class="btm-nav-label">Stok</span>
+        </button>
+        <button>
+            <i data-lucide="shopping-cart"></i>
+            <span class="btm-nav-label">Order</span>
+        </button>
+    </div>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>
