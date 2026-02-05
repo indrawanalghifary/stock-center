@@ -76,7 +76,10 @@ class InvoiceListView(ListView):
     ordering = ['-created_at']
 
     def get_queryset(self):
-        return Invoice.objects.select_related('reseller', 'transaction').order_by('-created_at')
+        queryset = Invoice.objects.select_related('reseller', 'transaction').order_by('-created_at')
+        if hasattr(self.request.user, 'reseller_profile'):
+            queryset = queryset.filter(reseller=self.request.user.reseller_profile)
+        return queryset
 
 @method_decorator(login_required, name='dispatch')
 class PaymentCreateView(CreateView):
@@ -154,6 +157,12 @@ class TransactionListView(ListView):
     template_name = 'transaction/list.html'
     context_object_name = 'transactions'
     ordering = ['-created_at']
+
+    def get_queryset(self):
+        queryset = Transaction.objects.all().order_by('-created_at')
+        if hasattr(self.request.user, 'reseller_profile'):
+            queryset = queryset.filter(reseller=self.request.user.reseller_profile)
+        return queryset
 
 @method_decorator(login_required, name='dispatch')
 class TransactionCreateView(CreateView):
@@ -240,6 +249,24 @@ class ReturnCreateView(CreateView):
     fields = ['reseller', 'warehouse', 'invoice']
     template_name = 'return/create.html'
 
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        if hasattr(self.request.user, 'reseller_profile'):
+            reseller = self.request.user.reseller_profile
+            # Lock Reseller Field
+            form.fields['reseller'].initial = reseller
+            form.fields['reseller'].widget = forms.HiddenInput()
+            form.fields['reseller'].disabled = True
+            
+            # Filter Invoices to only own invoices
+            form.fields['invoice'].queryset = Invoice.objects.filter(reseller=reseller)
+        return form
+
+    def form_valid(self, form):
+        if hasattr(self.request.user, 'reseller_profile'):
+            form.instance.reseller = self.request.user.reseller_profile
+        return super().form_valid(form)
+
     def get_success_url(self):
         return reverse('return_detail', kwargs={'pk': self.object.pk})
 
@@ -248,6 +275,12 @@ class ReturnDetailView(DetailView):
     model = ReturnHeader
     template_name = 'return/detail.html'
     context_object_name = 'return_header'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if hasattr(self.request.user, 'reseller_profile'):
+            queryset = queryset.filter(reseller=self.request.user.reseller_profile)
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
