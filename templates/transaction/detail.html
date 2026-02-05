@@ -121,4 +121,22 @@
     </div>
 
 </div>
+
+<script>
+    // Initialize TomSelect for Variant Dropdown
+    document.addEventListener("DOMContentLoaded", function(){
+        const variantSelect = document.querySelector('select[name="variant"]');
+        if(variantSelect){
+            new TomSelect(variantSelect,{
+                create: false,
+                sortField: {
+                    field: "text",
+                    direction: "asc"
+                },
+                placeholder: "Cari Produk...",
+                plugins: ['dropdown_input'],
+            });
+        }
+    });
+</script>
 {% endblock %}

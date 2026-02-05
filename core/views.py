@@ -7,7 +7,8 @@ from django.db import transaction
 from django.db.models import Sum
 from django.utils import timezone
 from django.urls import reverse_lazy, reverse
-from .models import WarehouseStock, StockMovement, Variant, Warehouse, Transaction, TransactionDetail, Invoice, Payment
+from django import forms
+from .models import WarehouseStock, StockMovement, Variant, Warehouse, Transaction, TransactionDetail, Invoice, Payment, ReturnHeader, ReturnDetail
 from .forms import StockAdjustmentForm, TransactionCreateForm, TransactionDetailForm
 
 @login_required
@@ -15,24 +16,50 @@ def home(request):
     if not request.user.is_authenticated:
         return render(request, 'home.html')
     
-    # Dashboard Stats
-    total_stock_value = 0 # Need calculation logic if variant has cost, currently using default_price as estimate
-    # Simple count for now
-    stock_count = WarehouseStock.objects.aggregate(total=Sum('qty_available'))['total'] or 0
+    context = {}
     
-    total_receivables = Invoice.objects.filter(status__in=['UNPAID', 'PARTIAL']).aggregate(
-        total=Sum('total_amount'), 
-        paid=Sum('paid_amount')
-    )
-    receivables_value = (total_receivables['total'] or 0) - (total_receivables['paid'] or 0)
+    # Check if user is a Reseller
+    is_reseller = hasattr(request.user, 'reseller_profile')
     
-    transaction_count = Transaction.objects.filter(created_at__date=timezone.now().date()).count()
+    if is_reseller:
+        reseller = request.user.reseller_profile
+        # Reseller Stats
+        # Balance / Debt
+        context['reseller_balance'] = reseller.current_balance
+        
+        # Unpaid Invoices
+        context['unpaid_invoices_count'] = Invoice.objects.filter(
+            reseller=reseller, 
+            status__in=['UNPAID', 'PARTIAL']
+        ).count()
+        
+        # Active Transactions
+        context['active_transactions'] = Transaction.objects.filter(
+            reseller=reseller,
+            status='DRAFT'
+        ).count()
+        
+        context['is_reseller'] = True
+        
+    else:
+        # Admin Stats (Global)
+        stock_count = WarehouseStock.objects.aggregate(total=Sum('qty_available'))['total'] or 0
+        
+        total_receivables = Invoice.objects.filter(status__in=['UNPAID', 'PARTIAL']).aggregate(
+            total=Sum('total_amount'), 
+            paid=Sum('paid_amount')
+        )
+        receivables_value = (total_receivables['total'] or 0) - (total_receivables['paid'] or 0)
+        
+        transaction_count = Transaction.objects.filter(created_at__date=timezone.now().date()).count()
 
-    context = {
-        'stock_count': stock_count,
-        'receivables_value': receivables_value,
-        'transaction_count': transaction_count,
-    }
+        context.update({
+            'stock_count': stock_count,
+            'receivables_value': receivables_value,
+            'transaction_count': transaction_count,
+            'is_reseller': False
+        })
+
     return render(request, 'home.html', context)
 
 
@@ -134,9 +161,27 @@ class TransactionCreateView(CreateView):
     form_class = TransactionCreateForm
     template_name = 'transaction/create.html'
 
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        # Check if user is a Reseller
+        if hasattr(self.request.user, 'reseller_profile'):
+            # Set the reseller field to the current user's profile and hide it
+            reseller = self.request.user.reseller_profile
+            form.fields['reseller'].initial = reseller
+            form.fields['reseller'].widget = forms.HiddenInput()
+            form.fields['reseller'].disabled = True # Ensure it can't be tampered easily, but need to handle save carefully
+            # Actually if disabled, it might not send data. 
+            # Better to just set initial and widget hidden, or handle in form_valid
+        return form
+
     def form_valid(self, form):
         form.instance.user = self.request.user
         form.instance.status = 'DRAFT'
+        
+        # Enforce Reseller if user is one
+        if hasattr(self.request.user, 'reseller_profile'):
+            form.instance.reseller = self.request.user.reseller_profile
+            
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -188,3 +233,49 @@ class TransactionDetailView(DetailView, FormView):
             # Reset status if save failed partially (though signal handles atomic usually, but pre_save validation might fail)
             self.object.refresh_from_db()
             return redirect('transaction_detail', pk=self.object.pk)
+
+@method_decorator(login_required, name='dispatch')
+class ReturnCreateView(CreateView):
+    model = ReturnHeader
+    fields = ['reseller', 'warehouse', 'invoice']
+    template_name = 'return/create.html'
+
+    def get_success_url(self):
+        return reverse('return_detail', kwargs={'pk': self.object.pk})
+
+@method_decorator(login_required, name='dispatch')
+class ReturnDetailView(DetailView):
+    model = ReturnHeader
+    template_name = 'return/detail.html'
+    context_object_name = 'return_header'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['variants'] = Variant.objects.all() # For dropdown
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        
+        if 'finalize' in request.POST:
+            try:
+                self.object.status = 'FINAL'
+                self.object.save()
+                messages.success(request, "Retur berhasil difinalisasi.")
+            except Exception as e:
+                messages.error(request, f"Gagal finalisasi: {e}")
+            return redirect('return_detail', pk=self.object.pk)
+        
+        # Simple Add Item Logic
+        variant_id = request.POST.get('variant')
+        qty = int(request.POST.get('qty', 0))
+        
+        if variant_id and qty > 0:
+            ReturnDetail.objects.create(
+                return_header=self.object,
+                variant_id=variant_id,
+                qty=qty
+            )
+            messages.success(request, "Item retur ditambahkan.")
+        
+        return redirect('return_detail', pk=self.object.pk)

@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block title %}Detail Retur #{{ return_header.id }}{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    
+    <!-- Info Retur -->
+    <div class="lg:col-span-2">
+        <div class="bg-base-100 shadow rounded-box p-4 mb-4">
+            <div class="flex justify-between items-center">
+                <h2 class="text-xl font-bold">Retur #{{ return_header.id }}</h2>
+                <div class="badge {% if return_header.status == 'FINAL' %}badge-success{% else %}badge-warning{% endif %}">
+                    {{ return_header.status }}
+                </div>
+            </div>
+            <div class="divider my-2"></div>
+            <div class="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                    <span class="block text-gray-500">Reseller</span>
+                    <span class="font-semibold">{{ return_header.reseller.name }}</span>
+                </div>
+                <div>
+                    <span class="block text-gray-500">Gudang</span>
+                    <span class="font-semibold">{{ return_header.warehouse.name }}</span>
+                </div>
+                <div>
+                    <span class="block text-gray-500">Invoice Ref</span>
+                    <span class="font-semibold">#INV-{{ return_header.invoice.id }}</span>
+                </div>
+                <div>
+                    <span class="block text-gray-500">Tanggal</span>
+                    <span>{{ return_header.created_at|date:"d M Y" }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-base-100 shadow rounded-box p-4">
+            <h3 class="font-bold mb-4">Barang di-Retur</h3>
+            <table class="table w-full">
+                <thead>
+                    <tr>
+                        <th>Produk</th>
+                        <th>Qty</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in return_header.details.all %}
+                    <tr>
+                        <td>
+                            <div class="font-bold">{{ item.variant.product.name }}</div>
+                            <div class="text-xs">{{ item.variant.sku }}</div>
+                        </td>
+                        <td>{{ item.qty }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="2" class="text-center">Belum ada item retur.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Actions (Only if Draft) -->
+    <div class="lg:col-span-1">
+        {% if return_header.status == 'DRAFT' %}
+        <div class="bg-base-100 shadow rounded-box p-4 sticky top-4">
+            <h3 class="font-bold mb-4">Tambah Item</h3>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-control w-full mb-4">
+                    <label class="label"><span class="label-text">Pilih Produk</span></label>
+                    <select name="variant" id="variant-select" class="select select-bordered w-full" required>
+                        <option value="">-- Pilih --</option>
+                        {% for v in variants %}
+                        <option value="{{ v.id }}">{{ v.product.name }} - {{ v.sku }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="form-control w-full mb-4">
+                    <label class="label"><span class="label-text">Jumlah (Qty)</span></label>
+                    <input type="number" name="qty" class="input input-bordered w-full" min="1" required>
+                </div>
+
+                <button type="submit" class="btn btn-secondary w-full">
+                    <i data-lucide="plus"></i> Tambah
+                </button>
+            </form>
+
+            <div class="divider"></div>
+
+            <form method="post" onsubmit="return confirm('Yakin finalisasi retur? Stok akan bertambah.');">
+                {% csrf_token %}
+                <button type="submit" name="finalize" class="btn btn-primary w-full">
+                    <i data-lucide="check-circle"></i> Finalisasi
+                </button>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+        const variantSelect = document.getElementById('variant-select');
+        if(variantSelect){
+            new TomSelect(variantSelect,{
+                create: false,
+                sortField: {
+                    field: "text",
+                    direction: "asc"
+                },
+                placeholder: "Cari Produk...",
+                plugins: ['dropdown_input'],
+            });
+        }
+    });
+</script>
+{% endblock %}

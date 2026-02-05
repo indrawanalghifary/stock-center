@@ -12,17 +12,18 @@ This project is a stock management system designed for multi-warehouse operation
 *   `config/`: Main Django project configuration (settings, URLs).
 *   `core/`: Main application containing business logic and models.
     *   `models.py`: Database models.
-    *   `views.py`: Application logic (Inventory, Transaction, Finance).
+    *   `views.py`: Application logic (Inventory, Transaction, Finance, Return).
     *   `forms.py`: Data entry forms.
     *   `signals.py`: Business logic automation (Stock deduction, Invoice creation).
     *   `admin.py`: Admin interface configuration.
     *   `urls.py`: App-specific URL routing.
 *   `templates/`: Global templates directory.
-    *   `base.html`: Base template.
-    *   `home.html`: Dashboard with statistics.
+    *   `base.html`: Base template with TomSelect and Lucide Icons.
+    *   `home.html`: Role-based Dashboard.
     *   `inventory/`: Inventory management templates.
     *   `transaction/`: Transaction (POS) templates.
     *   `finance/`: Invoice and Payment templates.
+    *   `return/`: Return Management templates.
 *   `venv/`: Python virtual environment.
 *   `backend.md`: Detailed specification of the database schema and business logic.
 *   `frontend.md`: User Interface and User Experience requirements.
@@ -41,16 +42,23 @@ This project is a stock management system designed for multi-warehouse operation
 
 ### 3. Transaction System (POS) 🛒
 *   **Create Order:** Select Reseller and Warehouse.
+*   **Searchable Items:** Integrated TomSelect for easy product lookup.
 *   **Add Items:** Dynamic cart management (Draft mode).
 *   **Finalize:** Lock order and trigger automation.
+*   **Role-Aware:** Resellers can only create orders for themselves; Admins can create for anyone.
 
 ### 4. Finance & Receivables 💰
 *   **Invoice List:** Track unpaid and partial invoices.
 *   **Payments:** Record payments against invoices to reduce reseller debt.
 
-### 5. Dashboard 📊
-*   **KPIs:** Total Stock, Total Receivables, Daily Transactions.
-*   **Quick Actions:** Shortcuts to common tasks.
+### 5. Return Management 🔁
+*   **Create Return:** Initiate return requests referencing specific invoices.
+*   **Finalize Return:** Automatically restores stock and adjusts reseller balance/credit.
+
+### 6. Role-Based Access & Dashboard 📊
+*   **Admin View:** Global stock, total receivables, all transactions.
+*   **Reseller View:** Personal debt, personal orders, unpaid invoices.
+*   **Menu Control:** Resellers cannot see Inventory adjustment menus.
 
 ## Setup & Running
 
@@ -78,9 +86,11 @@ This project is a stock management system designed for multi-warehouse operation
     ```
 
 ## Development Status
-*   **Phase:** Functional Beta.
-*   **Completed:** All core modules (Inventory, Transaction, Finance, Automation).
+*   **Phase:** Feature Complete (RC1).
+*   **Completed:**
+    *   Core Modules: Inventory, Transaction, Finance.
+    *   Advanced Features: Returns, Role Differentiation.
+    *   UX: Searchable Selects, Mobile-First Design.
 *   **Next Steps:**
     *   User Acceptance Testing (UAT).
-    *   Refine UI/UX (Feedback loops).
-    *   Add Report generation (PDF/Excel).
+    *   Deploy to production.

@@ -12,45 +12,97 @@
     </div>
 
     {% if user.is_authenticated %}
-    <div class="stats shadow w-full stats-vertical lg:stats-horizontal">
-  
-        <div class="stat">
-            <div class="stat-figure text-primary">
-                <i data-lucide="package" class="w-8 h-8"></i>
-            </div>
-            <div class="stat-title">Total Stok Item</div>
-            <div class="stat-value text-primary">{{ stock_count }}</div>
-            <div class="stat-desc">Unit di seluruh gudang</div>
-        </div>
         
-        <div class="stat">
-            <div class="stat-figure text-secondary">
-                <i data-lucide="credit-card" class="w-8 h-8"></i>
+        {% if is_reseller %}
+        <!-- DASHBOARD RESELLER -->
+        <div class="alert alert-info shadow-lg mb-6">
+            <div>
+                <i data-lucide="user"></i>
+                <span>Halo, {{ user.reseller_profile.name }}!</span>
             </div>
-            <div class="stat-title">Total Piutang</div>
-            <div class="stat-value text-secondary">Rp {{ receivables_value|floatformat:0 }}</div>
-            <div class="stat-desc">Tagihan belum lunas</div>
         </div>
-        
-        <div class="stat">
-            <div class="stat-figure text-secondary">
-                <i data-lucide="shopping-cart" class="w-8 h-8"></i>
-            </div>
-            <div class="stat-title">Transaksi Hari Ini</div>
-            <div class="stat-value">{{ transaction_count }}</div>
-            <div class="stat-desc">Pesanan baru masuk</div>
-        </div>
-        
-    </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8 w-full">
-        <a href="{% url 'transaction_create' %}" class="btn btn-lg btn-primary">
-            <i data-lucide="plus-circle"></i> Transaksi Baru
-        </a>
-        <a href="{% url 'stock_in' %}" class="btn btn-lg btn-secondary">
-            <i data-lucide="download"></i> Stok Masuk
-        </a>
-    </div>
+        <div class="stats shadow w-full stats-vertical lg:stats-horizontal">
+            <div class="stat">
+                <div class="stat-figure text-error">
+                    <i data-lucide="trending-down" class="w-8 h-8"></i>
+                </div>
+                <div class="stat-title">Tagihan Saya</div>
+                <div class="stat-value text-error">Rp {{ reseller_balance|floatformat:0 }}</div>
+                <div class="stat-desc">Total hutang saat ini</div>
+            </div>
+            
+            <div class="stat">
+                <div class="stat-figure text-warning">
+                    <i data-lucide="file-text" class="w-8 h-8"></i>
+                </div>
+                <div class="stat-title">Invoice Belum Bayar</div>
+                <div class="stat-value text-warning">{{ unpaid_invoices_count }}</div>
+                <div class="stat-desc">Invoice</div>
+            </div>
+            
+            <div class="stat">
+                <div class="stat-figure text-primary">
+                    <i data-lucide="shopping-bag" class="w-8 h-8"></i>
+                </div>
+                <div class="stat-title">Transaksi Aktif</div>
+                <div class="stat-value text-primary">{{ active_transactions }}</div>
+                <div class="stat-desc">Pesanan status Draft</div>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 gap-4 mt-8 w-full max-w-md mx-auto">
+            <a href="{% url 'transaction_create' %}" class="btn btn-lg btn-primary">
+                <i data-lucide="plus-circle"></i> Buat Pesanan Baru
+            </a>
+            <a href="{% url 'invoice_list' %}" class="btn btn-lg btn-outline">
+                <i data-lucide="list"></i> Lihat Tagihan Saya
+            </a>
+        </div>
+
+        {% else %}
+        <!-- DASHBOARD ADMIN/OWNER -->
+        <div class="badge badge-primary mb-4 p-4">Admin Dashboard</div>
+        
+        <div class="stats shadow w-full stats-vertical lg:stats-horizontal">
+            <div class="stat">
+                <div class="stat-figure text-primary">
+                    <i data-lucide="package" class="w-8 h-8"></i>
+                </div>
+                <div class="stat-title">Total Stok Item</div>
+                <div class="stat-value text-primary">{{ stock_count }}</div>
+                <div class="stat-desc">Unit di seluruh gudang</div>
+            </div>
+            
+            <div class="stat">
+                <div class="stat-figure text-secondary">
+                    <i data-lucide="credit-card" class="w-8 h-8"></i>
+                </div>
+                <div class="stat-title">Total Piutang Global</div>
+                <div class="stat-value text-secondary">Rp {{ receivables_value|floatformat:0 }}</div>
+                <div class="stat-desc">Tagihan belum lunas (Semua Reseller)</div>
+            </div>
+            
+            <div class="stat">
+                <div class="stat-figure text-secondary">
+                    <i data-lucide="shopping-cart" class="w-8 h-8"></i>
+                </div>
+                <div class="stat-title">Transaksi Hari Ini</div>
+                <div class="stat-value">{{ transaction_count }}</div>
+                <div class="stat-desc">Pesanan baru masuk</div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8 w-full">
+            <a href="{% url 'transaction_create' %}" class="btn btn-lg btn-primary">
+                <i data-lucide="plus-circle"></i> Transaksi Baru
+            </a>
+            <a href="{% url 'stock_in' %}" class="btn btn-lg btn-secondary">
+                <i data-lucide="download"></i> Stok Masuk
+            </a>
+        </div>
+        {% endif %}
+
     {% endif %}
 
   </div>

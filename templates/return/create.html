@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Buat Retur Baru{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto bg-base-100 shadow-xl rounded-box p-6">
+    <h2 class="text-2xl font-bold mb-6 text-center">Form Retur Barang</h2>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        {% if form.non_field_errors %}
+        <div class="alert alert-error mb-4">{{ form.non_field_errors }}</div>
+        {% endif %}
+
+        <div class="form-control w-full mb-4">
+            <label class="label"><span class="label-text font-semibold">Reseller</span></label>
+            {{ form.reseller }}
+             <!-- Add custom JS to filter invoices based on reseller later if needed -->
+        </div>
+
+        <div class="form-control w-full mb-4">
+             <label class="label"><span class="label-text font-semibold">Gudang Penerima</span></label>
+            {{ form.warehouse }}
+        </div>
+
+        <div class="form-control w-full mb-6">
+             <label class="label"><span class="label-text font-semibold">Refferensi Invoice</span></label>
+            {{ form.invoice }}
+        </div>
+
+        <div class="flex gap-2">
+            <a href="{% url 'home' %}" class="btn btn-ghost flex-1">Batal</a>
+            <button type="submit" class="btn btn-error flex-1">Buat Retur</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.querySelectorAll('select').forEach(el => el.classList.add('select', 'select-bordered', 'w-full'));
+</script>
+{% endblock %}

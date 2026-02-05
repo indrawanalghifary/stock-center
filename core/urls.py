@@ -19,4 +19,8 @@ urlpatterns = [
     # Finance
     path('invoices/', views.InvoiceListView.as_view(), name='invoice_list'),
     path('invoices/<int:pk>/pay/', views.PaymentCreateView.as_view(), name='payment_create'),
+
+    # Returns
+    path('returns/create/', views.ReturnCreateView.as_view(), name='return_create'),
+    path('returns/<int:pk>/', views.ReturnDetailView.as_view(), name='return_detail'),
 ]

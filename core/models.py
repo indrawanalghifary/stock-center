@@ -32,6 +32,7 @@ class Warehouse(models.Model):
         return self.name
 
 class Reseller(models.Model):
+    user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='reseller_profile')
     name = models.CharField(max_length=255)
     phone = models.CharField(max_length=20)
     address = models.TextField()
