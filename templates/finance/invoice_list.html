@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Daftar Tagihan (Invoice){% endblock %}
+
+{% block content %}
+<h1 class="text-2xl font-bold mb-6">Daftar Piutang / Invoice</h1>
+
+<div class="overflow-x-auto">
+    <table class="table w-full">
+        <thead>
+            <tr>
+                <th>Invoice ID</th>
+                <th>Tanggal</th>
+                <th>Reseller</th>
+                <th>Total</th>
+                <th>Terbayar</th>
+                <th>Sisa</th>
+                <th>Status</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for invoice in invoices %}
+            <tr class="hover">
+                <td class="font-mono">#INV-{{ invoice.id }}</td>
+                <td>{{ invoice.created_at|date:"d M Y" }}</td>
+                <td class="font-bold">{{ invoice.reseller.name }}</td>
+                <td>Rp {{ invoice.total_amount|floatformat:0 }}</td>
+                <td class="text-success">Rp {{ invoice.paid_amount|floatformat:0 }}</td>
+                <td class="text-error font-bold">
+                    Rp {{ invoice.total_amount|add:invoice.paid_amount|floatformat:0 }} 
+                    <!-- Note: Django template math is limited. Ideally calculate balance in model/view -->
+                </td>
+                <td>
+                    {% if invoice.status == 'PAID' %}
+                    <span class="badge badge-success">LUNAS</span>
+                    {% elif invoice.status == 'PARTIAL' %}
+                    <span class="badge badge-info">SEBAGIAN</span>
+                    {% else %}
+                    <span class="badge badge-error">BELUM BAYAR</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if invoice.status != 'PAID' %}
+                    <a href="{% url 'payment_create' invoice.pk %}" class="btn btn-sm btn-primary">
+                        <i data-lucide="credit-card"></i> Bayar
+                    </a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8" class="text-center py-4">Tidak ada data invoice.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

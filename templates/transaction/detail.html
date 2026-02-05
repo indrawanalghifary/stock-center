@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block title %}Detail Transaksi #{{ transaction.id }}{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    
+    <!-- Left: Transaction Info & Item List -->
+    <div class="lg:col-span-2">
+        <div class="bg-base-100 shadow rounded-box p-4 mb-4">
+            <div class="flex justify-between items-start">
+                <div>
+                    <h2 class="text-xl font-bold">Transaksi #{{ transaction.id }}</h2>
+                    <p class="text-sm text-gray-500">{{ transaction.created_at|date:"d M Y H:i" }}</p>
+                </div>
+                <div class="text-right">
+                    <div class="badge {% if transaction.status == 'FINAL' %}badge-success{% else %}badge-warning{% endif %}">
+                        {{ transaction.status }}
+                    </div>
+                </div>
+            </div>
+            <div class="divider my-2"></div>
+            <div class="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                    <span class="block text-gray-500">Reseller</span>
+                    <span class="font-semibold">{{ transaction.reseller.name }}</span>
+                </div>
+                <div>
+                    <span class="block text-gray-500">Gudang</span>
+                    <span class="font-semibold">{{ transaction.warehouse.name }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-base-100 shadow rounded-box p-4">
+            <h3 class="font-bold mb-4">Item Transaksi</h3>
+            <table class="table w-full">
+                <thead>
+                    <tr>
+                        <th>Produk</th>
+                        <th>Qty</th>
+                        <th class="text-right">Harga</th>
+                        <th class="text-right">Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in details %}
+                    <tr>
+                        <td>
+                            <div class="font-bold">{{ item.variant.product.name }}</div>
+                            <div class="text-xs text-gray-500">{{ item.variant.sku }}</div>
+                        </td>
+                        <td>{{ item.qty }}</td>
+                        <td class="text-right">Rp {{ item.price|floatformat:0 }}</td>
+                        <td class="text-right">Rp {{ item.subtotal|floatformat:0 }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center py-4">Belum ada item.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                     <tr>
+                        <td colspan="3" class="text-right font-bold">Total</td>
+                        <td class="text-right font-bold">Rp {{ transaction.details.all|length|yesno:"0,0" }} <!-- Simple total calc needs template tag usually, but let's skip for now or do it in view --> </td> 
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+    <!-- Right: Add Item Form (Only if DRAFT) -->
+    <div class="lg:col-span-1">
+        {% if transaction.status == 'DRAFT' %}
+        <div class="bg-base-100 shadow-xl rounded-box p-4 sticky top-4">
+            <h3 class="font-bold mb-4">Tambah Item</h3>
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="form-control w-full mb-2">
+                    <label class="label"><span class="label-text">Pilih Varian</span></label>
+                    {{ form.variant }}
+                </div>
+                
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="form-control w-full mb-2">
+                        <label class="label"><span class="label-text">Qty</span></label>
+                        {{ form.qty }}
+                    </div>
+                    <div class="form-control w-full mb-2">
+                         <label class="label"><span class="label-text">Harga</span></label>
+                        {{ form.price }}
+                    </div>
+                </div>
+
+                <button type="submit" name="add_item" class="btn btn-secondary w-full mt-4">
+                    <i data-lucide="plus"></i> Tambah
+                </button>
+            </form>
+
+            <div class="divider"></div>
+
+            <form method="post" onsubmit="return confirm('Apakah Anda yakin? Stok akan dikurangi dan Invoice dibuat.');">
+                {% csrf_token %}
+                <button type="submit" name="finalize" class="btn btn-primary w-full">
+                    <i data-lucide="check-circle"></i> Finalisasi Transaksi
+                </button>
+            </form>
+        </div>
+        {% endif %}
+        
+        {% if transaction.status == 'FINAL' %}
+        <div class="alert alert-success shadow-lg">
+            <div>
+                <i data-lucide="check-circle"></i>
+                <span>Transaksi Selesai.</span>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}

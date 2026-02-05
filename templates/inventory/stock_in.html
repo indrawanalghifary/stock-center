@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}Tambah Stok (Inbound){% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto bg-base-100 shadow-xl rounded-box p-6">
+    <h2 class="text-2xl font-bold mb-6 text-center">Tambah Stok Masuk</h2>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        {% if form.non_field_errors %}
+        <div class="alert alert-error mb-4">
+            {{ form.non_field_errors }}
+        </div>
+        {% endif %}
+
+        <div class="form-control w-full mb-4">
+            <label class="label">
+                <span class="label-text font-semibold">Gudang Tujuan</span>
+            </label>
+            {{ form.warehouse }} <!-- Render default select, styled via CSS or customized later -->
+            <div class="text-error text-sm">{{ form.warehouse.errors }}</div>
+        </div>
+
+        <div class="form-control w-full mb-4">
+            <label class="label">
+                <span class="label-text font-semibold">Produk Varian</span>
+            </label>
+            {{ form.variant }}
+            <div class="text-error text-sm">{{ form.variant.errors }}</div>
+        </div>
+
+        <div class="form-control w-full mb-4">
+            <label class="label">
+                <span class="label-text font-semibold">Jumlah (Qty)</span>
+            </label>
+            <input type="number" name="qty" class="input input-bordered w-full" min="1" required>
+            <div class="text-error text-sm">{{ form.qty.errors }}</div>
+        </div>
+        
+        <div class="form-control w-full mb-6">
+             <label class="label">
+                <span class="label-text font-semibold">Catatan (Optional)</span>
+            </label>
+            <textarea name="notes" class="textarea textarea-bordered h-24"></textarea>
+        </div>
+
+        <div class="flex gap-2">
+            <a href="{% url 'inventory_list' %}" class="btn btn-ghost flex-1">Batal</a>
+            <button type="submit" class="btn btn-primary flex-1">Simpan Stok</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    // Simple script to add DaisyUI classes to Django rendered fields if needed
+    document.querySelectorAll('select').forEach(el => el.classList.add('select', 'select-bordered', 'w-full'));
+</script>
+{% endblock %}

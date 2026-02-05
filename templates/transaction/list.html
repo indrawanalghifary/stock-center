@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Daftar Transaksi{% endblock %}
+
+{% block content %}
+<div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold">Transaksi</h1>
+    <a href="{% url 'transaction_create' %}" class="btn btn-primary">
+        <i data-lucide="plus"></i> Transaksi Baru
+    </a>
+</div>
+
+<div class="overflow-x-auto">
+    <table class="table w-full">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tanggal</th>
+                <th>Reseller</th>
+                <th>Gudang</th>
+                <th>Status</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for trx in transactions %}
+            <tr class="hover">
+                <td class="font-mono">#{{ trx.id }}</td>
+                <td>{{ trx.created_at|date:"d M Y H:i" }}</td>
+                <td class="font-bold">{{ trx.reseller.name }}</td>
+                <td>{{ trx.warehouse.name }}</td>
+                <td>
+                    {% if trx.status == 'FINAL' %}
+                    <span class="badge badge-success">FINAL</span>
+                    {% else %}
+                    <span class="badge badge-warning">DRAFT</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'transaction_detail' trx.pk %}" class="btn btn-sm btn-ghost">
+                        <i data-lucide="eye"></i> Detail
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center py-4">Belum ada transaksi.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

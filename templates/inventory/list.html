@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Inventory List{% endblock %}
+
+{% block content %}
+<div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold">Stok Gudang</h1>
+    <a href="{% url 'stock_in' %}" class="btn btn-primary">
+        <i data-lucide="plus"></i> Tambah Stok
+    </a>
+</div>
+
+<div class="overflow-x-auto">
+    <table class="table w-full">
+        <thead>
+            <tr>
+                <th>Gudang</th>
+                <th>Produk</th>
+                <th>SKU</th>
+                <th>Varian</th>
+                <th>Stok Tersedia</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for stock in stocks %}
+            <tr class="hover">
+                <td>{{ stock.warehouse.name }}</td>
+                <td class="font-bold">{{ stock.variant.product.name }}</td>
+                <td><span class="badge badge-ghost">{{ stock.variant.sku }}</span></td>
+                <td>{{ stock.variant.color }} / {{ stock.variant.size }}</td>
+                <td>
+                    <span class="badge {% if stock.qty_available > 0 %}badge-success{% else %}badge-error{% endif %}">
+                        {{ stock.qty_available }}
+                    </span>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center py-4">Belum ada data stok.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

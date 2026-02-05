@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Pembayaran Invoice #{{ invoice.id }}{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto bg-base-100 shadow-xl rounded-box p-6">
+    <h2 class="text-2xl font-bold mb-2 text-center">Rekam Pembayaran</h2>
+    <p class="text-center text-gray-500 mb-6">Untuk Invoice #INV-{{ invoice.id }} - {{ invoice.reseller.name }}</p>
+
+    <div class="stats shadow w-full mb-6">
+        <div class="stat place-items-center">
+            <div class="stat-title">Total Tagihan</div>
+            <div class="stat-value text-lg">Rp {{ invoice.total_amount|floatformat:0 }}</div>
+        </div>
+        <div class="stat place-items-center">
+            <div class="stat-title">Sudah Bayar</div>
+            <div class="stat-value text-lg text-success">Rp {{ invoice.paid_amount|floatformat:0 }}</div>
+        </div>
+    </div>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="form-control w-full mb-4">
+            <label class="label">
+                <span class="label-text font-semibold">Jumlah Pembayaran</span>
+            </label>
+            <input type="number" name="amount" class="input input-bordered w-full" step="0.01" required>
+            <div class="text-error text-sm">{{ form.amount.errors }}</div>
+        </div>
+
+        <div class="form-control w-full mb-6">
+            <label class="label">
+                <span class="label-text font-semibold">Metode Pembayaran</span>
+            </label>
+            <input type="text" name="method" class="input input-bordered w-full" placeholder="Cash / Transfer / E-Wallet" required>
+            <div class="text-error text-sm">{{ form.method.errors }}</div>
+        </div>
+
+        <div class="flex gap-2">
+            <a href="{% url 'invoice_list' %}" class="btn btn-ghost flex-1">Batal</a>
+            <button type="submit" class="btn btn-primary flex-1">Simpan</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

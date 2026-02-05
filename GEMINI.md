@@ -11,29 +11,46 @@ This project is a stock management system designed for multi-warehouse operation
 ## Directory Structure
 *   `config/`: Main Django project configuration (settings, URLs).
 *   `core/`: Main application containing business logic and models.
-    *   `models.py`: Contains all database models (Product, Variant, Warehouse, Stock, Transaction, etc.).
+    *   `models.py`: Database models.
+    *   `views.py`: Application logic (Inventory, Transaction, Finance).
+    *   `forms.py`: Data entry forms.
+    *   `signals.py`: Business logic automation (Stock deduction, Invoice creation).
     *   `admin.py`: Admin interface configuration.
-    *   `views.py`: Basic views (Home).
     *   `urls.py`: App-specific URL routing.
 *   `templates/`: Global templates directory.
-    *   `base.html`: Base template with Tailwind/DaisyUI and Lucide Icons.
-    *   `home.html`: Homepage template.
-    *   `login.html`: Login page template.
+    *   `base.html`: Base template.
+    *   `home.html`: Dashboard with statistics.
+    *   `inventory/`: Inventory management templates.
+    *   `transaction/`: Transaction (POS) templates.
+    *   `finance/`: Invoice and Payment templates.
 *   `venv/`: Python virtual environment.
 *   `backend.md`: Detailed specification of the database schema and business logic.
 *   `frontend.md`: User Interface and User Experience requirements.
 
-## Key Specifications
-*   **Models Implemented:**
-    *   **Master Data:** Product, Variant (SKU/QR), Warehouse, Reseller, ResellerPrice.
-    *   **Stock System:** WarehouseStock, StockMovement (Ledger).
-    *   **Transactions:** Transaction, TransactionDetail.
-    *   **Receivables:** Invoice, Payment.
-    *   **Returns:** ReturnHeader, ReturnDetail.
-*   **Frontend:**
-    *   Responsive layout with DaisyUI.
-    *   Login/Logout functionality.
-    *   Lucide Icons integration.
+## Key Features Implemented
+
+### 1. Automation (The Brain) 🧠
+*   **Auto-Stock Deduction:** Finalizing a transaction automatically checks and reduces warehouse stock.
+*   **Auto-Invoice:** Transactions generate invoices automatically upon finalization.
+*   **Auto-Ledger:** All stock changes are recorded in `StockMovement`.
+*   **Reseller Balance:** Debt is automatically calculated when transactions are finalized or payments are made.
+
+### 2. Inventory Management 📦
+*   **Stock Overview:** View stock levels across all warehouses.
+*   **Inbound Stock:** Form to add new stock (Purchase/Adjustment) with ledger tracking.
+
+### 3. Transaction System (POS) 🛒
+*   **Create Order:** Select Reseller and Warehouse.
+*   **Add Items:** Dynamic cart management (Draft mode).
+*   **Finalize:** Lock order and trigger automation.
+
+### 4. Finance & Receivables 💰
+*   **Invoice List:** Track unpaid and partial invoices.
+*   **Payments:** Record payments against invoices to reduce reseller debt.
+
+### 5. Dashboard 📊
+*   **KPIs:** Total Stock, Total Receivables, Daily Transactions.
+*   **Quick Actions:** Shortcuts to common tasks.
 
 ## Setup & Running
 
@@ -61,13 +78,9 @@ This project is a stock management system designed for multi-warehouse operation
     ```
 
 ## Development Status
-*   **Phase:** Foundation Complete.
-*   **Completed:**
-    *   Database schema implementation (`core/models.py`).
-    *   Admin interface registration (`core/admin.py`).
-    *   Basic frontend structure (`templates/base.html`).
-    *   Authentication views (Login/Logout).
+*   **Phase:** Functional Beta.
+*   **Completed:** All core modules (Inventory, Transaction, Finance, Automation).
 *   **Next Steps:**
-    *   Implement specific business logic (Stock ledger updates on transaction finalization).
-    *   Create dashboards for different user roles (Owner vs Reseller).
-    *   Build forms for data entry (Product, Warehouse, Transaction).
+    *   User Acceptance Testing (UAT).
+    *   Refine UI/UX (Feedback loops).
+    *   Add Report generation (PDF/Excel).

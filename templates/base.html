@@ -29,12 +29,21 @@
                     <i data-lucide="menu"></i>
                 </div>
                 <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-                    <li><a href="/">Dashboard</a></li>
-                    <li><a href="#">Produk</a></li>
-                    <li><a href="#">Stok</a></li>
-                    <li><a href="#">Transaksi</a></li>
-                    <li><a href="#">Laporan</a></li>
-                </ul>
+                <li><a href="{% url 'home' %}">Dashboard</a></li>
+                {% if user.is_authenticated %}
+                <li><a href="{% url 'inventory_list' %}">Stok Gudang</a></li>
+                <li><a href="{% url 'transaction_list' %}">Transaksi</a></li>
+                <li><a href="{% url 'invoice_list' %}">Keuangan</a></li>
+                <li class="mt-2 border-t pt-2">
+                    <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button class="w-full text-left">Logout</button>
+                    </form>
+                </li>
+                {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+                {% endif %}
+            </ul>
             </div>
         </div>
         <div class="navbar-center">
@@ -60,20 +69,22 @@
     </main>
 
     <!-- Bottom Navigation (Mobile) -->
+    {% if user.is_authenticated %}
     <div class="btm-nav btm-nav-sm lg:hidden">
-        <button class="active">
+        <a href="{% url 'home' %}" class="{% if request.path == '/' %}active{% endif %}">
             <i data-lucide="home"></i>
             <span class="btm-nav-label">Home</span>
-        </button>
-        <button>
+        </a>
+        <a href="{% url 'inventory_list' %}" class="{% if 'inventory' in request.path %}active{% endif %}">
             <i data-lucide="package"></i>
             <span class="btm-nav-label">Stok</span>
-        </button>
-        <button>
+        </a>
+        <a href="{% url 'transaction_list' %}" class="{% if 'transactions' in request.path %}active{% endif %}">
             <i data-lucide="shopping-cart"></i>
             <span class="btm-nav-label">Order</span>
-        </button>
+        </a>
     </div>
+    {% endif %}
 
     <script>
         // Initialize Lucide Icons
