@@ -4,11 +4,11 @@ from django.utils.decorators import method_decorator
 from django.views.generic import ListView, FormView, CreateView, DetailView, UpdateView
 from django.contrib import messages
 from django.db import transaction
-from django.db.models import Sum
+from django.db.models import Sum, Q
 from django.utils import timezone
 from django.urls import reverse_lazy, reverse
 from django import forms
-from .models import WarehouseStock, StockMovement, Variant, Warehouse, Transaction, TransactionDetail, Invoice, Payment, ReturnHeader, ReturnDetail
+from .models import WarehouseStock, StockMovement, Variant, Warehouse, Transaction, TransactionDetail, Invoice, Payment, ReturnHeader, ReturnDetail, Product
 from .forms import StockAdjustmentForm, TransactionCreateForm, TransactionDetailForm
 
 @login_required
@@ -74,12 +74,39 @@ class InvoiceListView(ListView):
     template_name = 'finance/invoice_list.html'
     context_object_name = 'invoices'
     ordering = ['-created_at']
+    paginate_by = 10
 
     def get_queryset(self):
         queryset = Invoice.objects.select_related('reseller', 'transaction').order_by('-created_at')
         if hasattr(self.request.user, 'reseller_profile'):
             queryset = queryset.filter(reseller=self.request.user.reseller_profile)
+        
+        # Search
+        query = self.request.GET.get('q')
+        if query:
+            if query.isdigit():
+                 queryset = queryset.filter(id=query)
+            else:
+                 queryset = queryset.filter(reseller__name__icontains=query)
+        
+        # Filters
+        status = self.request.GET.get('status')
+        if status:
+            queryset = queryset.filter(status=status)
+            
+        start_date = self.request.GET.get('start_date')
+        end_date = self.request.GET.get('end_date')
+        if start_date:
+            queryset = queryset.filter(created_at__date__gte=start_date)
+        if end_date:
+            queryset = queryset.filter(created_at__date__lte=end_date)
+            
         return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['status_choices'] = Invoice.STATUS_CHOICES
+        return context
 
 @method_decorator(login_required, name='dispatch')
 class PaymentCreateView(CreateView):
@@ -109,9 +136,41 @@ class InventoryListView(ListView):
     model = WarehouseStock
     template_name = 'inventory/list.html'
     context_object_name = 'stocks'
+    paginate_by = 10
 
     def get_queryset(self):
-        return WarehouseStock.objects.select_related('warehouse', 'variant__product').order_by('warehouse', 'variant__product__name')
+        queryset = WarehouseStock.objects.select_related('warehouse', 'variant__product').order_by('warehouse', 'variant__product__name')
+        
+        # Search
+        query = self.request.GET.get('q')
+        if query:
+            queryset = queryset.filter(
+                Q(variant__product__name__icontains=query) | 
+                Q(variant__sku__icontains=query) |
+                Q(variant__color__icontains=query)
+            )
+            
+        # Filters
+        warehouse_id = self.request.GET.get('warehouse')
+        if warehouse_id:
+            queryset = queryset.filter(warehouse_id=warehouse_id)
+            
+        category = self.request.GET.get('category')
+        if category:
+            queryset = queryset.filter(variant__product__category=category)
+            
+        brand = self.request.GET.get('brand')
+        if brand:
+            queryset = queryset.filter(variant__product__brand=brand)
+            
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['warehouses'] = Warehouse.objects.all()
+        context['categories'] = Product.objects.values_list('category', flat=True).distinct().order_by('category')
+        context['brands'] = Product.objects.values_list('brand', flat=True).distinct().order_by('brand')
+        return context
 
 @method_decorator(login_required, name='dispatch')
 class StockInView(FormView):
@@ -157,12 +216,45 @@ class TransactionListView(ListView):
     template_name = 'transaction/list.html'
     context_object_name = 'transactions'
     ordering = ['-created_at']
+    paginate_by = 10
 
     def get_queryset(self):
         queryset = Transaction.objects.all().order_by('-created_at')
         if hasattr(self.request.user, 'reseller_profile'):
             queryset = queryset.filter(reseller=self.request.user.reseller_profile)
+        
+        # Search
+        query = self.request.GET.get('q')
+        if query:
+             queryset = queryset.filter(
+                Q(id__icontains=query) | 
+                Q(reseller__name__icontains=query) |
+                Q(warehouse__name__icontains=query)
+            )
+            
+        # Filters
+        warehouse_id = self.request.GET.get('warehouse')
+        if warehouse_id:
+            queryset = queryset.filter(warehouse_id=warehouse_id)
+            
+        status = self.request.GET.get('status')
+        if status:
+            queryset = queryset.filter(status=status)
+            
+        start_date = self.request.GET.get('start_date')
+        end_date = self.request.GET.get('end_date')
+        if start_date:
+            queryset = queryset.filter(created_at__date__gte=start_date)
+        if end_date:
+            queryset = queryset.filter(created_at__date__lte=end_date)
+            
         return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['warehouses'] = Warehouse.objects.all()
+        context['status_choices'] = Transaction.STATUS_CHOICES
+        return context
 
 @method_decorator(login_required, name='dispatch')
 class TransactionCreateView(CreateView):

@@ -3,11 +3,57 @@
 {% block title %}Daftar Transaksi{% endblock %}
 
 {% block content %}
-<div class="flex justify-between items-center mb-6">
-    <h1 class="text-2xl font-bold">Transaksi</h1>
-    <a href="{% url 'transaction_create' %}" class="btn btn-primary">
-        <i data-lucide="plus"></i> Transaksi Baru
-    </a>
+<div class="flex flex-col gap-4 mb-6">
+    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+        <h1 class="text-2xl font-bold">Transaksi</h1>
+        <a href="{% url 'transaction_create' %}" class="btn btn-primary w-full lg:w-auto">
+            <i data-lucide="plus"></i> Transaksi Baru
+        </a>
+    </div>
+
+    <form method="get" class="bg-base-100 p-4 rounded-box shadow-sm border border-base-200">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-2 items-end">
+            <!-- Search -->
+            <div class="form-control lg:col-span-2">
+                <label class="label"><span class="label-text-alt">Pencarian</span></label>
+                <div class="join w-full">
+                    <input type="text" name="q" placeholder="ID / Reseller..." class="input input-bordered join-item w-full" value="{{ request.GET.q|default:'' }}">
+                    <button class="btn join-item"><i data-lucide="search"></i></button>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="form-control">
+                <label class="label"><span class="label-text-alt">Gudang</span></label>
+                <select name="warehouse" class="select select-bordered w-full" onchange="this.form.submit()">
+                    <option value="">Semua Gudang</option>
+                    {% for w in warehouses %}
+                    <option value="{{ w.id }}" {% if request.GET.warehouse == w.id|stringformat:"s" %}selected{% endif %}>{{ w.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-control">
+                <label class="label"><span class="label-text-alt">Status</span></label>
+                <select name="status" class="select select-bordered w-full" onchange="this.form.submit()">
+                    <option value="">Semua Status</option>
+                    {% for code, label in status_choices %}
+                    <option value="{{ code }}" {% if request.GET.status == code %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-control">
+                <label class="label"><span class="label-text-alt">Dari Tanggal</span></label>
+                <input type="date" name="start_date" class="input input-bordered w-full" value="{{ request.GET.start_date|default:'' }}" onchange="this.form.submit()">
+            </div>
+
+            <div class="form-control">
+                <label class="label"><span class="label-text-alt">Sampai Tanggal</span></label>
+                <input type="date" name="end_date" class="input input-bordered w-full" value="{{ request.GET.end_date|default:'' }}" onchange="this.form.submit()">
+            </div>
+        </div>
+    </form>
 </div>
 
 <div class="overflow-x-auto">
@@ -44,10 +90,18 @@
             </tr>
             {% empty %}
             <tr>
-                <td colspan="6" class="text-center py-4">Belum ada transaksi.</td>
+                <td colspan="6" class="text-center py-4">
+                     {% if request.GET.q %}
+                        Tidak ada transaksi yang cocok.
+                    {% else %}
+                        Belum ada transaksi.
+                    {% endif %}
+                </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
+
+{% include 'partials/pagination.html' %}
 {% endblock %}
