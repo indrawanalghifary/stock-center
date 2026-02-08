@@ -38,6 +38,12 @@ def home(request):
             reseller=reseller,
             status='DRAFT'
         ).count()
+
+        # Draft Returns
+        context['draft_returns_count'] = ReturnHeader.objects.filter(
+            reseller=reseller,
+            status='DRAFT'
+        ).count()
         
         context['is_reseller'] = True
         
@@ -52,11 +58,15 @@ def home(request):
         receivables_value = (total_receivables['total'] or 0) - (total_receivables['paid'] or 0)
         
         transaction_count = Transaction.objects.filter(created_at__date=timezone.now().date()).count()
+        
+        # Pending Returns
+        pending_returns = ReturnHeader.objects.filter(status='DRAFT').count()
 
         context.update({
             'stock_count': stock_count,
             'receivables_value': receivables_value,
             'transaction_count': transaction_count,
+            'pending_returns': pending_returns,
             'is_reseller': False
         })
 
@@ -336,6 +346,40 @@ class TransactionDetailView(DetailView, FormView):
             return redirect('transaction_detail', pk=self.object.pk)
 
 @method_decorator(login_required, name='dispatch')
+class ReturnListView(ListView):
+    model = ReturnHeader
+    template_name = 'return/list.html'
+    context_object_name = 'returns'
+    ordering = ['-created_at']
+    paginate_by = 10
+
+    def get_queryset(self):
+        queryset = ReturnHeader.objects.all().order_by('-created_at')
+        if hasattr(self.request.user, 'reseller_profile'):
+            queryset = queryset.filter(reseller=self.request.user.reseller_profile)
+        
+        # Search
+        query = self.request.GET.get('q')
+        if query:
+            queryset = queryset.filter(
+                Q(id__icontains=query) | 
+                Q(reseller__name__icontains=query) |
+                Q(invoice__id__icontains=query)
+            )
+            
+        # Filters
+        status = self.request.GET.get('status')
+        if status:
+            queryset = queryset.filter(status=status)
+            
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['status_choices'] = ReturnHeader.STATUS_CHOICES
+        return context
+
+@method_decorator(login_required, name='dispatch')
 class ReturnCreateView(CreateView):
     model = ReturnHeader
     fields = ['reseller', 'warehouse', 'invoice']
@@ -389,6 +433,12 @@ class ReturnDetailView(DetailView):
                 messages.success(request, "Retur berhasil difinalisasi.")
             except Exception as e:
                 messages.error(request, f"Gagal finalisasi: {e}")
+            return redirect('return_detail', pk=self.object.pk)
+        
+        if 'remove_item' in request.POST:
+            detail_id = request.POST.get('detail_id')
+            ReturnDetail.objects.filter(id=detail_id, return_header=self.object).delete()
+            messages.success(request, "Item dihapus.")
             return redirect('return_detail', pk=self.object.pk)
         
         # Simple Add Item Logic

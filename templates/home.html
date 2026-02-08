@@ -49,14 +49,29 @@
                 <div class="stat-value text-primary">{{ active_transactions }}</div>
                 <div class="stat-desc">Pesanan status Draft</div>
             </div>
+
+            <div class="stat">
+                <div class="stat-figure text-error">
+                    <i data-lucide="rotate-ccw" class="w-8 h-8"></i>
+                </div>
+                <div class="stat-title">Retur Draft</div>
+                <div class="stat-value text-error">{{ draft_returns_count }}</div>
+                <div class="stat-desc">Retur belum difinalisasi</div>
+            </div>
         </div>
         
-        <div class="grid grid-cols-1 gap-4 mt-8 w-full max-w-md mx-auto">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8 w-full max-w-2xl mx-auto">
             <a href="{% url 'transaction_create' %}" class="btn btn-lg btn-primary">
-                <i data-lucide="plus-circle"></i> Buat Pesanan Baru
+                <i data-lucide="plus-circle"></i> Pesanan Baru
+            </a>
+            <a href="{% url 'return_create' %}" class="btn btn-lg btn-error">
+                <i data-lucide="rotate-ccw"></i> Buat Retur
             </a>
             <a href="{% url 'invoice_list' %}" class="btn btn-lg btn-outline">
-                <i data-lucide="list"></i> Lihat Tagihan Saya
+                <i data-lucide="list"></i> Tagihan Saya
+            </a>
+            <a href="{% url 'return_list' %}" class="btn btn-lg btn-outline">
+                <i data-lucide="history"></i> Riwayat Retur
             </a>
         </div>
 
@@ -91,14 +106,29 @@
                 <div class="stat-value">{{ transaction_count }}</div>
                 <div class="stat-desc">Pesanan baru masuk</div>
             </div>
+
+            <div class="stat">
+                <div class="stat-figure text-error">
+                    <i data-lucide="rotate-ccw" class="w-8 h-8"></i>
+                </div>
+                <div class="stat-title">Retur Pending</div>
+                <div class="stat-value text-error">{{ pending_returns }}</div>
+                <div class="stat-desc">Menunggu finalisasi</div>
+            </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8 w-full">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-8 w-full">
             <a href="{% url 'transaction_create' %}" class="btn btn-lg btn-primary">
                 <i data-lucide="plus-circle"></i> Transaksi Baru
             </a>
             <a href="{% url 'stock_in' %}" class="btn btn-lg btn-secondary">
                 <i data-lucide="download"></i> Stok Masuk
+            </a>
+            <a href="{% url 'return_list' %}" class="btn btn-lg btn-error">
+                <i data-lucide="rotate-ccw"></i> Kelola Retur
+            </a>
+            <a href="{% url 'invoice_list' %}" class="btn btn-lg btn-outline">
+                <i data-lucide="file-text"></i> Semua Invoice
             </a>
         </div>
         {% endif %}

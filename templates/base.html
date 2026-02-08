@@ -50,6 +50,7 @@
                     
                     <li><a href="{% url 'transaction_list' %}">Transaksi</a></li>
                     <li><a href="{% url 'invoice_list' %}">Keuangan</a></li>
+                    <li><a href="{% url 'return_list' %}">Retur Barang</a></li>
                     
                     <li class="mt-2 border-t pt-2">
                         <form method="post" action="{% url 'logout' %}">
@@ -82,6 +83,15 @@
 
     <!-- Main Content -->
     <main class="container mx-auto p-4">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-error{% else %}alert-info{% endif %} mb-4">
+                    <i data-lucide="info"></i>
+                    <span>{{ message }}</span>
+                </div>
+            {% endfor %}
+        {% endif %}
+
         {% block content %}
         {% endblock %}
     </main>
@@ -104,6 +114,11 @@
         <a href="{% url 'transaction_list' %}" class="{% if 'transactions' in request.path %}active{% endif %}">
             <i data-lucide="shopping-cart"></i>
             <span class="btm-nav-label">Order</span>
+        </a>
+
+        <a href="{% url 'return_list' %}" class="{% if 'returns' in request.path %}active{% endif %}">
+            <i data-lucide="rotate-ccw"></i>
+            <span class="btm-nav-label">Retur</span>
         </a>
     </div>
     {% endif %}

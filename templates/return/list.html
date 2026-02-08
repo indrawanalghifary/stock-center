@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block title %}Daftar Retur{% endblock %}
+
+{% block content %}
+<div class="flex flex-col gap-4 mb-6">
+    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+        <h1 class="text-2xl font-bold">Pengembalian Barang (Retur)</h1>
+        <a href="{% url 'return_create' %}" class="btn btn-primary w-full lg:w-auto">
+            <i data-lucide="plus"></i> Retur Baru
+        </a>
+    </div>
+
+    <form method="get" class="bg-base-100 p-4 rounded-box shadow-sm border border-base-200">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 items-end">
+            <!-- Search -->
+            <div class="form-control lg:col-span-2">
+                <label class="label"><span class="label-text-alt">Pencarian</span></label>
+                <div class="join w-full">
+                    <input type="text" name="q" placeholder="ID / Reseller / Invoice..." class="input input-bordered join-item w-full" value="{{ request.GET.q|default:'' }}">
+                    <button class="btn join-item"><i data-lucide="search"></i></button>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="form-control">
+                <label class="label"><span class="label-text-alt">Status</span></label>
+                <select name="status" class="select select-bordered w-full" onchange="this.form.submit()">
+                    <option value="">Semua Status</option>
+                    {% for code, label in status_choices %}
+                    <option value="{{ code }}" {% if request.GET.status == code %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="flex gap-2">
+                <a href="{% url 'return_list' %}" class="btn btn-ghost flex-1">Reset</a>
+                <button type="submit" class="btn btn-primary flex-1">Filter</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="overflow-x-auto">
+    <table class="table w-full">
+        <thead>
+            <tr>
+                <th>ID Retur</th>
+                <th>Tanggal</th>
+                <th>Reseller</th>
+                <th>Invoice Ref</th>
+                <th>Status</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for retur in returns %}
+            <tr class="hover">
+                <td class="font-mono">#{{ retur.id }}</td>
+                <td>{{ retur.created_at|date:"d M Y H:i" }}</td>
+                <td class="font-bold">{{ retur.reseller.name }}</td>
+                <td>
+                    {% if retur.invoice %}
+                        <span class="badge badge-outline">INV#{{ retur.invoice.id }}</span>
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td>
+                    {% if retur.status == 'FINAL' %}
+                    <span class="badge badge-success">FINAL</span>
+                    {% else %}
+                    <span class="badge badge-warning">DRAFT</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'return_detail' retur.pk %}" class="btn btn-sm btn-ghost">
+                        <i data-lucide="eye"></i> Detail
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center py-4">
+                     {% if request.GET.q %}
+                        Tidak ada retur yang cocok.
+                    {% else %}
+                        Belum ada data retur.
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% include 'partials/pagination.html' %}
+{% endblock %}

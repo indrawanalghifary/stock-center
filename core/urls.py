@@ -21,6 +21,7 @@ urlpatterns = [
     path('invoices/<int:pk>/pay/', views.PaymentCreateView.as_view(), name='payment_create'),
 
     # Returns
+    path('returns/', views.ReturnListView.as_view(), name='return_list'),
     path('returns/create/', views.ReturnCreateView.as_view(), name='return_create'),
     path('returns/<int:pk>/', views.ReturnDetailView.as_view(), name='return_detail'),
 ]

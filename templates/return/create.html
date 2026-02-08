@@ -29,14 +29,42 @@
             {{ form.invoice }}
         </div>
 
-        <div class="flex gap-2">
-            <a href="{% url 'home' %}" class="btn btn-ghost flex-1">Batal</a>
-            <button type="submit" class="btn btn-error flex-1">Buat Retur</button>
-        </div>
-    </form>
-</div>
+                <div class="flex gap-2">
 
-<script>
-    document.querySelectorAll('select').forEach(el => el.classList.add('select', 'select-bordered', 'w-full'));
-</script>
-{% endblock %}
+                    <a href="{% url 'return_list' %}" class="btn btn-ghost flex-1">Batal</a>
+
+                    <button type="submit" class="btn btn-error flex-1">Buat Retur</button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+        
+
+        <script>
+
+            document.addEventListener("DOMContentLoaded", function(){
+
+                document.querySelectorAll('select').forEach(el => {
+
+                    new TomSelect(el, {
+
+                        create: false,
+
+                        placeholder: "Pilih...",
+
+                        plugins: ['dropdown_input'],
+
+                    });
+
+                });
+
+            });
+
+        </script>
+
+        {% endblock %}
+
+        
