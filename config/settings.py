@@ -26,11 +26,17 @@ SECRET_KEY = "django-insecure-$9b_espv06)r56v3u572g#^$t-9i4k_r!_u14o&7#cp)8zb!2(
 DEBUG = True
 
 ALLOWED_HOSTS = []
+LOGIN_URL = 'login'  # nama url login
+LOGIN_REDIRECT_URL = 'home'  # setelah berhasil login
+LOGOUT_REDIRECT_URL = 'login'  # setelah logout
+
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    "django_daisy",
+    "django.contrib.humanize",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -121,3 +127,32 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+DAISY_SETTINGS = {
+    'SITE_TITLE': 'Panel Admin',  # The title of the site 
+    'SITE_HEADER': 'Administration',  # Header text displayed in the admin panel
+    'INDEX_TITLE': 'Hi, welcome to your dashboard',  # The title for the index page of dashboard
+    'SITE_LOGO': '/static/admin/img/daisyui-logomark.svg',  # Path to the logo image displayed in the sidebar
+    'LOAD_FULL_STYLES': False,  # Load complete DaisyUI library
+    'SHOW_CHANGELIST_FILTER': False,  # Auto-open filter sidebar
+    'DONT_SUPPORT_ME': True,  # Hide GitHub link
+    'SIDEBAR_FOOTNOTE': 'SilentTech',  # Custom sidebar footer text
+    'EXTRA_STYLES': ["/static/admin/css/mobile.css"],  # List of extra stylesheets to be loaded in base.html (optional)
+    'EXTRA_SCRIPTS': [],  # List of extra script URLs to be loaded in base.html (optional)
+    'LOAD_FULL_STYLES': False,  # If True, loads full DaisyUI components in the admin (useful if you have custom template overrides)
+    'SHOW_CHANGELIST_FILTER': False,  # If True, the filter sidebar will open by default on changelist views
+    'APPS_REORDER': {
+        # Custom configurations for third-party apps that can't be modified directly in their `apps.py`
+        'auth': {
+            'icon': 'fa-solid fa-person-military-pointing',  # FontAwesome icon for the 'auth' app
+            'name': 'Authentication',  # Custom name for the 'auth' app
+            'hide': False,  # Whether to hide the 'auth' app from the sidebar (set to True to hide)
+            'app': 'users',  # The actual app to display in the sidebar (e.g., rename 'auth' to 'users')
+            'divider_title': "Auth",  # Divider title for the 'auth' section
+        },
+        'social_django': {
+            'icon': 'fa-solid fa-users-gear',  # Custom FontAwesome icon for the 'social_django' app
+        },
+    },
+}
