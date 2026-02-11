@@ -1,0 +1,7 @@
+asgiref==3.11.1
+dj-database-url==3.1.0
+django==6.0.2
+django-daisy==2.0.7
+psutil==7.2.1
+python-decouple==3.8
+sqlparse==0.5.5
