@@ -7,7 +7,7 @@ from .models import (
 
 class VariantInline(admin.TabularInline):
     model = Variant
-    extra = 1
+    extra = 10
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
