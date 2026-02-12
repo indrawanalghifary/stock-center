@@ -76,10 +76,12 @@
                     {% endif %}
                 </td>
                 <td>
-                    {% if invoice.status != 'PAID' %}
-                    <a href="{% url 'payment_create' invoice.pk %}" class="btn btn-sm btn-primary">
-                        <i data-lucide="credit-card"></i> Bayar
-                    </a>
+                    {% if not user.reseller_profile %}
+                        {% if invoice.status != 'PAID' %}
+                        <a href="{% url 'payment_create' invoice.pk %}" class="btn btn-sm btn-primary">
+                            <i data-lucide="credit-card"></i> Bayar
+                        </a>
+                        {% endif %}
                     {% endif %}
                 </td>
             </tr>
