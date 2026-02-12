@@ -8,7 +8,7 @@ from django.db.models import Sum, Q
 from django.utils import timezone
 from django.urls import reverse_lazy, reverse
 from django import forms
-from .models import WarehouseStock, StockMovement, Variant, Warehouse, Transaction, TransactionDetail, Invoice, Payment, ReturnHeader, ReturnDetail, Product
+from .models import WarehouseStock, StockMovement, Variant, Warehouse, Transaction, TransactionDetail, Invoice, Payment, ReturnHeader, ReturnDetail, Product, ResellerPrice
 from .forms import StockAdjustmentForm, TransactionCreateForm, TransactionDetailForm
 
 @login_required
@@ -328,6 +328,28 @@ class TransactionDetailView(DetailView, FormView):
     def form_valid(self, form):
         detail = form.save(commit=False)
         detail.transaction = self.object
+
+        # Determine price: reseller-specific price if exists, otherwise variant default
+        variant = detail.variant
+        reseller = self.object.reseller
+        reseller_price = None
+        if reseller:
+            reseller_price = ResellerPrice.objects.filter(reseller=reseller, variant=variant).first()
+
+        if reseller_price:
+            detail.price = reseller_price.custom_price
+        else:
+            detail.price = variant.default_price
+
+        # Validate stock in the transaction's warehouse
+        warehouse = self.object.warehouse
+        stock = WarehouseStock.objects.filter(warehouse=warehouse, variant=variant).first()
+        available = stock.qty_available if stock else 0
+
+        if detail.qty > available:
+            messages.error(self.request, f"Stok tidak cukup. Tersedia: {available}.")
+            return redirect('transaction_detail', pk=self.object.pk)
+
         detail.save()
         messages.success(self.request, "Item added.")
         return redirect('transaction_detail', pk=self.object.pk)

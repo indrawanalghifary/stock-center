@@ -32,10 +32,9 @@ class TransactionCreateForm(forms.ModelForm):
 class TransactionDetailForm(forms.ModelForm):
     class Meta:
         model = TransactionDetail
-        fields = ['variant', 'qty', 'price']
+        fields = ['variant', 'qty']
         widgets = {
             'variant': forms.Select(attrs={'class': 'select select-bordered w-full'}),
             'qty': forms.NumberInput(attrs={'class': 'input input-bordered w-full', 'min': 1}),
-            'price': forms.NumberInput(attrs={'class': 'input input-bordered w-full'}),
         }
 
