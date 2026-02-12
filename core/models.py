@@ -145,6 +145,9 @@ class Payment(models.Model):
     method = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f"PAY-{self.id} - {self.reseller.name} ({self.amount})"
+
 # 🔁 5️⃣ RETUR BARANG
 
 class ReturnHeader(models.Model):
@@ -166,3 +169,6 @@ class ReturnDetail(models.Model):
     return_header = models.ForeignKey(ReturnHeader, on_delete=models.CASCADE, related_name='details')
     variant = models.ForeignKey(Variant, on_delete=models.CASCADE)
     qty = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.return_header} - {self.variant.sku} ({self.qty})"

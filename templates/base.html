@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="id" data-theme="light">
 <head>
+    {% load static %}
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Stock Center{% endblock %}</title>
@@ -44,9 +46,9 @@
                 {% if user.is_authenticated %}
                     
                     <!-- Menu logic based on Reseller profile presence -->
-                    {% if not user.reseller_profile %}
+                    {% comment %} {% if not user.reseller_profile %} {% endcomment %}
                         <li><a href="{% url 'inventory_list' %}">Stok Gudang</a></li>
-                    {% endif %}
+                    {% comment %} {% endif %} {% endcomment %}
                     
                     <li><a href="{% url 'transaction_list' %}">Transaksi</a></li>
                     <li><a href="{% url 'invoice_list' %}">Keuangan</a></li>

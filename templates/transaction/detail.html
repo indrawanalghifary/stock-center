@@ -100,13 +100,14 @@
             </form>
 
             <div class="divider"></div>
-
-            <form method="post" onsubmit="return confirm('Apakah Anda yakin? Stok akan dikurangi dan Invoice dibuat.');">
-                {% csrf_token %}
-                <button type="submit" name="finalize" class="btn btn-primary w-full">
-                    <i data-lucide="check-circle"></i> Finalisasi Transaksi
-                </button>
-            </form>
+            {% if not user.reseller_profile %}
+                <form method="post" onsubmit="return confirm('Apakah Anda yakin? Stok akan dikurangi dan Invoice dibuat.');">
+                    {% csrf_token %}
+                    <button type="submit" name="finalize" class="btn btn-primary w-full">
+                        <i data-lucide="check-circle"></i> Finalisasi Transaksi
+                    </button>
+                </form>
+            {% endif %}
         </div>
         {% endif %}
         
