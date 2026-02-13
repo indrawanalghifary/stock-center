@@ -8,6 +8,7 @@ from django.db.models import Sum, Q
 from django.utils import timezone
 from django.urls import reverse_lazy, reverse
 from django import forms
+from django.http import JsonResponse
 from .models import WarehouseStock, StockMovement, Variant, Warehouse, Transaction, TransactionDetail, Invoice, Payment, ReturnHeader, ReturnDetail, Product, ResellerPrice
 from .forms import StockAdjustmentForm, TransactionCreateForm, TransactionDetailForm
 
@@ -714,4 +715,52 @@ class AnalyticsView(ListView):
             'sales_trend': sales_trend,
             'is_reseller': is_reseller,
         })
+        return context
+
+@login_required
+def scanner(request):
+    return render(request, 'scanner.html')
+
+@login_required
+def variant_barcode(request, pk):
+    variant = get_object_or_404(Variant, pk=pk)
+    return render(request, 'inventory/barcode_page.html', {'variant': variant})
+
+@login_required
+def invoice_qrcode(request, pk):
+    invoice = get_object_or_404(Invoice, pk=pk)
+    return render(request, 'finance/qrcode_page.html', {'invoice': invoice})
+
+@login_required
+def scan_lookup(request):
+    code = request.GET.get('code', '')
+    if not code:
+        return JsonResponse({'error': 'No code provided'}, status=400)
+
+    # Check for Invoice ID (format: INV-123)
+    if code.startswith('INV-'):
+        try:
+            inv_id = int(code.replace('INV-', ''))
+            invoice = Invoice.objects.get(id=inv_id)
+            # Redirect to transaction detail which is effectively the invoice detail
+            return JsonResponse({'url': reverse('transaction_detail', kwargs={'pk': invoice.transaction.pk})})
+        except (ValueError, Invoice.DoesNotExist):
+            pass
+
+    # Try SKU lookup
+    variant = Variant.objects.filter(sku=code).first()
+    if variant:
+        return JsonResponse({'url': reverse('variant_detail', kwargs={'pk': variant.pk})})
+
+    return JsonResponse({'error': 'Data tidak ditemukan'}, status=404)
+
+@method_decorator(login_required, name='dispatch')
+class VariantDetailView(DetailView):
+    model = Variant
+    template_name = 'inventory/variant_detail.html'
+    context_object_name = 'variant'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['stocks'] = WarehouseStock.objects.filter(variant=self.object).select_related('warehouse')
         return context

@@ -67,6 +67,7 @@
                 <th>SKU</th>
                 <th>Varian</th>
                 <th>Stok Tersedia</th>
+                <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -89,7 +90,16 @@
                         {{ stock.qty_available }}
                     </span>
                 </td>
-
+                <td>
+                    <div class="flex gap-1">
+                        <a href="{% url 'variant_detail' stock.variant.pk %}" class="btn btn-ghost btn-xs" title="Detail">
+                            <i data-lucide="eye" class="w-4 h-4"></i>
+                        </a>
+                        <a href="{% url 'variant_barcode' stock.variant.pk %}" class="btn btn-ghost btn-xs text-secondary" title="Barcode">
+                            <i data-lucide="barcode" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </td>
             </tr>
             {% empty %}
             <tr>

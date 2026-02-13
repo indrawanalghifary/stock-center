@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}Scanner Barcode/QR{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto">
+    <div class="text-center mb-6">
+        <h1 class="text-2xl font-bold">Scanner</h1>
+        <p class="text-base-content/70 text-sm">Arahkan kamera ke Barcode (SKU) atau QR Code (Invoice)</p>
+    </div>
+
+    <div class="bg-base-100 rounded-box shadow-lg border border-base-200 overflow-hidden">
+        <div id="reader" style="width: 100%;"></div>
+    </div>
+
+    <div id="result" class="mt-4 hidden">
+        <div class="alert alert-info">
+            <span id="result-text">Mencari data...</span>
+        </div>
+    </div>
+
+    <div class="mt-6 flex flex-col gap-2">
+        <button id="start-btn" class="btn btn-primary w-full">
+            <i data-lucide="camera"></i> Mulai Kamera
+        </button>
+        <button id="stop-btn" class="btn btn-outline btn-error w-full hidden">
+             Stop Kamera
+        </button>
+    </div>
+</div>
+
+<script src="https://unpkg.com/html5-qrcode"></script>
+<script>
+    const html5QrCode = new Html5Qrcode("reader");
+    const resultDiv = document.getElementById('result');
+    const resultText = document.getElementById('result-text');
+    const startBtn = document.getElementById('start-btn');
+    const stopBtn = document.getElementById('stop-btn');
+
+    function onScanSuccess(decodedText, decodedResult) {
+        // Stop scanning to process
+        html5QrCode.stop().then(() => {
+            startBtn.classList.remove('hidden');
+            stopBtn.classList.add('hidden');
+            
+            resultDiv.classList.remove('hidden');
+            resultText.innerText = "Mencari data: " + decodedText;
+
+            // Send to backend lookup
+            fetch(`/scan-lookup/?code=${encodeURIComponent(decodedText)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.url) {
+                        window.location.href = data.url;
+                    } else {
+                        resultText.innerText = "Error: " + (data.error || "Data tidak ditemukan");
+                        resultDiv.className = "alert alert-error mt-4";
+                    }
+                })
+                .catch(err => {
+                    resultText.innerText = "Terjadi kesalahan sistem.";
+                    resultDiv.className = "alert alert-error mt-4";
+                });
+        });
+    }
+
+    startBtn.addEventListener('click', () => {
+        const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+        
+        html5QrCode.start({ facingMode: "environment" }, config, onScanSuccess)
+            .then(() => {
+                startBtn.classList.add('hidden');
+                stopBtn.classList.remove('hidden');
+                resultDiv.classList.add('hidden');
+            })
+            .catch(err => {
+                alert("Gagal mengakses kamera: " + err);
+            });
+    });
+
+    stopBtn.addEventListener('click', () => {
+        html5QrCode.stop().then(() => {
+            startBtn.classList.remove('hidden');
+            stopBtn.classList.add('hidden');
+        });
+    });
+</script>
+{% endblock %}

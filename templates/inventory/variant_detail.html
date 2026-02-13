@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}Detail Produk - {{ variant.sku }}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="flex items-center gap-2 mb-4">
+        <a href="{% url 'inventory_list' %}" class="btn btn-ghost btn-sm">
+            <i data-lucide="arrow-left"></i> Kembali
+        </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Info Card -->
+        <div class="md:col-span-1 space-y-4">
+            <div class="card bg-base-100 shadow-xl border border-base-200">
+                <div class="card-body">
+                    <h2 class="card-title text-2xl">{{ variant.product.name }}</h2>
+                    <div class="badge badge-primary">{{ variant.sku }}</div>
+                    
+                    <div class="divider my-1"></div>
+                    
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span class="opacity-70">Warna:</span>
+                            <span class="font-semibold">{{ variant.color }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="opacity-70">Ukuran:</span>
+                            <span class="font-semibold">{{ variant.size }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="opacity-70">Brand:</span>
+                            <span class="font-semibold">{{ variant.product.brand }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="opacity-70">Kategori:</span>
+                            <span class="font-semibold">{{ variant.product.category }}</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <div class="text-sm opacity-70">Harga Default:</div>
+                        <div class="text-xl font-bold text-primary">Rp {{ variant.default_price|floatformat:0|intcomma }}</div>
+                    </div>
+                    
+                    <div class="card-actions mt-4">
+                        <a href="{% url 'variant_barcode' variant.pk %}" class="btn btn-outline btn-block">
+                            <i data-lucide="barcode"></i> Cetak Barcode
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stock Card -->
+        <div class="md:col-span-2">
+            <div class="card bg-base-100 shadow-xl border border-base-200">
+                <div class="card-body">
+                    <h3 class="font-bold text-lg mb-4">Ketersediaan Stok di Gudang</h3>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="table w-full">
+                            <thead>
+                                <tr>
+                                    <th>Gudang</th>
+                                    <th class="text-right">Jumlah Stok</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for s in stocks %}
+                                <tr>
+                                    <td>{{ s.warehouse.name }}</td>
+                                    <td class="text-right">
+                                        <span class="badge {% if s.qty_available > 0 %}badge-success{% else %}badge-error{% endif %}">
+                                            {{ s.qty_available }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="2" class="text-center py-4">Belum ada data stok di gudang manapun.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

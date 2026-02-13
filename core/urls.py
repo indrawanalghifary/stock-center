@@ -27,4 +27,11 @@ urlpatterns = [
 
     # Analytics
     path('analytics/', views.AnalyticsView.as_view(), name='analytics'),
+
+    # Scanner & Codes
+    path('scanner/', views.scanner, name='scanner'),
+    path('variants/<int:pk>/', views.VariantDetailView.as_view(), name='variant_detail'),
+    path('variants/<int:pk>/barcode/', views.variant_barcode, name='variant_barcode'),
+    path('invoices/<int:pk>/qrcode/', views.invoice_qrcode, name='invoice_qrcode'),
+    path('scan-lookup/', views.scan_lookup, name='scan_lookup'),
 ]

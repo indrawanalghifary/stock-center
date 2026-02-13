@@ -77,13 +77,18 @@
                     {% endif %}
                 </td>
                 <td>
-                    {% if not user.reseller_profile %}
-                        {% if invoice.status != 'PAID' %}
-                        <a href="{% url 'payment_create' invoice.pk %}" class="btn btn-sm btn-primary">
-                            <i data-lucide="credit-card"></i> Bayar
+                    <div class="flex gap-1">
+                        <a href="{% url 'invoice_qrcode' invoice.pk %}" class="btn btn-sm btn-ghost text-secondary" title="QR Code">
+                            <i data-lucide="qr-code"></i>
                         </a>
+                        {% if not user.reseller_profile %}
+                            {% if invoice.status != 'PAID' %}
+                            <a href="{% url 'payment_create' invoice.pk %}" class="btn btn-sm btn-primary">
+                                <i data-lucide="credit-card"></i> Bayar
+                            </a>
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
+                    </div>
                 </td>
             </tr>
             {% empty %}
