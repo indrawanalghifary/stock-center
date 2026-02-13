@@ -386,8 +386,10 @@ class ReturnListView(ListView):
             queryset = queryset.filter(
                 Q(id__icontains=query) | 
                 Q(reseller__name__icontains=query) |
-                Q(invoice__id__icontains=query)
-            )
+                Q(invoice__id__icontains=query) |
+                Q(details__variant__product__name__icontains=query) |
+                Q(details__variant__sku__icontains=query)
+            ).distinct()
             
         # Filters
         status = self.request.GET.get('status')
@@ -442,12 +444,43 @@ class ReturnDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['variants'] = Variant.objects.all() # For dropdown
+        # Filter variants only from the invoice
+        invoice = self.object.invoice
+        transaction_details = invoice.transaction.details.all()
+        
+        allowed_variants = []
+        for td in transaction_details:
+            # Calculate already returned in OTHER returns
+            already_returned_others = ReturnDetail.objects.filter(
+                return_header__invoice=invoice,
+                variant=td.variant
+            ).exclude(return_header=self.object).aggregate(total=Sum('qty'))['total'] or 0
+            
+            # Count what's already in THIS return
+            in_this_return = ReturnDetail.objects.filter(
+                return_header=self.object,
+                variant=td.variant
+            ).aggregate(total=Sum('qty'))['total'] or 0
+            
+            remaining = td.qty - already_returned_others - in_this_return
+            if remaining > 0:
+                allowed_variants.append({
+                    'id': td.variant.id,
+                    'name': td.variant.product.name,
+                    'sku': td.variant.sku,
+                    'max_qty': remaining
+                })
+        
+        context['allowed_variants'] = allowed_variants
         return context
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         
+        if self.object.status == 'FINAL':
+            messages.error(request, "Retur yang sudah final tidak bisa diubah.")
+            return redirect('return_detail', pk=self.object.pk)
+
         if 'finalize' in request.POST:
             try:
                 self.object.status = 'FINAL'
@@ -463,16 +496,44 @@ class ReturnDetailView(DetailView):
             messages.success(request, "Item dihapus.")
             return redirect('return_detail', pk=self.object.pk)
         
-        # Simple Add Item Logic
+        # Add Item Logic
         variant_id = request.POST.get('variant')
-        qty = int(request.POST.get('qty', 0))
+        try:
+            qty = int(request.POST.get('qty', 0))
+        except ValueError:
+            qty = 0
         
         if variant_id and qty > 0:
-            ReturnDetail.objects.create(
-                return_header=self.object,
-                variant_id=variant_id,
-                qty=qty
-            )
+            invoice = self.object.invoice
+            # 1. Check if variant is in the original transaction
+            td = TransactionDetail.objects.filter(transaction=invoice.transaction, variant_id=variant_id).first()
+            if not td:
+                messages.error(request, "Produk tidak ada dalam invoice ini.")
+                return redirect('return_detail', pk=self.object.pk)
+            
+            # 2. Calculate sisa yang bisa di-retur
+            total_returned_others = ReturnDetail.objects.filter(
+                return_header__invoice=invoice,
+                variant_id=variant_id
+            ).exclude(return_header=self.object).aggregate(total=Sum('qty'))['total'] or 0
+            
+            current_detail = ReturnDetail.objects.filter(return_header=self.object, variant_id=variant_id).first()
+            current_qty = current_detail.qty if current_detail else 0
+            
+            if (total_returned_others + current_qty + qty) > td.qty:
+                sisa = td.qty - total_returned_others - current_qty
+                messages.error(request, f"Total retur melebihi qty invoice ({td.qty}). Sisa yang bisa di-retur: {sisa}")
+                return redirect('return_detail', pk=self.object.pk)
+
+            if current_detail:
+                current_detail.qty += qty
+                current_detail.save()
+            else:
+                ReturnDetail.objects.create(
+                    return_header=self.object,
+                    variant_id=variant_id,
+                    qty=qty
+                )
             messages.success(request, "Item retur ditambahkan.")
         
         return redirect('return_detail', pk=self.object.pk)

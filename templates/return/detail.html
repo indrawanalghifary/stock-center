@@ -86,15 +86,18 @@
                     <label class="label"><span class="label-text">Pilih Produk</span></label>
                     <select name="variant" id="variant-select" class="select select-bordered w-full" required>
                         <option value="">-- Pilih --</option>
-                        {% for v in variants %}
-                        <option value="{{ v.id }}">{{ v.product.name }} - {{ v.sku }}</option>
+                        {% for v in allowed_variants %}
+                        <option value="{{ v.id }}" data-max="{{ v.max_qty }}">{{ v.name }} - {{ v.sku }} (Sisa: {{ v.max_qty }})</option>
                         {% endfor %}
                     </select>
                 </div>
                 
                 <div class="form-control w-full mb-4">
-                    <label class="label"><span class="label-text">Jumlah (Qty)</span></label>
-                    <input type="number" name="qty" class="input input-bordered w-full" min="1" required>
+                    <label class="label">
+                        <span class="label-text">Jumlah (Qty)</span>
+                        <span id="max-info" class="label-text-alt text-error hidden">Maks: <span id="max-qty-label">0</span></span>
+                    </label>
+                    <input type="number" name="qty" id="qty-input" class="input input-bordered w-full" min="1" required>
                 </div>
 
                 <button type="submit" class="btn btn-secondary w-full">
@@ -120,8 +123,12 @@
 <script>
     document.addEventListener("DOMContentLoaded", function(){
         const variantSelect = document.getElementById('variant-select');
+        const qtyInput = document.getElementById('qty-input');
+        const maxInfo = document.getElementById('max-info');
+        const maxQtyLabel = document.getElementById('max-qty-label');
+
         if(variantSelect){
-            new TomSelect(variantSelect,{
+            const ts = new TomSelect(variantSelect,{
                 create: false,
                 sortField: {
                     field: "text",
@@ -129,6 +136,19 @@
                 },
                 placeholder: "Cari Produk...",
                 plugins: ['dropdown_input'],
+                onChange: function(value) {
+                    const option = variantSelect.options[variantSelect.selectedIndex];
+                    if (option && value) {
+                        const maxQty = option.getAttribute('data-max');
+                        qtyInput.max = maxQty;
+                        qtyInput.value = Math.min(qtyInput.value || 1, maxQty);
+                        maxQtyLabel.textContent = maxQty;
+                        maxInfo.classList.remove('hidden');
+                    } else {
+                        qtyInput.removeAttribute('max');
+                        maxInfo.classList.add('hidden');
+                    }
+                }
             });
         }
     });
