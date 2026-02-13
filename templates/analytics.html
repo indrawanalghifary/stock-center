@@ -1,0 +1,285 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}Statistik & Analitik{% endblock %}
+
+{% block content %}
+<div class="flex flex-col gap-6">
+    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+        <h1 class="text-2xl font-bold">Statistik & Analitik</h1>
+        
+        <form method="get" class="bg-base-100 p-4 rounded-box shadow-sm border border-base-200 w-full lg:w-auto">
+            <div class="flex flex-wrap gap-4 items-end">
+                <div class="form-control">
+                    <label class="label"><span class="label-text-alt font-bold">Dari</span></label>
+                    <input type="date" name="start_date" class="input input-bordered input-sm" value="{{ start_date }}">
+                </div>
+                <div class="form-control">
+                    <label class="label"><span class="label-text-alt font-bold">Sampai</span></label>
+                    <input type="date" name="end_date" class="input input-bordered input-sm" value="{{ end_date }}">
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm">Filter</button>
+                <a href="{% url 'analytics' %}" class="btn btn-ghost btn-sm">Reset</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Summary Chart (Dynamic) -->
+    <div class="card bg-base-100 shadow-sm border border-base-200">
+        <div class="card-body p-4">
+            <h3 class="card-title text-sm opacity-70 uppercase">
+                {% if start_date and end_date %}
+                    Tren Penjualan ({{ start_date }} s/d {{ end_date }})
+                {% else %}
+                    Tren Penjualan (6 Bulan Terakhir)
+                {% endif %}
+            </h3>
+            <div class="h-64">
+                <canvas id="salesChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="stats shadow bg-primary text-primary-content">
+            <div class="stat p-4">
+                <div class="stat-title text-primary-content opacity-70">Total Penjualan</div>
+                <div class="stat-value text-xl">Rp {{ total_period_sales|floatformat:0|intcomma }}</div>
+                <div class="stat-desc text-primary-content opacity-70">Periode terpilih</div>
+            </div>
+        </div>
+        
+        {% if not is_reseller %}
+        <div class="stats shadow bg-base-100">
+            <div class="stat p-4">
+                <div class="stat-title opacity-70">Top Reseller</div>
+                <div class="stat-value text-xl text-secondary">{{ top_reseller_name|truncatechars:15 }}</div>
+                <div class="stat-desc">Belanja terbanyak</div>
+            </div>
+        </div>
+
+        <div class="stats shadow bg-base-100">
+            <div class="stat p-4">
+                <div class="stat-title opacity-70">Kategori Terlaris</div>
+                <div class="stat-value text-xl text-accent">{{ top_category_name }}</div>
+                <div class="stat-desc">Qty terbanyak</div>
+            </div>
+        </div>
+
+        <div class="stats shadow bg-base-100">
+            <div class="stat p-4">
+                <div class="stat-title opacity-70">Return Rate</div>
+                <div class="stat-value text-xl {% if return_rate > 5 %}text-error{% else %}text-success{% endif %}">
+                    {{ return_rate|floatformat:1 }}%
+                </div>
+                <div class="stat-desc">Rasio barang kembali</div>
+            </div>
+        </div>
+        {% else %}
+        <div class="stats shadow bg-base-100">
+            <div class="stat p-4">
+                <div class="stat-title opacity-70">Sisa Limit Kredit</div>
+                <div class="stat-value text-xl text-error">Rp {{ user.reseller_profile.current_balance|floatformat:0|intcomma }}</div>
+                <div class="stat-desc">Total tagihan saat ini</div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        <!-- Grouping: By Product -->
+        <div class="card bg-base-100 shadow-sm border border-base-200">
+            <div class="card-body p-4">
+                <h3 class="card-title text-sm opacity-70 uppercase">Produk Berdasarkan Kuantitas</h3>
+                <div class="overflow-x-auto">
+                    <table class="table table-sm w-full">
+                        <thead>
+                            <tr class="bg-base-200">
+                                <th>Produk</th>
+                                <th class="text-right">Qty</th>
+                                <th class="text-right">Total Nilai</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for p in product_grouping %}
+                            <tr class="hover">
+                                <td>
+                                    <div class="font-bold">{{ p.variant__product__name }}</div>
+                                    <div class="text-xs opacity-50">{{ p.variant__sku }}</div>
+                                </td>
+                                <td class="text-right font-mono">{{ p.total_qty }}</td>
+                                <td class="text-right">Rp {{ p.total_value|floatformat:0|intcomma }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="3" class="text-center py-4 opacity-50">Tidak ada data transaksi</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grouping: By Reseller (Leaderboard) -->
+        <div class="card bg-base-100 shadow-sm border border-base-200">
+            <div class="card-body p-4">
+                <div class="flex justify-between items-center mb-2">
+                    <h3 class="card-title text-sm opacity-70 uppercase text-secondary">Leaderboard Reseller</h3>
+                    <div class="badge badge-secondary badge-sm">Top Performa</div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="table table-sm w-full">
+                        <thead>
+                            <tr class="bg-base-200">
+                                <th class="w-12">Rank</th>
+                                <th>Reseller</th>
+                                <th class="text-right">Total Belanja</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for r in reseller_grouping %}
+                            <tr class="hover {% if is_reseller and user.reseller_profile.id == r.transaction__reseller__id %}bg-secondary/10 font-bold{% endif %}">
+                                <td class="text-center">
+                                    {% if forloop.counter == 1 %}🥇
+                                    {% elif forloop.counter == 2 %}🥈
+                                    {% elif forloop.counter == 3 %}🥉
+                                    {% else %}{{ forloop.counter }}{% endif %}
+                                </td>
+                                <td>
+                                    {% if not is_reseller or user.reseller_profile.id == r.transaction__reseller__id or forloop.counter <= 3 %}
+                                        {{ r.transaction__reseller__name }}
+                                    {% else %}
+                                        Reseller #{{ forloop.counter }}
+                                    {% endif %}
+                                    {% if is_reseller and user.reseller_profile.id == r.transaction__reseller__id %}
+                                        <span class="badge badge-xs badge-secondary ml-1">Anda</span>
+                                    {% endif %}
+                                </td>
+                                <td class="text-right font-bold {% if forloop.first %}text-secondary{% endif %}">
+                                    Rp {{ r.total_value|floatformat:0|intcomma }}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="3" class="text-center py-4 opacity-50">Belum ada data performa</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% if is_reseller %}
+                <p class="text-[10px] mt-2 opacity-50">* Nama reseller di luar Top 3 disamarkan untuk privasi.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {% if not is_reseller %}
+    <!-- Log Movement Section -->
+    <div class="card bg-base-100 shadow-sm border border-base-200">
+        <div class="card-body p-4">
+            <div class="flex justify-between items-center mb-2">
+                <h3 class="card-title text-sm opacity-70 uppercase text-error">Log Pergerakan Stok</h3>
+                <div class="flex gap-2">
+                    {% for m in movement_summary %}
+                        <div class="badge badge-outline badge-sm">
+                            {{ m.movement_type }}: {{ m.total_qty }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="overflow-x-auto max-h-96">
+                <table class="table table-xs w-full table-pin-rows">
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Produk</th>
+                            <th>Tipe</th>
+                            <th>Qty</th>
+                            <th>Gudang</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for m in movements %}
+                        <tr>
+                            <td>{{ m.created_at|date:"d/m/y H:i" }}</td>
+                            <td class="whitespace-nowrap">{{ m.variant.product.name }}</td>
+                            <td>
+                                <span class="badge badge-xs 
+                                    {% if m.movement_type == 'IN' %}badge-success{% elif m.movement_type == 'OUT' %}badge-error{% else %}badge-warning{% endif %}">
+                                    {{ m.movement_type }}
+                                </span>
+                            </td>
+                            <td class="font-mono">{{ m.qty }}</td>
+                            <td>{{ m.warehouse.name }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="5" class="text-center py-4 opacity-50">Tidak ada pergerakan stok</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+
+<!-- Chart JS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('salesChart').getContext('2d');
+        const salesData = {{ sales_trend|safe }};
+        
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: salesData.map(d => d.label),
+                datasets: [{
+                    label: 'Nilai Penjualan (Rp)',
+                    data: salesData.map(d => d.value),
+                    borderColor: '#570df8',
+                    backgroundColor: 'rgba(87, 13, 248, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: salesData.length > 31 ? 0 : 3,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return 'Rp ' + value.toLocaleString('id-ID');
+                            }
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            maxRotation: 45,
+                            minRotation: 45,
+                            autoSkip: true,
+                            maxTicksLimit: 15
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return 'Penjualan: Rp ' + context.raw.toLocaleString('id-ID');
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

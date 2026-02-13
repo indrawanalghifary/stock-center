@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load humanize %}
 
 {% block title %}Daftar Tagihan (Invoice){% endblock %}
 
@@ -61,10 +62,10 @@
                 <td class="font-mono">#INV-{{ invoice.id }}</td>
                 <td>{{ invoice.created_at|date:"d M Y" }}</td>
                 <td class="font-bold">{{ invoice.reseller.name }}</td>
-                <td>Rp {{ invoice.total_amount|floatformat:0 }}</td>
-                <td class="text-success">Rp {{ invoice.paid_amount|floatformat:0 }}</td>
+                <td>Rp {{ invoice.total_amount|floatformat:0|intcomma }}</td>
+                <td class="text-success">Rp {{ invoice.paid_amount|floatformat:0|intcomma }}</td>
                 <td class="text-error font-bold">
-                    Rp {{ invoice.remaining_balance|floatformat:0 }}
+                    Rp {{ invoice.remaining_balance|floatformat:0|intcomma }}
                 </td>
                 <td>
                     {% if invoice.status == 'PAID' %}

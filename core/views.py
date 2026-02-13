@@ -537,3 +537,181 @@ class ReturnDetailView(DetailView):
             messages.success(request, "Item retur ditambahkan.")
         
         return redirect('return_detail', pk=self.object.pk)
+
+@method_decorator(login_required, name='dispatch')
+class AnalyticsView(ListView):
+    template_name = 'analytics.html'
+    context_object_name = 'movements'
+    model = StockMovement
+
+    def get_queryset(self):
+        queryset = StockMovement.objects.select_related('variant__product', 'warehouse').order_by('-created_at')
+        
+        start_date = self.request.GET.get('start_date')
+        end_date = self.request.GET.get('end_date')
+        
+        if start_date:
+            queryset = queryset.filter(created_at__date__gte=start_date)
+        if end_date:
+            queryset = queryset.filter(created_at__date__lte=end_date)
+            
+        if not start_date and not end_date:
+            # Default to current month if no range provided
+            now = timezone.now()
+            queryset = queryset.filter(created_at__year=now.year, created_at__month=now.month)
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        now = timezone.now()
+        
+        start_date = self.request.GET.get('start_date')
+        end_date = self.request.GET.get('end_date')
+        
+        # Base query for analytics in the selected range
+        base_trx_query = TransactionDetail.objects.filter(transaction__status='FINAL')
+        base_movement_query = StockMovement.objects.all()
+
+        if start_date:
+            base_trx_query = base_trx_query.filter(transaction__created_at__date__gte=start_date)
+            base_movement_query = base_movement_query.filter(created_at__date__gte=start_date)
+        if end_date:
+            base_trx_query = base_trx_query.filter(transaction__created_at__date__lte=end_date)
+            base_movement_query = base_movement_query.filter(created_at__date__lte=end_date)
+            
+        if not start_date and not end_date:
+            # Default to current month
+            base_trx_query = base_trx_query.filter(transaction__created_at__year=now.year, transaction__created_at__month=now.month)
+            base_movement_query = base_movement_query.filter(created_at__year=now.year, created_at__month=now.month)
+
+        is_reseller = hasattr(self.request.user, 'reseller_profile')
+        reseller = self.request.user.reseller_profile if is_reseller else None
+
+        if is_reseller:
+            base_trx_query = base_trx_query.filter(transaction__reseller=reseller)
+
+        # 1. Group by Product (Top Products)
+        total_period_sales = base_trx_query.aggregate(total=Sum('subtotal'))['total'] or 0
+        product_grouping = base_trx_query.values(
+            'variant__product__name', 'variant__sku'
+        ).annotate(
+            total_qty=Sum('qty'),
+            total_value=Sum('subtotal')
+        ).order_by('-total_qty')
+
+        # 2. Group by Reseller (Leaderboard - available to all)
+        reseller_grouping = base_trx_query.values(
+            'transaction__reseller__id',
+            'transaction__reseller__name'
+        ).annotate(
+            total_qty=Sum('qty'),
+            total_value=Sum('subtotal')
+        ).order_by('-total_value')
+        
+        top_reseller_name = "-"
+        if reseller_grouping.exists():
+            top_reseller_name = reseller_grouping[0]['transaction__reseller__name']
+
+        # 2b. Top Category (Admins only)
+        top_category_name = "-"
+        if not is_reseller:
+            category_grouping = base_trx_query.values(
+                'variant__product__category'
+            ).annotate(
+                total_qty=Sum('qty')
+            ).order_by('-total_qty')
+            if category_grouping.exists():
+                top_category_name = category_grouping[0]['variant__product__category']
+
+        # 2c. Return Rate (Admins only)
+        return_rate = 0
+        if not is_reseller:
+            total_out = base_trx_query.aggregate(total=Sum('qty'))['total'] or 0
+            
+            # Base return query
+            base_return_query = ReturnDetail.objects.filter(return_header__status='FINAL')
+            if start_date:
+                base_return_query = base_return_query.filter(return_header__created_at__date__gte=start_date)
+            if end_date:
+                base_return_query = base_return_query.filter(return_header__created_at__date__lte=end_date)
+            if not start_date and not end_date:
+                base_return_query = base_return_query.filter(return_header__created_at__year=now.year, return_header__created_at__month=now.month)
+            
+            total_ret = base_return_query.aggregate(total=Sum('qty'))['total'] or 0
+            if total_out > 0:
+                return_rate = (total_ret / total_out) * 100
+
+        # 3. Movement Summary (Admins only)
+        movement_summary = []
+        if not is_reseller:
+            movement_summary = base_movement_query.values('movement_type').annotate(total_qty=Sum('qty'))
+
+        # 4. Dynamic Sales Trend based on filter
+        sales_trend = []
+        import datetime
+        
+        if start_date and end_date:
+            # Daily Trend for the selected range
+            s_date = datetime.datetime.strptime(start_date, '%Y-%m-%d').date()
+            e_date = datetime.datetime.strptime(end_date, '%Y-%m-%d').date()
+            
+            # Limit to 60 days to prevent chart clutter, otherwise maybe group by week? 
+            # For now, let's just do daily.
+            delta = e_date - s_date
+            
+            curr = s_date
+            while curr <= e_date:
+                daily_sales_query = TransactionDetail.objects.filter(
+                    transaction__status='FINAL',
+                    transaction__created_at__date=curr
+                )
+                if is_reseller:
+                    daily_sales_query = daily_sales_query.filter(transaction__reseller=reseller)
+                
+                total_val = daily_sales_query.aggregate(total=Sum('subtotal'))['total'] or 0
+                sales_trend.append({
+                    'label': curr.strftime('%d %b'),
+                    'value': float(total_val)
+                })
+                curr += datetime.timedelta(days=1)
+                
+                # Safety break if range is too long (e.g. > 90 days)
+                if len(sales_trend) > 90:
+                    break
+        else:
+            # Default: Last 6 Months (Monthly)
+            for i in range(5, -1, -1):
+                # Calculate month start
+                target_date = now.replace(day=1) - datetime.timedelta(days=i*30)
+                target_date = target_date.replace(day=1)
+                t_year, t_month = target_date.year, target_date.month
+                
+                monthly_sales_query = TransactionDetail.objects.filter(
+                    transaction__status='FINAL',
+                    transaction__created_at__year=t_year,
+                    transaction__created_at__month=t_month
+                )
+                if is_reseller:
+                    monthly_sales_query = monthly_sales_query.filter(transaction__reseller=reseller)
+                
+                total_val = monthly_sales_query.aggregate(total=Sum('subtotal'))['total'] or 0
+                sales_trend.append({
+                    'label': target_date.strftime('%b %Y'),
+                    'value': float(total_val)
+                })
+
+        context.update({
+            'start_date': start_date,
+            'end_date': end_date,
+            'total_period_sales': total_period_sales,
+            'product_grouping': product_grouping,
+            'reseller_grouping': reseller_grouping,
+            'top_reseller_name': top_reseller_name,
+            'top_category_name': top_category_name,
+            'return_rate': return_rate,
+            'movement_summary': movement_summary,
+            'sales_trend': sales_trend,
+            'is_reseller': is_reseller,
+        })
+        return context

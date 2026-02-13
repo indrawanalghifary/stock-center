@@ -24,4 +24,7 @@ urlpatterns = [
     path('returns/', views.ReturnListView.as_view(), name='return_list'),
     path('returns/create/', views.ReturnCreateView.as_view(), name='return_create'),
     path('returns/<int:pk>/', views.ReturnDetailView.as_view(), name='return_detail'),
+
+    # Analytics
+    path('analytics/', views.AnalyticsView.as_view(), name='analytics'),
 ]

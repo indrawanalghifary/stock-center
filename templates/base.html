@@ -53,6 +53,7 @@
                     <li><a href="{% url 'transaction_list' %}">Transaksi</a></li>
                     <li><a href="{% url 'invoice_list' %}">Keuangan</a></li>
                     <li><a href="{% url 'return_list' %}">Retur Barang</a></li>
+                    <li><a href="{% url 'analytics' %}" class="font-bold text-primary">Statistik & Analitik</a></li>
                     
                     <li class="mt-2 border-t pt-2">
                         <form method="post" action="{% url 'logout' %}">
@@ -104,6 +105,11 @@
         <a href="{% url 'home' %}" class="{% if request.path == '/' %}active{% endif %}">
             <i data-lucide="home"></i>
             <span class="btm-nav-label">Home</span>
+        </a>
+
+        <a href="{% url 'analytics' %}" class="{% if 'analytics' in request.path %}active{% endif %} text-primary">
+            <i data-lucide="bar-chart-3"></i>
+            <span class="btm-nav-label">Stats</span>
         </a>
         
         {% if not user.reseller_profile %}

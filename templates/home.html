@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load humanize %}
 
 {% block content %}
 <div class="hero min-h-screen bg-base-200">
@@ -28,7 +29,7 @@
                     <i data-lucide="trending-down" class="w-8 h-8"></i>
                 </div>
                 <div class="stat-title">Tagihan Saya</div>
-                <div class="stat-value text-error">Rp {{ reseller_balance|floatformat:0 }}</div>
+                <div class="stat-value text-error">Rp {{ reseller_balance|floatformat:0|intcomma }}</div>
                 <div class="stat-desc">Total hutang saat ini</div>
             </div>
             
@@ -94,7 +95,7 @@
                     <i data-lucide="credit-card" class="w-8 h-8"></i>
                 </div>
                 <div class="stat-title">Total Piutang Global</div>
-                <div class="stat-value text-secondary">Rp {{ receivables_value|floatformat:0 }}</div>
+                <div class="stat-value text-secondary">Rp {{ receivables_value|floatformat:0|intcomma }}</div>
                 <div class="stat-desc">Tagihan belum lunas (Semua Reseller)</div>
             </div>
             
