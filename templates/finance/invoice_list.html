@@ -78,6 +78,9 @@
                 </td>
                 <td>
                     <div class="flex gap-1">
+                        <a href="{% url 'transaction_detail' invoice.transaction.pk %}" class="btn btn-sm btn-ghost text-primary" title="Detail Transaksi">
+                            <i data-lucide="shopping-bag"></i>
+                        </a>
                         <a href="{% url 'invoice_qrcode' invoice.pk %}" class="btn btn-sm btn-ghost text-secondary" title="QR Code">
                             <i data-lucide="qr-code"></i>
                         </a>

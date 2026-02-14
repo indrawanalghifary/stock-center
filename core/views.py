@@ -12,7 +12,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 import json
 from .models import WarehouseStock, StockMovement, Variant, Warehouse, Transaction, TransactionDetail, Invoice, Payment, ReturnHeader, ReturnDetail, Product, ResellerPrice, Reseller
-from .forms import StockAdjustmentForm, TransactionCreateForm, TransactionDetailForm
+from .forms import StockAdjustmentForm, TransactionCreateForm, TransactionDetailForm, PaymentForm
 
 @login_required
 def home(request):
@@ -124,7 +124,7 @@ class InvoiceListView(ListView):
 @method_decorator(login_required, name='dispatch')
 class PaymentCreateView(CreateView):
     model = Payment
-    fields = ['amount', 'method']
+    form_class = PaymentForm
     template_name = 'finance/payment_form.html'
     success_url = reverse_lazy('invoice_list')
 

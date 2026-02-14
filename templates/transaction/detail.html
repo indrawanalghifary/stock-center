@@ -107,12 +107,33 @@
         {% endif %}
         
         {% if transaction.status == 'FINAL' %}
-        <div class="alert alert-success shadow-lg">
+        <div class="alert alert-success shadow-lg mb-4">
             <div>
                 <i data-lucide="check-circle"></i>
                 <span>Transaksi Selesai.</span>
             </div>
         </div>
+
+        {% with invoice=transaction.invoice_set.first %}
+            {% if invoice %}
+            <div class="card bg-base-100 shadow border border-success/20">
+                <div class="card-body p-4">
+                    <h3 class="font-bold text-success flex items-center gap-2">
+                        <i data-lucide="file-text"></i> Invoice Terkait
+                    </h3>
+                    <div class="flex justify-between items-center mt-2">
+                        <div>
+                            <span class="font-mono text-lg font-bold">#INV-{{ invoice.id }}</span>
+                            <div class="badge {% if invoice.status == 'PAID' %}badge-success{% elif invoice.status == 'PARTIAL' %}badge-info{% else %}badge-error{% endif %} ml-2">
+                                {{ invoice.get_status_display }}
+                            </div>
+                        </div>
+                        <a href="{% url 'invoice_list' %}?q={{ invoice.id }}" class="btn btn-outline btn-sm"> Lihat Invoice </a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        {% endwith %}
         {% endif %}
     </div>
 

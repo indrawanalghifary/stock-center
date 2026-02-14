@@ -38,3 +38,24 @@ class TransactionDetailForm(forms.ModelForm):
             'qty': forms.NumberInput(attrs={'class': 'input input-bordered w-full', 'min': 1}),
         }
 
+class PaymentForm(forms.ModelForm):
+    METHOD_CHOICES = [
+        ('Cash', 'Cash'),
+        ('Transfer', 'Transfer'),
+        ('E-Wallet', 'E-Wallet'),
+        ('Lainnya', 'Lainnya'),
+    ]
+    
+    method = forms.ChoiceField(
+        choices=METHOD_CHOICES, 
+        widget=forms.Select(attrs={'class': 'select select-bordered w-full'})
+    )
+    
+    amount = forms.DecimalField(
+        widget=forms.NumberInput(attrs={'class': 'input input-bordered w-full', 'step': '0.01'})
+    )
+
+    class Meta:
+        model = Payment
+        fields = ['amount', 'method']
+

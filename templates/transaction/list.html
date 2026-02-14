@@ -83,9 +83,20 @@
                     {% endif %}
                 </td>
                 <td>
-                    <a href="{% url 'transaction_detail' trx.pk %}" class="btn btn-sm btn-ghost">
-                        <i data-lucide="eye"></i> Detail
-                    </a>
+                    <div class="flex gap-1">
+                        <a href="{% url 'transaction_detail' trx.pk %}" class="btn btn-sm btn-ghost" title="Detail Transaksi">
+                            <i data-lucide="eye"></i>
+                        </a>
+                        {% if trx.status == 'FINAL' %}
+                            {% with invoice=trx.invoice_set.first %}
+                                {% if invoice %}
+                                <a href="{% url 'invoice_list' %}?q={{ invoice.id }}" class="btn btn-sm btn-ghost text-success" title="Lihat Invoice">
+                                    <i data-lucide="file-text"></i>
+                                </a>
+                                {% endif %}
+                            {% endwith %}
+                        {% endif %}
+                    </div>
                 </td>
             </tr>
             {% empty %}

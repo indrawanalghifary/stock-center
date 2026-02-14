@@ -10,12 +10,16 @@
 
     <div class="stats shadow w-full mb-6">
         <div class="stat place-items-center">
-            <div class="stat-title">Total Tagihan</div>
-            <div class="stat-value text-lg">Rp {{ invoice.total_amount|floatformat:0|intcomma }}</div>
+            <div class="stat-title text-xs">Tagihan</div>
+            <div class="stat-value text-sm">Rp {{ invoice.total_amount|floatformat:0|intcomma }}</div>
         </div>
         <div class="stat place-items-center">
-            <div class="stat-title">Sudah Bayar</div>
-            <div class="stat-value text-lg text-success">Rp {{ invoice.paid_amount|floatformat:0|intcomma }}</div>
+            <div class="stat-title text-xs">Terbayar</div>
+            <div class="stat-value text-sm text-success">Rp {{ invoice.paid_amount|floatformat:0|intcomma }}</div>
+        </div>
+        <div class="stat place-items-center">
+            <div class="stat-title text-xs font-bold text-error">Sisa</div>
+            <div class="stat-value text-sm text-error font-bold">Rp {{ invoice.remaining_balance|floatformat:0|intcomma }}</div>
         </div>
     </div>
     {% if not user.reseller_profile %}
@@ -26,21 +30,21 @@
                 <label class="label">
                     <span class="label-text font-semibold">Jumlah Pembayaran</span>
                 </label>
-                <input type="number" name="amount" class="input input-bordered w-full" step="0.01" required>
-                <div class="text-error text-sm">{{ form.amount.errors }}</div>
+                {{ form.amount }}
+                <div class="text-error text-xs mt-1">{{ form.amount.errors }}</div>
             </div>
 
             <div class="form-control w-full mb-6">
                 <label class="label">
                     <span class="label-text font-semibold">Metode Pembayaran</span>
                 </label>
-                <input type="text" name="method" class="input input-bordered w-full" placeholder="Cash / Transfer / E-Wallet" required>
-                <div class="text-error text-sm">{{ form.method.errors }}</div>
+                {{ form.method }}
+                <div class="text-error text-xs mt-1">{{ form.method.errors }}</div>
             </div>
 
             <div class="flex gap-2">
                 <a href="{% url 'invoice_list' %}" class="btn btn-ghost flex-1">Batal</a>
-                <button type="submit" class="btn btn-primary flex-1">Simpan</button>
+                <button type="submit" class="btn btn-primary flex-1">Simpan Pembayaran</button>
             </div>
         </form>
     {% endif %}
