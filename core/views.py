@@ -14,7 +14,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 import json
 from .models import WarehouseStock, StockMovement, Variant, Warehouse, Transaction, TransactionDetail, Invoice, Payment, ReturnHeader, ReturnDetail, Product, ResellerPrice, Reseller, PackingTask, PackingItem
-from .forms import StockAdjustmentForm, TransactionCreateForm, TransactionDetailForm, PaymentForm, ResellerForm, ProductForm, VariantForm, ResellerPriceForm, WarehouseForm
+from .forms import UserForm, StockAdjustmentForm, TransactionCreateForm, TransactionDetailForm, PaymentForm, ResellerForm, ProductForm, VariantForm, ResellerPriceForm, WarehouseForm
 
 class AdminRequiredMixin(UserPassesTestMixin):
     def test_func(self):
@@ -43,6 +43,34 @@ class UserListView(AdminRequiredMixin, ListView):
                 Q(first_name__icontains=query) | Q(last_name__icontains=query)
             )
         return queryset
+
+@method_decorator(login_required, name='dispatch')
+class UserCreateView(AdminRequiredMixin, CreateView):
+    model = User
+    form_class = UserForm
+    template_name = 'master/form.html'
+    success_url = reverse_lazy('user_list')
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Tambah User / Pegawai"
+        return context
+
+@method_decorator(login_required, name='dispatch')
+class UserUpdateView(AdminRequiredMixin, UpdateView):
+    model = User
+    form_class = UserForm
+    template_name = 'master/form.html'
+    success_url = reverse_lazy('user_list')
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Edit User / Pegawai"
+        return context
+
+@method_decorator(login_required, name='dispatch')
+class UserDeleteView(AdminRequiredMixin, DeleteView):
+    model = User
+    template_name = 'master/confirm_delete.html'
+    success_url = reverse_lazy('user_list')
 
 @method_decorator(login_required, name='dispatch')
 class ResellerListView(AdminRequiredMixin, ListView):

@@ -6,7 +6,10 @@
 <div class="flex flex-col gap-4 mb-6">
     <div class="flex justify-between items-center">
         <h1 class="text-2xl font-bold">Data User / Pegawai</h1>
-        <a href="{% url 'master_dashboard' %}" class="btn btn-ghost btn-sm"> Kembali</a>
+        <div class="flex gap-2">
+            <a href="{% url 'user_create' %}" class="btn btn-primary btn-sm"><i data-lucide="plus"></i> Tambah User</a>
+            <a href="{% url 'master_dashboard' %}" class="btn btn-ghost btn-sm"> Kembali</a>
+        </div>
     </div>
 
     <form method="get" class="bg-base-100 p-4 rounded-box shadow-sm border border-base-200">
@@ -26,6 +29,7 @@
                 <th>Email</th>
                 <th>Status</th>
                 <th>Tanggal Bergabung</th>
+                <th class="text-center">Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -44,6 +48,16 @@
                     {% endif %}
                 </td>
                 <td>{{ u.date_joined|date:"d M Y" }}</td>
+                <td class="text-center">
+                    <div class="flex justify-center gap-2">
+                        <a href="{% url 'user_update' u.pk %}" class="btn btn-square btn-ghost btn-xs text-info">
+                            <i data-lucide="edit-3" class="w-4 h-4"></i>
+                        </a>
+                        <a href="{% url 'user_delete' u.pk %}" class="btn btn-square btn-ghost btn-xs text-error">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </td>
             </tr>
             {% empty %}
             <tr>

@@ -34,8 +34,11 @@ urlpatterns = [
     # Master Data
     path('master/', views.master_data_dashboard, name='master_dashboard'),
     
-    # Users (Read-only list for now in master)
+    # Users
     path('master/users/', views.UserListView.as_view(), name='user_list'),
+    path('master/users/add/', views.UserCreateView.as_view(), name='user_create'),
+    path('master/users/<int:pk>/edit/', views.UserUpdateView.as_view(), name='user_update'),
+    path('master/users/<int:pk>/delete/', views.UserDeleteView.as_view(), name='user_delete'),
 
     # Resellers
     path('master/resellers/', views.ResellerListView.as_view(), name='reseller_list'),

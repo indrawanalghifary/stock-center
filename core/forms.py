@@ -1,5 +1,30 @@
 from django import forms
+from django.contrib.auth.models import User
 from .models import Warehouse, Variant, StockMovement, Transaction, TransactionDetail, Payment, Reseller, Product, ResellerPrice
+
+class UserForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'input input-bordered w-full'}), required=False, help_text="Kosongkan jika tidak ingin mengubah password (untuk edit).")
+    
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name', 'is_staff', 'is_active']
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'input input-bordered w-full'}),
+            'email': forms.EmailInput(attrs={'class': 'input input-bordered w-full'}),
+            'first_name': forms.TextInput(attrs={'class': 'input input-bordered w-full'}),
+            'last_name': forms.TextInput(attrs={'class': 'input input-bordered w-full'}),
+            'is_staff': forms.CheckboxInput(attrs={'class': 'toggle toggle-secondary'}),
+            'is_active': forms.CheckboxInput(attrs={'class': 'toggle toggle-primary'}),
+        }
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        password = self.cleaned_data.get("password")
+        if password:
+            user.set_password(password)
+        if commit:
+            user.save()
+        return user
 
 class StockAdjustmentForm(forms.ModelForm):
     warehouse = forms.ModelChoiceField(queryset=Warehouse.objects.all(), empty_label="Select Warehouse", widget=forms.Select(attrs={'class': 'select searchable-select w-full'}))
