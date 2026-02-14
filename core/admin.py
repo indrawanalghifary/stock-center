@@ -2,7 +2,8 @@ from django.contrib import admin
 from .models import (
     Product, Variant, Warehouse, Reseller, ResellerPrice,
     WarehouseStock, StockMovement, Transaction, TransactionDetail,
-    Invoice, Payment, ReturnHeader, ReturnDetail
+    Invoice, Payment, ReturnHeader, ReturnDetail,
+    PackingTask, PackingItem
 )
 
 class VariantInline(admin.TabularInline):
@@ -49,3 +50,16 @@ admin.site.register(ResellerPrice)
 admin.site.register(Payment)
 admin.site.register(ReturnHeader)
 admin.site.register(ReturnDetail)
+
+class PackingItemInline(admin.TabularInline):
+    model = PackingItem
+    extra = 0
+    readonly_fields = ('variant', 'qty')
+
+@admin.register(PackingTask)
+class PackingTaskAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'warehouse', 'total_items', 'total_fee', 'created_at')
+    list_filter = ('warehouse', 'user', 'created_at')
+    search_fields = ('user__username', 'warehouse__name')
+    readonly_fields = ('created_at',)
+    inlines = [PackingItemInline]

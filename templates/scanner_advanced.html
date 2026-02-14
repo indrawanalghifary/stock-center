@@ -209,20 +209,37 @@
         lastScannedCode = decodedText;
         lastScannedTime = now;
 
-        // Feedback
-        beep.play().catch(e => console.log("Audio play failed"));
-        
-        // Flash effect
+        // Visual feedback - processing
         const readerDiv = document.getElementById('reader');
-        readerDiv.style.borderColor = "#22c55e";
-        setTimeout(() => { readerDiv.style.borderColor = "transparent"; }, 200);
+        readerDiv.style.borderColor = "#3b82f6"; // Blue
 
-        if (scannedItems[decodedText]) {
-            scannedItems[decodedText].qty += 1;
-        } else {
-            scannedItems[decodedText] = { qty: 1 };
-        }
-        updateTable();
+        // Validate SKU against database immediately
+        fetch(`/scan-lookup/?code=${encodeURIComponent(decodedText)}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.url && data.url.includes('/variants/')) {
+                    // SKU Valid
+                    beep.play().catch(e => console.log("Audio play failed"));
+                    readerDiv.style.borderColor = "#22c55e"; // Green
+                    
+                    if (scannedItems[decodedText]) {
+                        scannedItems[decodedText].qty += 1;
+                    } else {
+                        scannedItems[decodedText] = { qty: 1 };
+                    }
+                    updateTable();
+                } else {
+                    // SKU Not Found in Database
+                    readerDiv.style.borderColor = "#ef4444"; // Red
+                    // Optional: vibrate or different sound for error
+                    console.warn("SKU tidak terdaftar:", decodedText);
+                }
+                setTimeout(() => { readerDiv.style.borderColor = "transparent"; }, 500);
+            })
+            .catch(err => {
+                readerDiv.style.borderColor = "#f59e0b"; // Warning/Orange
+                setTimeout(() => { readerDiv.style.borderColor = "transparent"; }, 500);
+            });
     }
 
     startBtn.addEventListener('click', () => {

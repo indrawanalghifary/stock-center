@@ -172,3 +172,25 @@ class ReturnDetail(models.Model):
 
     def __str__(self):
         return f"{self.return_header} - {self.variant.sku} ({self.qty})"
+
+# 📦 6️⃣ PACKING SYSTEM
+
+class PackingTask(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='packing_tasks')
+    warehouse = models.ForeignKey(Warehouse, on_delete=models.CASCADE)
+    total_items = models.IntegerField(default=0)
+    packing_fee_per_item = models.DecimalField(max_digits=10, decimal_places=2, default=500.00) # Contoh biaya per SKU
+    total_fee = models.DecimalField(max_digits=12, decimal_places=2, default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"PACK-{self.id} - {self.user.username} ({self.total_items} items)"
+
+class PackingItem(models.Model):
+    packing_task = models.ForeignKey(PackingTask, on_delete=models.CASCADE, related_name='items')
+    variant = models.ForeignKey(Variant, on_delete=models.CASCADE)
+    qty = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.packing_task.id} - {self.variant.sku} ({self.qty})"
+

@@ -11,7 +11,7 @@ from django import forms
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 import json
-from .models import WarehouseStock, StockMovement, Variant, Warehouse, Transaction, TransactionDetail, Invoice, Payment, ReturnHeader, ReturnDetail, Product, ResellerPrice, Reseller
+from .models import WarehouseStock, StockMovement, Variant, Warehouse, Transaction, TransactionDetail, Invoice, Payment, ReturnHeader, ReturnDetail, Product, ResellerPrice, Reseller, PackingTask, PackingItem
 from .forms import StockAdjustmentForm, TransactionCreateForm, TransactionDetailForm, PaymentForm
 
 @login_required
@@ -542,6 +542,40 @@ class ReturnDetailView(DetailView):
         return redirect('return_detail', pk=self.object.pk)
 
 @method_decorator(login_required, name='dispatch')
+class PackingListView(ListView):
+    model = PackingTask
+    template_name = 'packing/list.html'
+    context_object_name = 'tasks'
+    ordering = ['-created_at']
+    paginate_by = 10
+
+    def get_queryset(self):
+        queryset = PackingTask.objects.select_related('user', 'warehouse').prefetch_related('items__variant__product').order_by('-created_at')
+        
+        # Admin can see all, regular user might only see their own packing tasks
+        if not self.request.user.is_superuser and not self.request.user.groups.filter(name='Admins').exists():
+             # If you want to restrict to only their own tasks:
+             # queryset = queryset.filter(user=self.request.user)
+             pass
+
+        # Search
+        query = self.request.GET.get('q')
+        if query:
+            queryset = queryset.filter(
+                Q(user__username__icontains=query) | 
+                Q(warehouse__name__icontains=query)
+            )
+            
+        start_date = self.request.GET.get('start_date')
+        end_date = self.request.GET.get('end_date')
+        if start_date:
+            queryset = queryset.filter(created_at__date__gte=start_date)
+        if end_date:
+            queryset = queryset.filter(created_at__date__lte=end_date)
+            
+        return queryset
+
+@method_decorator(login_required, name='dispatch')
 class AnalyticsView(ListView):
     template_name = 'analytics.html'
     context_object_name = 'movements'
@@ -836,7 +870,40 @@ def process_scanned_data(request):
             })
 
         elif mode == 'PACKING':
-            return JsonResponse({'success': True, 'message': f'Packing {len(items)} item tercatat (Simulasi).'})
+            with transaction.atomic():
+                packing_fee_per_item = 500 # Bisa dipindahkan ke settings atau config
+                total_qty = sum(int(item['qty']) for item in items)
+                
+                task = PackingTask.objects.create(
+                    user=request.user,
+                    warehouse=warehouse,
+                    total_items=total_qty,
+                    packing_fee_per_item=packing_fee_per_item,
+                    total_fee=total_qty * packing_fee_per_item
+                )
+
+                for item in items:
+                    variant = Variant.objects.filter(sku=item['sku']).first()
+                    if not variant:
+                        unknown_skus.append(item['sku'])
+                        continue
+                    
+                    qty = int(item['qty'])
+                    PackingItem.objects.create(
+                        packing_task=task,
+                        variant=variant,
+                        qty=qty
+                    )
+                    processed_count += 1
+            
+            if processed_count == 0:
+                return JsonResponse({'success': False, 'error': f'Tidak ada SKU yang valid. SKU tidak dikenal: {", ".join(unknown_skus)}'})
+
+            msg = f'Berhasil menyimpan data Packing (ID: {task.id}). Total Item: {total_qty}. Biaya: Rp {task.total_fee}'
+            if unknown_skus:
+                msg += f' SKU tidak dikenal: {", ".join(unknown_skus)}'
+            
+            return JsonResponse({'success': True, 'message': msg})
 
         return JsonResponse({'success': False, 'error': 'Mode tidak valid'})
 
