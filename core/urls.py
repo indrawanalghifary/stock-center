@@ -30,6 +30,8 @@ urlpatterns = [
 
     # Scanner & Codes
     path('scanner/', views.scanner, name='scanner'),
+    path('scanner/advanced/', views.scanner_advanced, name='scanner_advanced'),
+    path('scanner/process/', views.process_scanned_data, name='process_scanned_data'),
     path('variants/<int:pk>/', views.VariantDetailView.as_view(), name='variant_detail'),
     path('variants/<int:pk>/barcode/', views.variant_barcode, name='variant_barcode'),
     path('invoices/<int:pk>/qrcode/', views.invoice_qrcode, name='invoice_qrcode'),

@@ -53,7 +53,15 @@
                     <li><a href="{% url 'transaction_list' %}">Transaksi</a></li>
                     <li><a href="{% url 'invoice_list' %}">Keuangan</a></li>
                     <li><a href="{% url 'return_list' %}">Retur Barang</a></li>
-                    <li><a href="{% url 'scanner' %}" class="text-secondary font-bold"><i data-lucide="scan-line"></i> Scanner QR/Barcode</a></li>
+                    <li>
+                        <details>
+                            <summary class="font-bold text-secondary"><i data-lucide="scan-line"></i> Scanner</summary>
+                            <ul>
+                                <li><a href="{% url 'scanner' %}">Scanner Tunggal (Lookup)</a></li>
+                                <li><a href="{% url 'scanner_advanced' %}">Scanner Batch (Processing)</a></li>
+                            </ul>
+                        </details>
+                    </li>
                     <li><a href="{% url 'analytics' %}" class="font-bold text-primary">Statistik & Analitik</a></li>
                     
                     <li class="mt-2 border-t pt-2">

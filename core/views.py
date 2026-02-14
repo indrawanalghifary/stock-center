@@ -9,7 +9,9 @@ from django.utils import timezone
 from django.urls import reverse_lazy, reverse
 from django import forms
 from django.http import JsonResponse
-from .models import WarehouseStock, StockMovement, Variant, Warehouse, Transaction, TransactionDetail, Invoice, Payment, ReturnHeader, ReturnDetail, Product, ResellerPrice
+from django.views.decorators.http import require_POST
+import json
+from .models import WarehouseStock, StockMovement, Variant, Warehouse, Transaction, TransactionDetail, Invoice, Payment, ReturnHeader, ReturnDetail, Product, ResellerPrice, Reseller
 from .forms import StockAdjustmentForm, TransactionCreateForm, TransactionDetailForm
 
 @login_required
@@ -720,6 +722,126 @@ class AnalyticsView(ListView):
 @login_required
 def scanner(request):
     return render(request, 'scanner.html')
+
+@login_required
+def scanner_advanced(request):
+    warehouses = Warehouse.objects.filter(is_active=True)
+    resellers = Reseller.objects.all()
+    
+    is_reseller = hasattr(request.user, 'reseller_profile')
+    user_reseller = request.user.reseller_profile if is_reseller else None
+
+    context = {
+        'warehouses': warehouses,
+        'resellers': resellers,
+        'is_reseller': is_reseller,
+        'user_reseller': user_reseller,
+    }
+    return render(request, 'scanner_advanced.html', context)
+
+@login_required
+@require_POST
+def process_scanned_data(request):
+    try:
+        data = json.loads(request.body)
+        mode = data.get('mode') # PACKING, STOCK, ORDER
+        warehouse_id = data.get('warehouse_id')
+        reseller_id = data.get('reseller_id')
+        items = data.get('items', []) # List of {sku: ..., qty: ...}
+
+        if not items:
+            return JsonResponse({'success': False, 'error': 'Tidak ada item untuk diproses'})
+
+        warehouse = get_object_or_404(Warehouse, id=warehouse_id)
+        unknown_skus = []
+        processed_count = 0
+        
+        if mode == 'STOCK':
+            with transaction.atomic():
+                for item in items:
+                    variant = Variant.objects.filter(sku=item['sku']).first()
+                    if not variant:
+                         unknown_skus.append(item['sku'])
+                         continue
+                    
+                    qty = int(item['qty'])
+                    stock, created = WarehouseStock.objects.get_or_create(
+                        warehouse=warehouse,
+                        variant=variant
+                    )
+                    stock.qty_available += qty 
+                    stock.save()
+
+                    StockMovement.objects.create(
+                        warehouse=warehouse,
+                        variant=variant,
+                        movement_type='IN',
+                        qty=qty,
+                        ref_type='SCAN_OPNAME',
+                        user=request.user
+                    )
+                    processed_count += 1
+            
+            if processed_count == 0:
+                return JsonResponse({'success': False, 'error': f'Tidak ada SKU yang valid. SKU tidak dikenal: {", ".join(unknown_skus)}'})
+
+            msg = f'Berhasil update stok {processed_count} item.'
+            if unknown_skus:
+                msg += f' SKU tidak dikenal: {", ".join(unknown_skus)}'
+            return JsonResponse({'success': True, 'message': msg})
+
+        elif mode == 'ORDER':
+            if not reseller_id:
+                return JsonResponse({'success': False, 'error': 'Reseller harus dipilih untuk mode Pesanan'})
+            
+            reseller = get_object_or_404(Reseller, id=reseller_id)
+            
+            with transaction.atomic():
+                trx = Transaction.objects.create(
+                    reseller=reseller,
+                    warehouse=warehouse,
+                    user=request.user,
+                    status='DRAFT'
+                )
+                
+                for item in items:
+                    variant = Variant.objects.filter(sku=item['sku']).first()
+                    if not variant:
+                        unknown_skus.append(item['sku'])
+                        continue
+                    
+                    qty = int(item['qty'])
+                    reseller_price = ResellerPrice.objects.filter(reseller=reseller, variant=variant).first()
+                    price = reseller_price.custom_price if reseller_price else variant.default_price
+                    
+                    TransactionDetail.objects.create(
+                        transaction=trx,
+                        variant=variant,
+                        qty=qty,
+                        price=price
+                    )
+                    processed_count += 1
+            
+            if processed_count == 0:
+                return JsonResponse({'success': False, 'error': f'Tidak ada SKU yang valid. SKU tidak dikenal: {", ".join(unknown_skus)}'})
+
+            msg = f'Berhasil membuat Pesanan TRX-{trx.id} dengan {processed_count} item.'
+            if unknown_skus:
+                msg += f' SKU tidak dikenal: {", ".join(unknown_skus)}'
+            
+            return JsonResponse({
+                'success': True, 
+                'message': msg, 
+                'url': reverse('transaction_detail', kwargs={'pk': trx.pk})
+            })
+
+        elif mode == 'PACKING':
+            return JsonResponse({'success': True, 'message': f'Packing {len(items)} item tercatat (Simulasi).'})
+
+        return JsonResponse({'success': False, 'error': 'Mode tidak valid'})
+
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})
 
 @login_required
 def variant_barcode(request, pk):

@@ -1,0 +1,324 @@
+{% extends 'base.html' %}
+
+{% block title %}Scanner Lanjutan{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto pb-20">
+    <div class="text-center mb-6">
+        <h1 class="text-2xl font-bold">Scanner Lanjutan</h1>
+        <p class="text-base-content/70 text-sm">Scan SKU terus menerus untuk Batch Processing</p>
+    </div>
+
+    <!-- Configuration Card -->
+    <div class="card bg-base-100 shadow-xl border border-base-200 mb-6">
+        <div class="card-body p-4 sm:p-6">
+            <h2 class="card-title text-sm uppercase tracking-widest text-base-content/50 mb-4">Pengaturan</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Mode Selection -->
+                <div class="form-control">
+                    <label class="label"><span class="label-text font-semibold">Pilih Mode</span></label>
+                    <select id="scan-mode" class="select select-bordered w-full">
+                        <option value="PACKING">Tenaga Packing (Hitung Saja)</option>
+                        <option value="STOCK">Update Real Stock (Opname)</option>
+                        <option value="ORDER">Pesanan Reseller (Buat TRX)</option>
+                    </select>
+                </div>
+
+                <!-- Warehouse Selection -->
+                <div class="form-control">
+                    <label class="label"><span class="label-text font-semibold">Gudang</span></label>
+                    <select id="warehouse-id" class="select select-bordered w-full">
+                        {% for w in warehouses %}
+                        <option value="{{ w.id }}">{{ w.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Reseller Selection (Hidden by default unless ORDER mode) -->
+                <div id="reseller-container" class="form-control hidden md:col-span-2">
+                    <label class="label"><span class="label-text font-semibold">Reseller</span></label>
+                    {% if is_reseller %}
+                        <div class="p-3 bg-base-200 rounded-lg text-sm font-bold flex items-center gap-2">
+                            <i data-lucide="user" class="w-4 h-4"></i> {{ user_reseller.name }}
+                        </div>
+                        <input type="hidden" id="reseller-id" value="{{ user_reseller.id }}">
+                    {% else %}
+                        <select id="reseller-id" class="select select-bordered w-full">
+                            <option value="">-- Pilih Reseller --</option>
+                            {% for r in resellers %}
+                            <option value="{{ r.id }}">{{ r.name }}</option>
+                            {% endfor %}
+                        </select>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scanner Section -->
+    <div class="bg-base-100 rounded-box shadow-lg border border-base-200 overflow-hidden mb-6">
+        <div id="reader" style="width: 100%; min-height: 250px;" class="bg-black"></div>
+        <div class="p-4 flex flex-col gap-2">
+            <button id="start-btn" class="btn btn-primary w-full">
+                <i data-lucide="camera"></i> Mulai Kamera
+            </button>
+            <div id="scanner-controls" class="hidden flex gap-2">
+                <button id="stop-btn" class="btn btn-error flex-1">
+                    Stop
+                </button>
+                <button id="torch-btn" class="btn btn-outline btn-warning">
+                    <i data-lucide="zap"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scanned List -->
+    <div class="card bg-base-100 shadow-xl border border-base-200">
+        <div class="card-body p-4">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="card-title text-lg">Item Ter-scan (<span id="total-scanned">0</span>)</h2>
+                <button id="clear-btn" class="btn btn-ghost btn-xs text-error">Hapus Semua</button>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="table table-zebra w-full">
+                    <thead>
+                        <tr>
+                            <th>SKU</th>
+                            <th>Qty</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="scan-list-body">
+                        <!-- Items will be injected here -->
+                        <tr id="empty-row">
+                            <td colspan="3" class="text-center text-base-content/50 py-8">Belum ada item di-scan</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-6">
+                <button id="submit-btn" class="btn btn-success btn-block" disabled>
+                    Proses Sekarang
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Audio for feedback -->
+<audio id="beep-sound" src="https://assets.mixkit.co/active_storage/sfx/2358/2358-preview.mp3" preload="auto"></audio>
+
+<script src="https://unpkg.com/html5-qrcode"></script>
+<script>
+    const html5QrCode = new Html5Qrcode("reader");
+    const scanListBody = document.getElementById('scan-list-body');
+    const totalScannedSpan = document.getElementById('total-scanned');
+    const startBtn = document.getElementById('start-btn');
+    const stopBtn = document.getElementById('stop-btn');
+    const submitBtn = document.getElementById('submit-btn');
+    const clearBtn = document.getElementById('clear-btn');
+    const scannerControls = document.getElementById('scanner-controls');
+    const scanMode = document.getElementById('scan-mode');
+    const resellerContainer = document.getElementById('reseller-container');
+    const beep = document.getElementById('beep-sound');
+
+    let scannedItems = {}; // {sku: {qty: N}}
+    let isScanning = false;
+    let lastScannedCode = "";
+    let lastScannedTime = 0;
+
+    // Toggle Reseller Selection based on mode
+    scanMode.addEventListener('change', (e) => {
+        if (e.target.value === 'ORDER') {
+            resellerContainer.classList.remove('hidden');
+        } else {
+            resellerContainer.classList.add('hidden');
+        }
+    });
+
+    function updateTable() {
+        const skus = Object.keys(scannedItems);
+        if (skus.length === 0) {
+            scanListBody.innerHTML = `<tr id="empty-row"><td colspan="3" class="text-center text-base-content/50 py-8">Belum ada item di-scan</td></tr>`;
+            totalScannedSpan.innerText = "0";
+            submitBtn.disabled = true;
+            return;
+        }
+
+        let html = "";
+        let totalCount = 0;
+        skus.forEach(sku => {
+            const item = scannedItems[sku];
+            totalCount += item.qty;
+            html += `
+                <tr>
+                    <td class="font-mono text-sm">${sku}</td>
+                    <td>
+                        <div class="flex items-center gap-2">
+                            <button onclick="adjustQty('${sku}', -1)" class="btn btn-square btn-xs">-</button>
+                            <span class="font-bold w-8 text-center">${item.qty}</span>
+                            <button onclick="adjustQty('${sku}', 1)" class="btn btn-square btn-xs">+</button>
+                        </div>
+                    </td>
+                    <td>
+                        <button onclick="removeItem('${sku}')" class="btn btn-ghost btn-xs text-error">
+                            <i data-lucide="trash-2" class="w-4"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+        scanListBody.innerHTML = html;
+        totalScannedSpan.innerText = totalCount;
+        submitBtn.disabled = false;
+        
+        // Refresh Lucide Icons
+        if (window.lucide) {
+            lucide.createIcons();
+        }
+    }
+
+    function adjustQty(sku, delta) {
+        if (scannedItems[sku]) {
+            scannedItems[sku].qty += delta;
+            if (scannedItems[sku].qty <= 0) {
+                delete scannedItems[sku];
+            }
+            updateTable();
+        }
+    }
+
+    function removeItem(sku) {
+        delete scannedItems[sku];
+        updateTable();
+    }
+
+    function onScanSuccess(decodedText, decodedResult) {
+        const now = Date.now();
+        // Prevent double scanning within 1.5 seconds for same SKU
+        if (decodedText === lastScannedCode && (now - lastScannedTime) < 1500) {
+            return;
+        }
+
+        lastScannedCode = decodedText;
+        lastScannedTime = now;
+
+        // Feedback
+        beep.play().catch(e => console.log("Audio play failed"));
+        
+        // Flash effect
+        const readerDiv = document.getElementById('reader');
+        readerDiv.style.borderColor = "#22c55e";
+        setTimeout(() => { readerDiv.style.borderColor = "transparent"; }, 200);
+
+        if (scannedItems[decodedText]) {
+            scannedItems[decodedText].qty += 1;
+        } else {
+            scannedItems[decodedText] = { qty: 1 };
+        }
+        updateTable();
+    }
+
+    startBtn.addEventListener('click', () => {
+        const config = { 
+            fps: 15, 
+            qrbox: { width: 250, height: 250 },
+            aspectRatio: 1.0
+        };
+        
+        html5QrCode.start({ facingMode: "environment" }, config, onScanSuccess)
+            .then(() => {
+                isScanning = true;
+                startBtn.classList.add('hidden');
+                scannerControls.classList.remove('hidden');
+            })
+            .catch(err => {
+                alert("Gagal mengakses kamera: " + err);
+            });
+    });
+
+    stopBtn.addEventListener('click', () => {
+        html5QrCode.stop().then(() => {
+            isScanning = false;
+            startBtn.classList.remove('hidden');
+            scannerControls.classList.add('hidden');
+        });
+    });
+
+    clearBtn.addEventListener('click', () => {
+        if (confirm("Hapus semua item yang sudah di-scan?")) {
+            scannedItems = {};
+            updateTable();
+        }
+    });
+
+    submitBtn.addEventListener('click', () => {
+        const mode = scanMode.value;
+        const warehouseId = document.getElementById('warehouse-id').value;
+        const resellerId = document.getElementById('reseller-id') ? document.getElementById('reseller-id').value : null;
+
+        if (mode === 'ORDER' && !resellerId) {
+            alert("Harap pilih Reseller untuk mode Pesanan");
+            return;
+        }
+
+        const items = Object.keys(scannedItems).map(sku => ({
+            sku: sku,
+            qty: scannedItems[sku].qty
+        }));
+
+        submitBtn.disabled = true;
+        submitBtn.innerText = "Memproses...";
+
+        fetch("{% url 'process_scanned_data' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": "{{ csrf_token }}"
+            },
+            body: JSON.stringify({
+                mode: mode,
+                warehouse_id: warehouseId,
+                reseller_id: resellerId,
+                items: items
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                if (data.url) {
+                    window.location.href = data.url;
+                } else {
+                    scannedItems = {};
+                    updateTable();
+                    submitBtn.innerText = "Proses Sekarang";
+                }
+            } else {
+                alert("Error: " + data.error);
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Proses Sekarang";
+            }
+        })
+        .catch(err => {
+            alert("Terjadi kesalahan sistem: " + err);
+            submitBtn.disabled = false;
+            submitBtn.innerText = "Proses Sekarang";
+        });
+    });
+</script>
+
+<style>
+    #reader {
+        border: 4px solid transparent;
+        transition: border-color 0.2s;
+    }
+    #reader__scan_region video {
+        object-fit: cover !important;
+    }
+</style>
+{% endblock %}
