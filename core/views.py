@@ -485,6 +485,20 @@ class InventoryListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        
+        # 1. Hitung Total Nominal untuk SELURUH hasil filter (bukan cuma yang di halaman ini)
+        from django.db.models import F, Sum, DecimalField
+        filtered_qs = self.get_queryset()
+        total_nominal = filtered_qs.aggregate(
+            total=Sum(F('qty_available') * F('variant__default_price'), output_field=DecimalField())
+        )['total'] or 0
+        
+        # 2. Tambahkan nominal_value ke objek yang sedang ditampilkan di HALAMAN ini saja
+        # context['stocks'] adalah daftar objek yang sudah dipaginasi
+        for s in context['stocks']:
+            s.nominal_value = s.qty_available * s.variant.default_price
+            
+        context['total_nominal'] = total_nominal
         context['warehouses'] = Warehouse.objects.all()
         context['categories'] = Product.objects.values_list('category', flat=True).distinct().order_by('category')
         context['brands'] = Product.objects.values_list('brand', flat=True).distinct().order_by('brand')
