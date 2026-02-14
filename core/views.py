@@ -1,7 +1,9 @@
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView, FormView, CreateView, DetailView, UpdateView
+from django.views.generic import ListView, FormView, CreateView, DetailView, UpdateView, DeleteView
 from django.contrib import messages
 from django.db import transaction
 from django.db.models import Sum, Q
@@ -12,7 +14,282 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 import json
 from .models import WarehouseStock, StockMovement, Variant, Warehouse, Transaction, TransactionDetail, Invoice, Payment, ReturnHeader, ReturnDetail, Product, ResellerPrice, Reseller, PackingTask, PackingItem
-from .forms import StockAdjustmentForm, TransactionCreateForm, TransactionDetailForm, PaymentForm
+from .forms import StockAdjustmentForm, TransactionCreateForm, TransactionDetailForm, PaymentForm, ResellerForm, ProductForm, VariantForm, ResellerPriceForm, WarehouseForm
+
+class AdminRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_superuser or self.request.user.groups.filter(name='Admins').exists()
+
+@login_required
+def master_data_dashboard(request):
+    if not (request.user.is_superuser or request.user.groups.filter(name='Admins').exists()):
+        messages.error(request, "Anda tidak memiliki akses ke Master Data.")
+        return redirect('home')
+    return render(request, 'master/dashboard.html')
+
+@method_decorator(login_required, name='dispatch')
+class UserListView(AdminRequiredMixin, ListView):
+    model = User
+    template_name = 'master/user_list.html'
+    context_object_name = 'users'
+    paginate_by = 10
+
+    def get_queryset(self):
+        queryset = User.objects.all().order_by('-date_joined')
+        query = self.request.GET.get('q')
+        if query:
+            queryset = queryset.filter(
+                Q(username__icontains=query) | Q(email__icontains=query) |
+                Q(first_name__icontains=query) | Q(last_name__icontains=query)
+            )
+        return queryset
+
+@method_decorator(login_required, name='dispatch')
+class ResellerListView(AdminRequiredMixin, ListView):
+    model = Reseller
+    template_name = 'master/reseller_list.html'
+    context_object_name = 'resellers'
+    paginate_by = 10
+
+    def get_queryset(self):
+        queryset = Reseller.objects.all().order_by('name')
+        query = self.request.GET.get('q')
+        if query:
+            queryset = queryset.filter(
+                Q(name__icontains=query) | Q(phone__icontains=query) | Q(address__icontains=query)
+            )
+        return queryset
+
+@method_decorator(login_required, name='dispatch')
+class ResellerDetailView(AdminRequiredMixin, DetailView):
+    model = Reseller
+    template_name = 'master/reseller_detail.html'
+    context_object_name = 'reseller'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['special_prices'] = self.object.special_prices.select_related('variant__product')
+        context['invoices'] = Invoice.objects.filter(reseller=self.object).order_by('-created_at')[:5]
+        return context
+
+@method_decorator(login_required, name='dispatch')
+class ResellerCreateView(AdminRequiredMixin, CreateView):
+    model = Reseller
+    form_class = ResellerForm
+    template_name = 'master/form.html'
+    success_url = reverse_lazy('reseller_list')
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Tambah Reseller"
+        return context
+
+@method_decorator(login_required, name='dispatch')
+class ResellerUpdateView(AdminRequiredMixin, UpdateView):
+    model = Reseller
+    form_class = ResellerForm
+    template_name = 'master/form.html'
+    success_url = reverse_lazy('reseller_list')
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Edit Reseller"
+        return context
+
+@method_decorator(login_required, name='dispatch')
+class ResellerDeleteView(AdminRequiredMixin, DeleteView):
+    model = Reseller
+    template_name = 'master/confirm_delete.html'
+    success_url = reverse_lazy('reseller_list')
+
+@method_decorator(login_required, name='dispatch')
+class WarehouseListView(AdminRequiredMixin, ListView):
+    model = Warehouse
+    template_name = 'master/warehouse_list.html'
+    context_object_name = 'warehouses'
+    paginate_by = 10
+
+    def get_queryset(self):
+        queryset = Warehouse.objects.all().order_by('name')
+        query = self.request.GET.get('q')
+        if query:
+            queryset = queryset.filter(
+                Q(name__icontains=query) | Q(location__icontains=query)
+            )
+        return queryset
+
+@method_decorator(login_required, name='dispatch')
+class WarehouseCreateView(AdminRequiredMixin, CreateView):
+    model = Warehouse
+    form_class = WarehouseForm
+    template_name = 'master/form.html'
+    success_url = reverse_lazy('warehouse_list')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Tambah Gudang"
+        return context
+
+@method_decorator(login_required, name='dispatch')
+class WarehouseUpdateView(AdminRequiredMixin, UpdateView):
+    model = Warehouse
+    form_class = WarehouseForm
+    template_name = 'master/form.html'
+    success_url = reverse_lazy('warehouse_list')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Edit Gudang"
+        return context
+
+@method_decorator(login_required, name='dispatch')
+class WarehouseDeleteView(AdminRequiredMixin, DeleteView):
+    model = Warehouse
+    template_name = 'master/confirm_delete.html'
+    success_url = reverse_lazy('warehouse_list')
+
+@method_decorator(login_required, name='dispatch')
+class ProductListView(AdminRequiredMixin, ListView):
+    model = Product
+    template_name = 'master/product_list.html'
+    context_object_name = 'products'
+    paginate_by = 10
+
+    def get_queryset(self):
+        queryset = Product.objects.all().order_by('name')
+        query = self.request.GET.get('q')
+        if query:
+            queryset = queryset.filter(
+                Q(name__icontains=query) | Q(category__icontains=query) | Q(brand__icontains=query)
+            )
+        return queryset
+
+@method_decorator(login_required, name='dispatch')
+class ProductDetailView(AdminRequiredMixin, DetailView):
+    model = Product
+    template_name = 'master/product_detail.html'
+    context_object_name = 'product'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['variants'] = self.object.variants.all()
+        return context
+
+@method_decorator(login_required, name='dispatch')
+class ProductCreateView(AdminRequiredMixin, CreateView):
+    model = Product
+    form_class = ProductForm
+    template_name = 'master/form.html'
+    success_url = reverse_lazy('product_list')
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Tambah Produk"
+        return context
+
+@method_decorator(login_required, name='dispatch')
+class ProductUpdateView(AdminRequiredMixin, UpdateView):
+    model = Product
+    form_class = ProductForm
+    template_name = 'master/form.html'
+    success_url = reverse_lazy('product_list')
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Edit Produk"
+        return context
+
+@method_decorator(login_required, name='dispatch')
+class ProductDeleteView(AdminRequiredMixin, DeleteView):
+    model = Product
+    template_name = 'master/confirm_delete.html'
+    success_url = reverse_lazy('product_list')
+
+@method_decorator(login_required, name='dispatch')
+class VariantCreateView(AdminRequiredMixin, CreateView):
+    model = Variant
+    form_class = VariantForm
+    template_name = 'master/form.html'
+    success_url = reverse_lazy('product_list')
+    
+    def get_initial(self):
+        initial = super().get_initial()
+        product_id = self.request.GET.get('product')
+        if product_id:
+            initial['product'] = product_id
+        return initial
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Tambah Varian"
+        return context
+
+@method_decorator(login_required, name='dispatch')
+class VariantUpdateView(AdminRequiredMixin, UpdateView):
+    model = Variant
+    form_class = VariantForm
+    template_name = 'master/form.html'
+    success_url = reverse_lazy('product_list')
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Edit Varian"
+        return context
+
+@method_decorator(login_required, name='dispatch')
+class VariantDeleteView(AdminRequiredMixin, DeleteView):
+    model = Variant
+    template_name = 'master/confirm_delete.html'
+    success_url = reverse_lazy('product_list')
+
+@method_decorator(login_required, name='dispatch')
+class ResellerPriceListView(AdminRequiredMixin, ListView):
+    model = ResellerPrice
+    template_name = 'master/reseller_price_list.html'
+    context_object_name = 'special_prices'
+    paginate_by = 10
+
+    def get_queryset(self):
+        queryset = ResellerPrice.objects.select_related('reseller', 'variant__product').order_by('reseller__name')
+        query = self.request.GET.get('q')
+        if query:
+            queryset = queryset.filter(
+                Q(reseller__name__icontains=query) | 
+                Q(variant__sku__icontains=query) |
+                Q(variant__product__name__icontains=query)
+            )
+        return queryset
+
+@method_decorator(login_required, name='dispatch')
+class ResellerPriceCreateView(AdminRequiredMixin, CreateView):
+    model = ResellerPrice
+    form_class = ResellerPriceForm
+    template_name = 'master/form.html'
+    success_url = reverse_lazy('reseller_price_list')
+
+    def get_initial(self):
+        initial = super().get_initial()
+        reseller_id = self.request.GET.get('reseller')
+        if reseller_id:
+            initial['reseller'] = reseller_id
+        return initial
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Tambah Harga Khusus"
+        return context
+
+@method_decorator(login_required, name='dispatch')
+class ResellerPriceUpdateView(AdminRequiredMixin, UpdateView):
+    model = ResellerPrice
+    form_class = ResellerPriceForm
+    template_name = 'master/form.html'
+    success_url = reverse_lazy('reseller_price_list')
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Edit Harga Khusus"
+        return context
+
+@method_decorator(login_required, name='dispatch')
+class ResellerPriceDeleteView(AdminRequiredMixin, DeleteView):
+    model = ResellerPrice
+    template_name = 'master/confirm_delete.html'
+    success_url = reverse_lazy('reseller_price_list')
 
 @login_required
 def home(request):

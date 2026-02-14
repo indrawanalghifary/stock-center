@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}Daftar Harga Khusus{% endblock %}
+
+{% block content %}
+<div class="flex flex-col gap-4 mb-6">
+    <div class="flex justify-between items-center">
+        <h1 class="text-2xl font-bold">Data Harga Khusus Reseller</h1>
+        <div class="flex gap-2">
+            <a href="{% url 'reseller_price_create' %}" class="btn btn-primary btn-sm"><i data-lucide="plus"></i> Tambah</a>
+            <a href="{% url 'master_dashboard' %}" class="btn btn-ghost btn-sm"> Kembali</a>
+        </div>
+    </div>
+
+    <form method="get" class="bg-base-100 p-4 rounded-box shadow-sm border border-base-200">
+        <div class="flex gap-2">
+            <input type="text" name="q" placeholder="Cari Reseller/SKU/Produk..." class="input input-bordered w-full" value="{{ request.GET.q|default:'' }}">
+            <button class="btn btn-primary"><i data-lucide="search"></i></button>
+        </div>
+    </form>
+</div>
+
+<div class="overflow-x-auto">
+    <table class="table w-full bg-base-100 shadow rounded-box">
+        <thead>
+            <tr>
+                <th>Reseller</th>
+                <th>Produk (SKU)</th>
+                <th class="text-right">Harga Normal</th>
+                <th class="text-right">Harga Khusus</th>
+                <th class="text-right">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sp in special_prices %}
+            <tr class="hover">
+                <td class="font-bold text-secondary">{{ sp.reseller.name }}</td>
+                <td>
+                    <div class="font-bold">{{ sp.variant.product.name }}</div>
+                    <div class="text-xs font-mono">{{ sp.variant.sku }}</div>
+                </td>
+                <td class="text-right text-gray-400">Rp {{ sp.variant.default_price|floatformat:0|intcomma }}</td>
+                <td class="text-right font-bold text-success">Rp {{ sp.custom_price|floatformat:0|intcomma }}</td>
+                <td class="text-right">
+                    <div class="flex justify-end gap-1">
+                        <a href="{% url 'reseller_price_update' sp.pk %}" class="btn btn-ghost btn-xs text-info" title="Edit">
+                            <i data-lucide="edit-3" class="w-4"></i>
+                        </a>
+                        <a href="{% url 'reseller_price_delete' sp.pk %}" class="btn btn-ghost btn-xs text-error" title="Hapus">
+                            <i data-lucide="trash-2" class="w-4"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center py-8 text-base-content/50">Data tidak ditemukan.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% include 'partials/pagination.html' %}
+{% endblock %}

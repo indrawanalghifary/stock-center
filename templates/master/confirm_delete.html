@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Konfirmasi Hapus{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto bg-base-100 shadow-xl rounded-box p-6 border border-error/20">
+    <div class="text-center">
+        <div class="w-16 h-16 bg-error/10 rounded-full flex items-center justify-center text-error mx-auto mb-4">
+            <i data-lucide="alert-triangle" class="w-8 h-8"></i>
+        </div>
+        <h2 class="text-2xl font-bold mb-2">Konfirmasi Hapus</h2>
+        <p class="text-base-content/70 mb-8">Apakah Anda yakin ingin menghapus <strong>{{ object }}</strong>? Tindakan ini tidak dapat dibatalkan.</p>
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="flex gap-2">
+            <a href="{{ request.META.HTTP_REFERER|default:'..' }}" class="btn btn-ghost flex-1">Batal</a>
+            <button type="submit" class="btn btn-error flex-1">Hapus Permanen</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

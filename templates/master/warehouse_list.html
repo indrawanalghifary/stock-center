@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}Daftar Gudang{% endblock %}
+
+{% block content %}
+<div class="flex flex-col gap-4 mb-6">
+    <div class="flex justify-between items-center">
+        <h1 class="text-2xl font-bold">Data Gudang</h1>
+        <div class="flex gap-2">
+            <a href="{% url 'warehouse_create' %}" class="btn btn-primary btn-sm"><i data-lucide="plus"></i> Tambah</a>
+            <a href="{% url 'master_dashboard' %}" class="btn btn-ghost btn-sm"> Kembali</a>
+        </div>
+    </div>
+
+    <form method="get" class="bg-base-100 p-4 rounded-box shadow-sm border border-base-200">
+        <div class="flex gap-2">
+            <input type="text" name="q" placeholder="Cari Nama/Lokasi..." class="input input-bordered w-full" value="{{ request.GET.q|default:'' }}">
+            <button class="btn btn-primary"><i data-lucide="search"></i></button>
+        </div>
+    </form>
+</div>
+
+<div class="overflow-x-auto">
+    <table class="table w-full bg-base-100 shadow rounded-box">
+        <thead>
+            <tr>
+                <th>Nama Gudang</th>
+                <th>Lokasi</th>
+                <th>Status</th>
+                <th class="text-right">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for w in warehouses %}
+            <tr class="hover">
+                <td class="font-bold">{{ w.name }}</td>
+                <td>{{ w.location }}</td>
+                <td>
+                    {% if w.is_active %}
+                        <span class="badge badge-success">Aktif</span>
+                    {% else %}
+                        <span class="badge badge-error">Non-Aktif</span>
+                    {% endif %}
+                </td>
+                <td class="text-right">
+                    <div class="flex justify-end gap-1">
+                        <a href="{% url 'warehouse_update' w.pk %}" class="btn btn-ghost btn-xs text-info" title="Edit">
+                            <i data-lucide="edit-3" class="w-4"></i>
+                        </a>
+                        <a href="{% url 'warehouse_delete' w.pk %}" class="btn btn-ghost btn-xs text-error" title="Hapus">
+                            <i data-lucide="trash-2" class="w-4"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" class="text-center py-8 text-base-content/50">Data tidak ditemukan.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% include 'partials/pagination.html' %}
+{% endblock %}

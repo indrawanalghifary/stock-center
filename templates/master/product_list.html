@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}Daftar Produk{% endblock %}
+
+{% block content %}
+<div class="flex flex-col gap-4 mb-6">
+    <div class="flex justify-between items-center">
+        <h1 class="text-2xl font-bold">Data Produk & Varian</h1>
+        <div class="flex gap-2">
+            <a href="{% url 'product_create' %}" class="btn btn-primary btn-sm"><i data-lucide="plus"></i> Produk</a>
+            <a href="{% url 'variant_create' %}" class="btn btn-secondary btn-sm"><i data-lucide="plus"></i> Varian</a>
+            <a href="{% url 'master_dashboard' %}" class="btn btn-ghost btn-sm"> Kembali</a>
+        </div>
+    </div>
+
+    <form method="get" class="bg-base-100 p-4 rounded-box shadow-sm border border-base-200">
+        <div class="flex gap-2">
+            <input type="text" name="q" placeholder="Cari Nama/Brand/Kategori..." class="input input-bordered w-full" value="{{ request.GET.q|default:'' }}">
+            <button class="btn btn-primary"><i data-lucide="search"></i></button>
+        </div>
+    </form>
+</div>
+
+<div class="overflow-x-auto">
+    <table class="table w-full bg-base-100 shadow rounded-box">
+        <thead>
+            <tr>
+                <th>Nama Produk</th>
+                <th>Brand / Kategori</th>
+                <th>Varian (SKU)</th>
+                <th>Status</th>
+                <th class="text-right">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in products %}
+            <tr class="hover">
+                <td class="font-bold">
+                    <a href="{% url 'product_detail' p.pk %}" class="text-primary hover:underline">{{ p.name }}</a>
+                </td>
+                <td>
+                    <div class="text-sm">{{ p.brand }}</div>
+                    <div class="text-xs text-gray-500">{{ p.category }}</div>
+                </td>
+                <td>
+                    <div class="dropdown dropdown-left">
+                        <label tabindex="0" class="btn btn-ghost btn-xs">{{ p.variants.count }} Varian</label>
+                        <div tabindex="0" class="dropdown-content z-[1] card card-compact w-80 p-2 shadow bg-base-100 text-base-content border">
+                            <div class="card-body">
+                                <ul class="text-xs space-y-2">
+                                    {% for v in p.variants.all %}
+                                    <li class="border-b pb-1 last:border-0">
+                                        <div class="flex justify-between items-center">
+                                            <div>
+                                                <span class="font-mono font-bold">{{ v.sku }}</span>
+                                                <div class="text-gray-500">{{ v.color }} / {{ v.size }}</div>
+                                            </div>
+                                            <div class="flex items-center gap-2">
+                                                <span class="text-primary font-bold">Rp {{ v.default_price|floatformat:0|intcomma }}</span>
+                                                <div class="flex">
+                                                    <a href="{% url 'variant_update' v.pk %}" class="btn btn-ghost btn-xs text-info p-0 h-auto min-h-0"><i data-lucide="edit-3" class="w-3"></i></a>
+                                                    <a href="{% url 'variant_delete' v.pk %}" class="btn btn-ghost btn-xs text-error p-0 h-auto min-h-0"><i data-lucide="trash-2" class="w-3"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    {% if p.is_active %}
+                        <span class="badge badge-success">Aktif</span>
+                    {% else %}
+                        <span class="badge badge-error">Non-Aktif</span>
+                    {% endif %}
+                </td>
+                <td class="text-right">
+                    <div class="flex justify-end gap-1">
+                        <a href="{% url 'product_update' p.pk %}" class="btn btn-ghost btn-xs text-info" title="Edit Produk">
+                            <i data-lucide="edit-3" class="w-4"></i>
+                        </a>
+                        <a href="{% url 'product_delete' p.pk %}" class="btn btn-ghost btn-xs text-error" title="Hapus Produk">
+                            <i data-lucide="trash-2" class="w-4"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center py-8 text-base-content/50">Data tidak ditemukan.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% include 'partials/pagination.html' %}
+{% endblock %}

@@ -31,6 +31,42 @@ urlpatterns = [
     # Analytics
     path('analytics/', views.AnalyticsView.as_view(), name='analytics'),
 
+    # Master Data
+    path('master/', views.master_data_dashboard, name='master_dashboard'),
+    
+    # Users (Read-only list for now in master)
+    path('master/users/', views.UserListView.as_view(), name='user_list'),
+
+    # Resellers
+    path('master/resellers/', views.ResellerListView.as_view(), name='reseller_list'),
+    path('master/resellers/add/', views.ResellerCreateView.as_view(), name='reseller_create'),
+    path('master/resellers/<int:pk>/', views.ResellerDetailView.as_view(), name='reseller_detail'),
+    path('master/resellers/<int:pk>/edit/', views.ResellerUpdateView.as_view(), name='reseller_update'),
+    path('master/resellers/<int:pk>/delete/', views.ResellerDeleteView.as_view(), name='reseller_delete'),
+
+    # Warehouses
+    path('master/warehouses/', views.WarehouseListView.as_view(), name='warehouse_list'),
+    path('master/warehouses/add/', views.WarehouseCreateView.as_view(), name='warehouse_create'),
+    path('master/warehouses/<int:pk>/edit/', views.WarehouseUpdateView.as_view(), name='warehouse_update'),
+    path('master/warehouses/<int:pk>/delete/', views.WarehouseDeleteView.as_view(), name='warehouse_delete'),
+
+    # Products & Variants
+    path('master/products/', views.ProductListView.as_view(), name='product_list'),
+    path('master/products/add/', views.ProductCreateView.as_view(), name='product_create'),
+    path('master/products/<int:pk>/', views.ProductDetailView.as_view(), name='product_detail'),
+    path('master/products/<int:pk>/edit/', views.ProductUpdateView.as_view(), name='product_update'),
+    path('master/products/<int:pk>/delete/', views.ProductDeleteView.as_view(), name='product_delete'),
+    
+    path('master/variants/add/', views.VariantCreateView.as_view(), name='variant_create'),
+    path('master/variants/<int:pk>/edit/', views.VariantUpdateView.as_view(), name='variant_update'),
+    path('master/variants/<int:pk>/delete/', views.VariantDeleteView.as_view(), name='variant_delete'),
+
+    # Reseller Prices
+    path('master/reseller-prices/', views.ResellerPriceListView.as_view(), name='reseller_price_list'),
+    path('master/reseller-prices/add/', views.ResellerPriceCreateView.as_view(), name='reseller_price_create'),
+    path('master/reseller-prices/<int:pk>/edit/', views.ResellerPriceUpdateView.as_view(), name='reseller_price_update'),
+    path('master/reseller-prices/<int:pk>/delete/', views.ResellerPriceDeleteView.as_view(), name='reseller_price_delete'),
+
     # Scanner & Codes
     path('scanner/', views.scanner, name='scanner'),
     path('scanner/advanced/', views.scanner_advanced, name='scanner_advanced'),

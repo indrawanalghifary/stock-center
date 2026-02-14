@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}Daftar Reseller{% endblock %}
+
+{% block content %}
+<div class="flex flex-col gap-4 mb-6">
+    <div class="flex justify-between items-center">
+        <h1 class="text-2xl font-bold">Data Reseller</h1>
+        <div class="flex gap-2">
+            <a href="{% url 'reseller_create' %}" class="btn btn-primary btn-sm"><i data-lucide="plus"></i> Tambah</a>
+            <a href="{% url 'master_dashboard' %}" class="btn btn-ghost btn-sm"> Kembali</a>
+        </div>
+    </div>
+
+    <form method="get" class="bg-base-100 p-4 rounded-box shadow-sm border border-base-200">
+        <div class="flex gap-2">
+            <input type="text" name="q" placeholder="Cari Nama/HP/Alamat..." class="input input-bordered w-full" value="{{ request.GET.q|default:'' }}">
+            <button class="btn btn-primary"><i data-lucide="search"></i></button>
+        </div>
+    </form>
+</div>
+
+<div class="overflow-x-auto">
+    <table class="table w-full bg-base-100 shadow rounded-box">
+        <thead>
+            <tr>
+                <th>Nama Reseller</th>
+                <th>Telepon</th>
+                <th>Alamat</th>
+                <th class="text-right">Plafon</th>
+                <th class="text-right">Hutang</th>
+                <th class="text-right">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in resellers %}
+            <tr class="hover">
+                <td class="font-bold">
+                    <a href="{% url 'reseller_detail' r.pk %}" class="text-primary hover:underline">{{ r.name }}</a>
+                </td>
+                <td>{{ r.phone }}</td>
+                <td class="max-w-xs truncate">{{ r.address }}</td>
+                <td class="text-right">Rp {{ r.credit_limit|floatformat:0|intcomma }}</td>
+                <td class="text-right font-bold text-error">Rp {{ r.current_balance|floatformat:0|intcomma }}</td>
+                <td class="text-right">
+                    <div class="flex justify-end gap-1">
+                        <a href="{% url 'reseller_update' r.pk %}" class="btn btn-ghost btn-xs text-info" title="Edit">
+                            <i data-lucide="edit-3" class="w-4"></i>
+                        </a>
+                        <a href="{% url 'reseller_delete' r.pk %}" class="btn btn-ghost btn-xs text-error" title="Hapus">
+                            <i data-lucide="trash-2" class="w-4"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center py-8 text-base-content/50">Data tidak ditemukan.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% include 'partials/pagination.html' %}
+{% endblock %}

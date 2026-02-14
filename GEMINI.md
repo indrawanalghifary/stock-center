@@ -1,7 +1,7 @@
 # Stock Center Project
 
 ## Overview
-This project is a stock management system designed for multi-warehouse operations, reseller management (credit/debt), and comprehensive stock tracking (ledger system).
+This project is a stock management system designed for multi-warehouse operations, reseller management, comprehensive stock tracking, and integrated packing labor tracking.
 
 ## Architecture
 *   **Backend:** Django 5.2.10 (Python)
@@ -9,56 +9,40 @@ This project is a stock management system designed for multi-warehouse operation
 *   **Database:** SQLite (default for development), capable of scaling to PostgreSQL.
 
 ## Directory Structure
-*   `config/`: Main Django project configuration (settings, URLs).
-*   `core/`: Main application containing business logic and models.
-    *   `models.py`: Database models.
-    *   `views.py`: Application logic (Inventory, Transaction, Finance, Return).
-    *   `forms.py`: Data entry forms.
-    *   `signals.py`: Business logic automation (Stock deduction, Invoice creation).
-    *   `admin.py`: Admin interface configuration.
-    *   `urls.py`: App-specific URL routing.
-*   `templates/`: Global templates directory.
-    *   `base.html`: Base template with TomSelect and Lucide Icons.
-    *   `home.html`: Role-based Dashboard.
-    *   `inventory/`: Inventory management templates.
-    *   `transaction/`: Transaction (POS) templates.
-    *   `finance/`: Invoice and Payment templates.
-    *   `return/`: Return Management templates.
-*   `venv/`: Python virtual environment.
-*   `backend.md`: Detailed specification of the database schema and business logic.
-*   `frontend.md`: User Interface and User Experience requirements.
+*   `config/`: Main Django project configuration.
+*   `core/`: Main application containing business logic, models, and scanner processing.
+*   `templates/`: Global templates (Inventory, Transaction, Finance, Return, Packing, Scanner).
+*   `static/`: Static assets (Icons, CSS).
 
 ## Key Features Implemented
 
-### 1. Automation (The Brain) 🧠
-*   **Auto-Stock Deduction:** Finalizing a transaction automatically checks and reduces warehouse stock.
-*   **Auto-Invoice:** Transactions generate invoices automatically upon finalization.
-*   **Auto-Ledger:** All stock changes are recorded in `StockMovement`.
-*   **Reseller Balance:** Debt is automatically calculated when transactions are finalized or payments are made.
+### 1. Automation & Scanner (The Brain) 🧠
+*   **Advanced Batch Scanner:** Continuous scanning mode for high-speed SKU processing.
+*   **Multi-Mode Scanner:**
+    *   **Packing Mode:** Logs packing labor, SKU counts, and calculates fees/incentives.
+    *   **Stock Mode:** Direct warehouse stock updates (Opname) via barcode.
+    *   **Order Mode:** Instant transaction creation from scanned batch.
+*   **Real-time SKU Validation:** Instant database lookup during scanning with visual feedback.
+*   **Torch Control:** Integrated flashlight support for low-light scanning environments.
 
-### 2. Inventory Management 📦
-*   **Stock Overview:** View stock levels across all warehouses.
-*   **Inbound Stock:** Form to add new stock (Purchase/Adjustment) with ledger tracking.
+### 2. Packing Management 📦
+*   **Labor Tracking:** Records who performed the packing, when, and where.
+*   **Fee Calculation:** Automatic calculation of packing fees based on item count.
+*   **Activity History:** Searchable and filterable history of all packing tasks.
 
-### 3. Transaction System (POS) 🛒
-*   **Create Order:** Select Reseller and Warehouse.
-*   **Searchable Items:** Integrated TomSelect for easy product lookup.
-*   **Add Items:** Dynamic cart management (Draft mode).
-*   **Finalize:** Lock order and trigger automation.
-*   **Role-Aware:** Resellers can only create orders for themselves; Admins can create for anyone.
+### 3. Inventory & Stock 🏢
+*   **Warehouse Overview:** Real-time stock levels across multiple locations.
+*   **Ledger System:** Every movement (In, Out, Return, Scan) is logged in `StockMovement`.
+*   **Auto-Stock Deduction:** Finalized transactions automatically reduce stock.
 
-### 4. Finance & Receivables 💰
-*   **Invoice List:** Track unpaid and partial invoices.
-*   **Payments:** Record payments against invoices to reduce reseller debt.
+### 4. Transaction & Finance 💰
+*   **Deep Linking:** Seamless navigation between Transactions and their associated Invoices.
+*   **Payment System:** Records payments with dropdown methods (Cash, Transfer, E-Wallet) and tracks remaining balances.
+*   **Reseller Balance:** Automated debt/credit calculation for resellers.
 
 ### 5. Return Management 🔁
-*   **Create Return:** Initiate return requests referencing specific invoices.
-*   **Finalize Return:** Automatically restores stock and adjusts reseller balance/credit.
-
-### 6. Role-Based Access & Dashboard 📊
-*   **Admin View:** Global stock, total receivables, all transactions.
-*   **Reseller View:** Personal debt, personal orders, unpaid invoices.
-*   **Menu Control:** Resellers cannot see Inventory adjustment menus.
+*   **Invoice-Linked Returns:** Returns are validated against original invoice quantities.
+*   **Auto-Adjustment:** Finalizing returns restores stock and adjusts reseller balances.
 
 ## Setup & Running
 
@@ -67,30 +51,10 @@ This project is a stock management system designed for multi-warehouse operation
 *   Active Virtual Environment (`source venv/bin/activate`)
 
 ### Commands
-1.  **Activate Environment:**
-    ```bash
-    source venv/bin/activate
-    ```
-2.  **Run Development Server:**
-    ```bash
-    python manage.py runserver
-    ```
-3.  **Database Migrations:**
-    ```bash
-    python manage.py makemigrations
-    python manage.py migrate
-    ```
-4.  **Create Superuser:**
-    ```bash
-    python manage.py createsuperuser
-    ```
+1.  **Run Development Server:** `python manage.py runserver`
+2.  **Database Migrations:** `python manage.py migrate`
+3.  **System Check:** `python manage.py check`
 
 ## Development Status
-*   **Phase:** Feature Complete (RC1).
-*   **Completed:**
-    *   Core Modules: Inventory, Transaction, Finance.
-    *   Advanced Features: Returns, Role Differentiation.
-    *   UX: Searchable Selects, Mobile-First Design.
-*   **Next Steps:**
-    *   User Acceptance Testing (UAT).
-    *   Deploy to production.
+*   **Phase:** Feature Complete (RC2).
+*   **Latest Additions:** Advanced Batch Scanner, Packing Labor Module, Transaction-Invoice Deep Linking.

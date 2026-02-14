@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}Detail Produk: {{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="flex justify-between items-start mb-6">
+        <div>
+            <div class="flex items-center gap-2 mb-1">
+                 <h1 class="text-3xl font-bold">{{ product.name }}</h1>
+                 {% if product.is_active %}
+                    <span class="badge badge-success badge-sm">Aktif</span>
+                 {% else %}
+                    <span class="badge badge-error badge-sm">Non-Aktif</span>
+                 {% endif %}
+            </div>
+            <p class="text-base-content/60">{{ product.brand }} | Kategori: {{ product.category }}</p>
+        </div>
+        <div class="flex gap-2">
+            <a href="{% url 'product_update' product.pk %}" class="btn btn-outline btn-sm"><i data-lucide="edit-3" class="w-4"></i> Edit Produk</a>
+            <a href="{% url 'product_list' %}" class="btn btn-ghost btn-sm">Kembali</a>
+        </div>
+    </div>
+
+    <!-- Variants Section -->
+    <div class="card bg-base-100 shadow border border-base-200 mb-8">
+        <div class="card-body p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold flex items-center gap-2">
+                    <i data-lucide="layers" class="text-primary"></i> Daftar Varian Produk
+                </h2>
+                <a href="{% url 'variant_create' %}?product={{ product.id }}" class="btn btn-primary btn-sm">
+                    <i data-lucide="plus"></i> Tambah Varian
+                </a>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="table w-full">
+                    <thead>
+                        <tr>
+                            <th>SKU (Barcode)</th>
+                            <th>Warna</th>
+                            <th>Ukuran</th>
+                            <th class="text-right">Harga Default</th>
+                            <th class="text-right">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for v in variants %}
+                        <tr class="hover">
+                            <td class="font-mono font-bold">{{ v.sku }}</td>
+                            <td>{{ v.color }}</td>
+                            <td>{{ v.size }}</td>
+                            <td class="text-right font-bold text-primary">Rp {{ v.default_price|floatformat:0|intcomma }}</td>
+                            <td class="text-right">
+                                <div class="flex justify-end gap-1">
+                                    <a href="{% url 'variant_barcode' v.pk %}" class="btn btn-ghost btn-xs text-secondary" title="Cetak Barcode"><i data-lucide="printer" class="w-4"></i></a>
+                                    <a href="{% url 'variant_update' v.pk %}" class="btn btn-ghost btn-xs text-info"><i data-lucide="edit-3" class="w-4"></i></a>
+                                    <a href="{% url 'variant_delete' v.pk %}" class="btn btn-ghost btn-xs text-error"><i data-lucide="trash-2" class="w-4"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center py-8 text-base-content/40">Belum ada varian untuk produk ini.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

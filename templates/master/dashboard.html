@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}Master Data Dashboard{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold">Master Data</h1>
+        <p class="text-base-content/70">Kelola data inti sistem Stock Center</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Users -->
+        <a href="{% url 'user_list' %}" class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all border border-base-200">
+            <div class="card-body items-center text-center">
+                <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center text-primary mb-2">
+                    <i data-lucide="users" class="w-8 h-8"></i>
+                </div>
+                <h2 class="card-title">User / Pegawai</h2>
+                <p class="text-xs text-base-content/60">Kelola akun dan akses sistem</p>
+            </div>
+        </a>
+
+        <!-- Resellers -->
+        <a href="{% url 'reseller_list' %}" class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all border border-base-200">
+            <div class="card-body items-center text-center">
+                <div class="w-16 h-16 bg-secondary/10 rounded-full flex items-center justify-center text-secondary mb-2">
+                    <i data-lucide="contact-2" class="w-8 h-8"></i>
+                </div>
+                <h2 class="card-title">Reseller</h2>
+                <p class="text-xs text-base-content/60">Data pelanggan dan plafon piutang</p>
+            </div>
+        </a>
+
+        <!-- Warehouses -->
+        <a href="{% url 'warehouse_list' %}" class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all border border-base-200">
+            <div class="card-body items-center text-center">
+                <div class="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center text-accent mb-2">
+                    <i data-lucide="warehouse" class="w-8 h-8"></i>
+                </div>
+                <h2 class="card-title">Gudang</h2>
+                <p class="text-xs text-base-content/60">Lokasi penyimpanan stok barang</p>
+            </div>
+        </a>
+
+        <!-- Products -->
+        <a href="{% url 'product_list' %}" class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all border border-base-200">
+            <div class="card-body items-center text-center">
+                <div class="w-16 h-16 bg-info/10 rounded-full flex items-center justify-center text-info mb-2">
+                    <i data-lucide="package-search" class="w-8 h-8"></i>
+                </div>
+                <h2 class="card-title">Produk & Varian</h2>
+                <p class="text-xs text-base-content/60">Master barang, kategori, dan SKU</p>
+            </div>
+        </a>
+
+        <!-- Reseller Prices -->
+        <a href="{% url 'reseller_price_list' %}" class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all border border-base-200">
+            <div class="card-body items-center text-center">
+                <div class="w-16 h-16 bg-warning/10 rounded-full flex items-center justify-center text-warning mb-2">
+                    <i data-lucide="tags" class="w-8 h-8"></i>
+                </div>
+                <h2 class="card-title">Harga Khusus</h2>
+                <p class="text-xs text-base-content/60">Atur harga spesial per reseller</p>
+            </div>
+        </a>
+
+        <!-- Admin Shortcut -->
+        <a href="/admin/" target="_blank" class="card bg-neutral text-neutral-content shadow-xl hover:shadow-2xl transition-all">
+            <div class="card-body items-center text-center">
+                <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mb-2">
+                    <i data-lucide="settings" class="w-8 h-8"></i>
+                </div>
+                <h2 class="card-title">Advanced Admin</h2>
+                <p class="text-xs opacity-60">Buka Django Admin Panel</p>
+            </div>
+        </a>
+    </div>
+</div>
+{% endblock %}

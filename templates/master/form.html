@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto bg-base-100 shadow-xl rounded-box p-6 border border-base-200">
+    <h2 class="text-2xl font-bold mb-6 text-center">{{ title }}</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        
+        {% for field in form %}
+        <div class="form-control w-full mb-4">
+            <label class="label">
+                <span class="label-text font-semibold">
+                    {{ field.label }}
+                </span>
+                {% if field.field.required %}<span class="label-text-alt text-error">* Wajib</span>{% endif %}
+            </label>
+            
+            <div class="flex items-center">
+                {{ field }}
+            </div>
+            
+            {% if field.help_text %}
+                <label class="label"><span class="label-text-alt opacity-70">{{ field.help_text }}</span></label>
+            {% endif %}
+            
+            {% if field.errors %}
+                <div class="text-error text-xs mt-1">{{ field.errors.0 }}</div>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        <div class="flex gap-2 mt-8">
+            <a href="{{ request.META.HTTP_REFERER|default:'..' }}" class="btn btn-ghost flex-1">Batal</a>
+            <button type="submit" class="btn btn-primary flex-1">Simpan</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+        document.querySelectorAll('.searchable-select').forEach(el => {
+            new TomSelect(el, {
+                create: false,
+                sortField: {
+                    field: "text",
+                    direction: "asc"
+                },
+                placeholder: "Cari data...",
+                plugins: ['dropdown_input'],
+            });
+        });
+    });
+</script>
+{% endblock %}

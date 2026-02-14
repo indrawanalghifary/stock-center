@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}Detail Reseller: {{ reseller.name }}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="flex justify-between items-start mb-6">
+        <div>
+            <h1 class="text-3xl font-bold">{{ reseller.name }}</h1>
+            <p class="text-base-content/60">{{ reseller.phone }} | {{ reseller.address|truncatewords:10 }}</p>
+        </div>
+        <div class="flex gap-2">
+            <a href="{% url 'reseller_update' reseller.pk %}" class="btn btn-outline btn-sm"><i data-lucide="edit-3" class="w-4"></i> Edit Profil</a>
+            <a href="{% url 'reseller_list' %}" class="btn btn-ghost btn-sm">Kembali</a>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="card bg-base-100 shadow border border-base-200">
+            <div class="card-body p-4 text-center">
+                <span class="text-xs uppercase font-bold opacity-50">Plafon Kredit</span>
+                <span class="text-xl font-bold">Rp {{ reseller.credit_limit|floatformat:0|intcomma }}</span>
+            </div>
+        </div>
+        <div class="card bg-error/10 shadow border border-error/20">
+            <div class="card-body p-4 text-center">
+                <span class="text-xs uppercase font-bold text-error opacity-70">Saldo Hutang</span>
+                <span class="text-xl font-bold text-error">Rp {{ reseller.current_balance|floatformat:0|intcomma }}</span>
+            </div>
+        </div>
+        <div class="card bg-base-100 shadow border border-base-200">
+            <div class="card-body p-4 text-center">
+                <span class="text-xs uppercase font-bold opacity-50">Akun User</span>
+                <span class="text-xl font-bold">{{ reseller.user.username|default:"-" }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Special Prices Section -->
+    <div class="card bg-base-100 shadow border border-base-200 mb-8">
+        <div class="card-body p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold flex items-center gap-2">
+                    <i data-lucide="tags" class="text-secondary"></i> Harga Khusus Reseller
+                </h2>
+                <a href="{% url 'reseller_price_create' %}?reseller={{ reseller.id }}" class="btn btn-secondary btn-sm">
+                    <i data-lucide="plus"></i> Tambah Harga Khusus
+                </a>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="table w-full">
+                    <thead>
+                        <tr>
+                            <th>Produk (SKU)</th>
+                            <th class="text-right">Harga Normal</th>
+                            <th class="text-right font-bold">Harga Khusus</th>
+                            <th class="text-right">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for sp in special_prices %}
+                        <tr class="hover">
+                            <td>
+                                <div class="font-bold">{{ sp.variant.product.name }}</div>
+                                <div class="text-xs font-mono">{{ sp.variant.sku }}</div>
+                            </td>
+                            <td class="text-right opacity-50">Rp {{ sp.variant.default_price|floatformat:0|intcomma }}</td>
+                            <td class="text-right font-bold text-success">Rp {{ sp.custom_price|floatformat:0|intcomma }}</td>
+                            <td class="text-right">
+                                <div class="flex justify-end gap-1">
+                                    <a href="{% url 'reseller_price_update' sp.pk %}" class="btn btn-ghost btn-xs text-info"><i data-lucide="edit-3" class="w-4"></i></a>
+                                    <a href="{% url 'reseller_price_delete' sp.pk %}" class="btn btn-ghost btn-xs text-error"><i data-lucide="trash-2" class="w-4"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-center py-8 text-base-content/40">Belum ada harga khusus untuk reseller ini.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Invoices -->
+    <div class="card bg-base-100 shadow border border-base-200">
+        <div class="card-body p-6">
+            <h2 class="text-xl font-bold mb-4">5 Invoice Terakhir</h2>
+            <div class="overflow-x-auto">
+                <table class="table table-compact w-full text-sm">
+                    <thead>
+                        <tr>
+                            <th>Invoice</th>
+                            <th>Tanggal</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for inv in invoices %}
+                        <tr>
+                            <td class="font-mono">#INV-{{ inv.id }}</td>
+                            <td>{{ inv.created_at|date:"d M y" }}</td>
+                            <td>Rp {{ inv.total_amount|floatformat:0|intcomma }}</td>
+                            <td><span class="badge badge-xs {% if inv.status == 'PAID' %}badge-success{% else %}badge-error{% endif %}">{{ inv.status }}</span></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
