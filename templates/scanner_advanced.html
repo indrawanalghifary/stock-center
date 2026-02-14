@@ -122,12 +122,14 @@
     const submitBtn = document.getElementById('submit-btn');
     const clearBtn = document.getElementById('clear-btn');
     const scannerControls = document.getElementById('scanner-controls');
+    const torchBtn = document.getElementById('torch-btn');
     const scanMode = document.getElementById('scan-mode');
     const resellerContainer = document.getElementById('reseller-container');
     const beep = document.getElementById('beep-sound');
 
     let scannedItems = {}; // {sku: {qty: N}}
     let isScanning = false;
+    let isTorchOn = false;
     let lastScannedCode = "";
     let lastScannedTime = 0;
 
@@ -233,17 +235,53 @@
         html5QrCode.start({ facingMode: "environment" }, config, onScanSuccess)
             .then(() => {
                 isScanning = true;
+                isTorchOn = false;
                 startBtn.classList.add('hidden');
                 scannerControls.classList.remove('hidden');
+                
+                // Check if torch is supported
+                setTimeout(() => {
+                    const track = html5QrCode.getRunningTrack();
+                    if (track && track.getCapabilities().torch) {
+                        torchBtn.classList.remove('hidden');
+                    } else {
+                        torchBtn.classList.add('hidden');
+                    }
+                }, 500);
             })
             .catch(err => {
                 alert("Gagal mengakses kamera: " + err);
             });
     });
 
+    torchBtn.addEventListener('click', () => {
+        if (!isScanning) return;
+        
+        isTorchOn = !isTorchOn;
+        html5QrCode.applyVideoConstraints({
+            focusMode: 'continuous',
+            advanced: [{ torch: isTorchOn }]
+        }).then(() => {
+            if (isTorchOn) {
+                torchBtn.classList.add('btn-warning');
+                torchBtn.classList.remove('btn-outline');
+            } else {
+                torchBtn.classList.remove('btn-warning');
+                torchBtn.classList.add('btn-outline');
+            }
+        }).catch(err => {
+            console.error("Torch error:", err);
+            // If failed, try to revert state
+            isTorchOn = !isTorchOn;
+        });
+    });
+
     stopBtn.addEventListener('click', () => {
         html5QrCode.stop().then(() => {
             isScanning = false;
+            isTorchOn = false;
+            torchBtn.classList.remove('btn-warning');
+            torchBtn.classList.add('btn-outline');
             startBtn.classList.remove('hidden');
             scannerControls.classList.add('hidden');
         });
