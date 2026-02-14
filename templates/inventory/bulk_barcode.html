@@ -1,0 +1,131 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Cetak Barcode Bulk</title>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            background-color: #f3f4f6;
+        }
+
+        /* Screen view */
+        .no-print-area {
+            padding: 20px;
+            background: white;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        /* Print layout */
+        .print-container {
+            display: flex;
+            flex-wrap: wrap;
+            width: 105mm; /* 33mm * 3 + gaps */
+            margin: 0 auto;
+            background: white;
+        }
+
+        .label-box {
+            width: 33mm;
+            height: 15mm;
+            box-sizing: border-box;
+            padding: 1mm;
+            text-align: center;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            border: 1px dashed #ccc; /* Visible only on screen */
+        }
+
+        .sku-text {
+            font-size: 8pt;
+            font-weight: bold;
+            margin-bottom: 0.5mm;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+        }
+
+        .barcode-svg {
+            max-width: 31mm;
+            max-height: 8mm;
+        }
+
+        @media print {
+            body {
+                background-color: white;
+            }
+            .no-print-area {
+                display: none;
+            }
+            .label-box {
+                border: none;
+                page-break-inside: avoid;
+            }
+            .print-container {
+                width: 105mm; /* Fixed width to force 3 per row */
+                margin: 0;
+                display: flex;
+                flex-wrap: wrap;
+            }
+            @page {
+                size: 105mm 15mm;
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="no-print-area">
+    <h1>Cetak Barcode (33x15mm - 3 Line)</h1>
+    <p>Total {{ labels|length }} label akan dicetak.</p>
+    <button onclick="window.print()" class="btn">Cetak Sekarang</button>
+    <button onclick="window.history.back()" class="btn" style="background-color: #6b7280;">Kembali</button>
+</div>
+
+<div class="print-container">
+    {% for label in labels %}
+    <div class="label-box">
+        <div class="sku-text">{{ label.sku }}</div>
+        <svg class="barcode-svg" id="barcode-{{ label.id }}"></svg>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        {% for label in labels %}
+        JsBarcode("#barcode-{{ label.id }}", "{{ label.sku }}", {
+            format: "CODE128",
+            width: 1,
+            height: 30,
+            displayValue: false,
+            margin: 0
+        });
+        {% endfor %}
+    });
+</script>
+
+</body>
+</html>

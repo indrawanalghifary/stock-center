@@ -76,6 +76,7 @@ urlpatterns = [
     path('scanner/process/', views.process_scanned_data, name='process_scanned_data'),
     path('variants/<int:pk>/', views.VariantDetailView.as_view(), name='variant_detail'),
     path('variants/<int:pk>/barcode/', views.variant_barcode, name='variant_barcode'),
+    path('variants/bulk-barcode/', views.bulk_barcode, name='bulk_barcode'),
     path('invoices/<int:pk>/qrcode/', views.invoice_qrcode, name='invoice_qrcode'),
     path('scan-lookup/', views.scan_lookup, name='scan_lookup'),
 ]

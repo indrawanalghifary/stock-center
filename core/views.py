@@ -1221,6 +1221,31 @@ def variant_barcode(request, pk):
     return render(request, 'inventory/barcode_page.html', {'variant': variant})
 
 @login_required
+def bulk_barcode(request):
+    variant_ids = request.GET.getlist('variants')
+    
+    # List to store duplicated variants
+    labels = []
+    
+    for v_id in variant_ids:
+        variant = get_object_or_404(Variant, id=v_id)
+        # Get qty from query param qty_ID, default to 1
+        qty_param = request.GET.get(f'qty_{v_id}', 1)
+        try:
+            qty = int(qty_param)
+        except ValueError:
+            qty = 1
+            
+        # Add the variant to our labels list multiple times
+        for i in range(qty):
+            labels.append({
+                'id': f"{variant.id}_{i}", # Unique ID for JS selector
+                'sku': variant.sku
+            })
+    
+    return render(request, 'inventory/bulk_barcode.html', {'labels': labels})
+
+@login_required
 def invoice_qrcode(request, pk):
     invoice = get_object_or_404(Invoice, pk=pk)
     return render(request, 'finance/qrcode_page.html', {'invoice': invoice})
