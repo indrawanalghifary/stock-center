@@ -1296,4 +1296,12 @@ class VariantDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['stocks'] = WarehouseStock.objects.filter(variant=self.object).select_related('warehouse')
+        
+        # Add reseller price if user is a reseller
+        if hasattr(self.request.user, 'reseller_profile'):
+            reseller = self.request.user.reseller_profile
+            special_price = ResellerPrice.objects.filter(reseller=reseller, variant=self.object).first()
+            if special_price:
+                context['reseller_price'] = special_price.custom_price
+                
         return context

@@ -41,8 +41,14 @@
                     </div>
 
                     <div class="mt-4">
-                        <div class="text-sm opacity-70">Harga Default:</div>
-                        <div class="text-xl font-bold text-primary">Rp {{ variant.default_price|floatformat:0|intcomma }}</div>
+                        {% if reseller_price %}
+                            <div class="text-sm opacity-70">Harga Reseller:</div>
+                            <div class="text-xl font-bold text-primary">Rp {{ reseller_price|floatformat:0|intcomma }}</div>
+                            <!-- <div class="text-xs opacity-50 line-through">Normal: Rp {{ variant.default_price|floatformat:0|intcomma }}</div> -->
+                        {% else %}
+                            <div class="text-sm opacity-70">Harga Default:</div>
+                            <div class="text-xl font-bold text-primary">Rp {{ variant.default_price|floatformat:0|intcomma }}</div>
+                        {% endif %}
                     </div>
                     
                     <div class="card-actions mt-4">
