@@ -1,10 +1,42 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.utils.safestring import mark_safe
 from .models import Warehouse, Variant, StockMovement, Transaction, TransactionDetail, Payment, Reseller, Product, ResellerPrice
 
-class SimpleCheckboxInput(forms.CheckboxInput):
-    """Custom CheckboxInput that renders only the input without extra wrapper or SVG"""
-    template_name = 'widgets/simple_checkbox.html'
+class PlainCheckboxInput(forms.CheckboxInput):
+    """Custom CheckboxInput yang render input checkbox polos tanpa wrapper"""
+    def render(self, name, value, attrs=None, renderer=None):
+        # Build attributes
+        if attrs is None:
+            attrs = {}
+        
+        attrs['type'] = 'checkbox'
+        attrs['name'] = name
+        
+        # Add id if not present
+        if 'id' not in attrs and name:
+            attrs['id'] = f'id_{name}'
+        
+        # Handle checked state
+        if value:
+            attrs['checked'] = True
+        
+        # Build HTML
+        html = f'<input'
+        for key, val in attrs.items():
+            if key == 'checked' and val is True:
+                html += f' {key}'
+            elif key == 'checked':
+                continue
+            elif val is True:
+                html += f' {key}'
+            elif val is False:
+                continue
+            else:
+                html += f' {key}="{val}"'
+        
+        html += '>'
+        return mark_safe(html)
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'input input-bordered w-full'}), required=False, help_text="Kosongkan jika tidak ingin mengubah password (untuk edit).")
@@ -17,8 +49,8 @@ class UserForm(forms.ModelForm):
             'email': forms.EmailInput(attrs={'class': 'input input-bordered w-full'}),
             'first_name': forms.TextInput(attrs={'class': 'input input-bordered w-full'}),
             'last_name': forms.TextInput(attrs={'class': 'input input-bordered w-full'}),
-            'is_staff': SimpleCheckboxInput(),
-            'is_active': SimpleCheckboxInput(),
+            'is_staff': PlainCheckboxInput(),
+            'is_active': PlainCheckboxInput(),
         }
 
     def save(self, commit=True):
@@ -98,7 +130,7 @@ class WarehouseForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={'class': 'input input-bordered w-full'}),
             'location': forms.TextInput(attrs={'class': 'input input-bordered w-full'}),
-            'is_active': SimpleCheckboxInput(),
+            'is_active': PlainCheckboxInput(),
         }
 
 class ProductForm(forms.ModelForm):
@@ -109,7 +141,7 @@ class ProductForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'input input-bordered w-full'}),
             'category': forms.TextInput(attrs={'class': 'input input-bordered w-full'}),
             'brand': forms.TextInput(attrs={'class': 'input input-bordered w-full'}),
-            'is_active': SimpleCheckboxInput(),
+            'is_active': PlainCheckboxInput(),
         }
 
 class VariantForm(forms.ModelForm):
