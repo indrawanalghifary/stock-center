@@ -454,10 +454,10 @@ class InventoryListView(ListView):
     model = WarehouseStock
     template_name = 'inventory/list.html'
     context_object_name = 'stocks'
-    paginate_by = 10
+    paginate_by = 100
 
     def get_queryset(self):
-        queryset = WarehouseStock.objects.select_related('warehouse', 'variant__product').order_by('warehouse', 'variant__product__name')
+        queryset = WarehouseStock.objects.select_related('warehouse', 'variant__product')
         
         # Search
         query = self.request.GET.get('q')
@@ -480,7 +480,24 @@ class InventoryListView(ListView):
         brand = self.request.GET.get('brand')
         if brand:
             queryset = queryset.filter(variant__product__brand=brand)
-            
+        
+        # Sorting
+        sort_by = self.request.GET.get('sort', 'warehouse')
+        sort_order = self.request.GET.get('order', 'asc')
+        
+        sort_fields = {
+            'warehouse': 'warehouse__name',
+            'product': 'variant__product__name',
+            'sku': 'variant__sku',
+            'variant': 'variant__color',
+            'stock': 'qty_available',
+        }
+        
+        order_field = sort_fields.get(sort_by, 'warehouse__name')
+        if sort_order == 'desc':
+            order_field = f'-{order_field}'
+        
+        queryset = queryset.order_by(order_field)
         return queryset
 
     def get_context_data(self, **kwargs):

@@ -86,11 +86,36 @@
                     <input type="checkbox" id="selectAll" class="checkbox checkbox-sm">
                 </th>
                 <th class="w-20 text-center">Qty Cetak</th>
-                <th>Gudang</th>
-                <th>Produk</th>
-                <th>SKU</th>
-                <th>Varian</th>
-                <th>Stok</th>
+                <th class="cursor-pointer hover:bg-base-200" onclick="sortTable('warehouse')">
+                    <div class="flex items-center gap-1">
+                        Gudang
+                        <span class="text-xs" id="sort-warehouse">{% if request.GET.sort == 'warehouse' and request.GET.order == 'desc' %}↓{% elif request.GET.sort == 'warehouse' %}↑{% else %}⇅{% endif %}</span>
+                    </div>
+                </th>
+                <th class="cursor-pointer hover:bg-base-200" onclick="sortTable('product')">
+                    <div class="flex items-center gap-1">
+                        Produk
+                        <span class="text-xs" id="sort-product">{% if request.GET.sort == 'product' and request.GET.order == 'desc' %}↓{% elif request.GET.sort == 'product' %}↑{% else %}⇅{% endif %}</span>
+                    </div>
+                </th>
+                <th class="cursor-pointer hover:bg-base-200" onclick="sortTable('sku')">
+                    <div class="flex items-center gap-1">
+                        SKU
+                        <span class="text-xs" id="sort-sku">{% if request.GET.sort == 'sku' and request.GET.order == 'desc' %}↓{% elif request.GET.sort == 'sku' %}↑{% else %}⇅{% endif %}</span>
+                    </div>
+                </th>
+                <th class="cursor-pointer hover:bg-base-200" onclick="sortTable('variant')">
+                    <div class="flex items-center gap-1">
+                        Varian
+                        <span class="text-xs" id="sort-variant">{% if request.GET.sort == 'variant' and request.GET.order == 'desc' %}↓{% elif request.GET.sort == 'variant' %}↑{% else %}⇅{% endif %}</span>
+                    </div>
+                </th>
+                <th class="cursor-pointer hover:bg-base-200" onclick="sortTable('stock')">
+                    <div class="flex items-center gap-1">
+                        Stok
+                        <span class="text-xs" id="sort-stock">{% if request.GET.sort == 'stock' and request.GET.order == 'desc' %}↓{% elif request.GET.sort == 'stock' %}↑{% else %}⇅{% endif %}</span>
+                    </div>
+                </th>
                 {% if not user.reseller_profile %}
                 <th>Nominal</th>
                 {% endif %}
@@ -176,6 +201,25 @@
             return;
         }
         document.getElementById('bulkForm').submit();
+    }
+
+    function sortTable(column) {
+        const currentSort = new URLSearchParams(window.location.search).get('sort');
+        const currentOrder = new URLSearchParams(window.location.search).get('order') || 'asc';
+        
+        // Determine new sort order
+        let newOrder = 'asc';
+        if (currentSort === column && currentOrder === 'asc') {
+            newOrder = 'desc';
+        }
+        
+        // Build new URL with sort parameters
+        const url = new URL(window.location);
+        url.searchParams.set('sort', column);
+        url.searchParams.set('order', newOrder);
+        
+        // Preserve other filters
+        window.location.href = url.toString();
     }
 </script>
 {% endblock %}
