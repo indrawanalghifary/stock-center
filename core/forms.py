@@ -2,6 +2,10 @@ from django import forms
 from django.contrib.auth.models import User
 from .models import Warehouse, Variant, StockMovement, Transaction, TransactionDetail, Payment, Reseller, Product, ResellerPrice
 
+class SimpleCheckboxInput(forms.CheckboxInput):
+    """Custom CheckboxInput that renders only the input without extra wrapper or SVG"""
+    template_name = 'widgets/simple_checkbox.html'
+
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'input input-bordered w-full'}), required=False, help_text="Kosongkan jika tidak ingin mengubah password (untuk edit).")
     
@@ -13,8 +17,8 @@ class UserForm(forms.ModelForm):
             'email': forms.EmailInput(attrs={'class': 'input input-bordered w-full'}),
             'first_name': forms.TextInput(attrs={'class': 'input input-bordered w-full'}),
             'last_name': forms.TextInput(attrs={'class': 'input input-bordered w-full'}),
-            'is_staff': forms.CheckboxInput(attrs={'class': 'toggle toggle-secondary'}),
-            'is_active': forms.CheckboxInput(attrs={'class': 'toggle toggle-primary'}),
+            'is_staff': SimpleCheckboxInput(),
+            'is_active': SimpleCheckboxInput(),
         }
 
     def save(self, commit=True):
@@ -94,7 +98,7 @@ class WarehouseForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={'class': 'input input-bordered w-full'}),
             'location': forms.TextInput(attrs={'class': 'input input-bordered w-full'}),
-            'is_active': forms.CheckboxInput(attrs={'class': 'toggle toggle-primary'}),
+            'is_active': SimpleCheckboxInput(),
         }
 
 class ProductForm(forms.ModelForm):
@@ -105,7 +109,7 @@ class ProductForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'input input-bordered w-full'}),
             'category': forms.TextInput(attrs={'class': 'input input-bordered w-full'}),
             'brand': forms.TextInput(attrs={'class': 'input input-bordered w-full'}),
-            'is_active': forms.CheckboxInput(attrs={'class': 'toggle toggle-primary'}),
+            'is_active': SimpleCheckboxInput(),
         }
 
 class VariantForm(forms.ModelForm):

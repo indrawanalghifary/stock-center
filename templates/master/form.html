@@ -11,16 +11,27 @@
         
         {% for field in form %}
         <div class="form-control w-full mb-4">
-            <label class="label">
-                <span class="label-text font-semibold">
-                    {{ field.label }}
-                </span>
-                {% if field.field.required %}<span class="label-text-alt text-error">* Wajib</span>{% endif %}
-            </label>
-            
-            <div class="flex items-center">
-                {{ field }}
-            </div>
+            {% if field.field.widget.input_type == "checkbox" %}
+                <!-- Checkbox simple -->
+                <div class="flex items-center gap-3">
+                    {{ field }}
+                    <label class="label cursor-pointer">
+                        <span class="label-text font-semibold">{{ field.label }}</span>
+                    </label>
+                </div>
+            {% else %}
+                <!-- Non-checkbox fields -->
+                <label class="label">
+                    <span class="label-text font-semibold">
+                        {{ field.label }}
+                    </span>
+                    {% if field.field.required %}<span class="label-text-alt text-error">* Wajib</span>{% endif %}
+                </label>
+                
+                <div class="flex items-center">
+                    {{ field }}
+                </div>
+            {% endif %}
             
             {% if field.help_text %}
                 <label class="label"><span class="label-text-alt opacity-70">{{ field.help_text }}</span></label>
