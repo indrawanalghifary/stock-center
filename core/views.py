@@ -6,7 +6,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import ListView, FormView, CreateView, DetailView, UpdateView, DeleteView
 from django.contrib import messages
 from django.db import transaction
-from django.db.models import Sum, Q, F
+from django.db.models import Sum, Q, F, Count
 from django.utils import timezone
 from django.urls import reverse_lazy, reverse
 from django import forms
@@ -1099,6 +1099,123 @@ class AnalyticsView(ListView):
             'reseller_pickup_ranking': reseller_pickup_ranking,
             'sales_trend': sales_trend,
             'is_reseller': is_reseller,
+        })
+        return context
+
+@method_decorator(login_required, name='dispatch')
+class ResellerSkuAnalysisView(ListView):
+    """View for analyzing SKU pickup by each reseller with date filtering"""
+    template_name = 'analysis/reseller_sku_analysis.html'
+    context_object_name = 'reseller_sku_data'
+    model = TransactionDetail
+
+    def get_queryset(self):
+        queryset = TransactionDetail.objects.filter(
+            transaction__status='FINAL'
+        ).select_related(
+            'variant__product', 'transaction__reseller', 'transaction__warehouse'
+        ).order_by('-transaction__created_at')
+
+        start_date = self.request.GET.get('start_date')
+        end_date = self.request.GET.get('end_date')
+        reseller_id = self.request.GET.get('reseller_id')
+
+        if start_date:
+            queryset = queryset.filter(transaction__created_at__date__gte=start_date)
+        if end_date:
+            queryset = queryset.filter(transaction__created_at__date__lte=end_date)
+
+        if not start_date and not end_date:
+            now = timezone.now()
+            queryset = queryset.filter(
+                transaction__created_at__year=now.year,
+                transaction__created_at__month=now.month
+            )
+
+        if reseller_id:
+            queryset = queryset.filter(transaction__reseller_id=reseller_id)
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        now = timezone.now()
+
+        start_date = self.request.GET.get('start_date')
+        end_date = self.request.GET.get('end_date')
+        reseller_id = self.request.GET.get('reseller_id')
+
+        # Base query
+        base_query = TransactionDetail.objects.filter(transaction__status='FINAL')
+
+        if start_date:
+            base_query = base_query.filter(transaction__created_at__date__gte=start_date)
+        if end_date:
+            base_query = base_query.filter(transaction__created_at__date__lte=end_date)
+
+        if not start_date and not end_date:
+            base_query = base_query.filter(
+                transaction__created_at__year=now.year,
+                transaction__created_at__month=now.month
+            )
+
+        if reseller_id:
+            base_query = base_query.filter(transaction__reseller_id=reseller_id)
+
+        # All resellers for filter dropdown
+        resellers = Reseller.objects.all().order_by('name')
+
+        # Summary: Total SKU taken by each reseller
+        reseller_summary = base_query.values(
+            'transaction__reseller__id',
+            'transaction__reseller__name'
+        ).annotate(
+            total_qty=Sum('qty'),
+            total_nominal=Sum('subtotal'),
+            total_skus=Sum('qty', distinct=True)
+        ).order_by('-total_qty')
+
+        # Top 10 SKUs overall
+        top_skus = base_query.values(
+            'variant__id',
+            'variant__sku',
+            'variant__product__name',
+            'variant__product__category',
+            'variant__color',
+            'variant__size'
+        ).annotate(
+            total_qty=Sum('qty'),
+            total_nominal=Sum('subtotal'),
+            reseller_count=Count('transaction__reseller', distinct=True)
+        ).order_by('-total_qty')[:10]
+
+        # SKU by Reseller breakdown (for the main table)
+        sku_by_reseller = base_query.values(
+            'transaction__reseller__id',
+            'transaction__reseller__name',
+            'variant__id',
+            'variant__sku',
+            'variant__product__name'
+        ).annotate(
+            total_qty=Sum('qty'),
+            total_nominal=Sum('subtotal'),
+            avg_price=Sum('subtotal') / Sum('qty')
+        ).order_by('transaction__reseller__name', '-total_qty')
+
+        # Calculate totals
+        total_qty = base_query.aggregate(total=Sum('qty'))['total'] or 0
+        total_nominal = base_query.aggregate(total=Sum('subtotal'))['total'] or 0
+
+        context.update({
+            'start_date': start_date,
+            'end_date': end_date,
+            'selected_reseller_id': reseller_id,
+            'resellers': resellers,
+            'reseller_summary': reseller_summary,
+            'top_skus': top_skus,
+            'sku_by_reseller': sku_by_reseller,
+            'total_qty': total_qty,
+            'total_nominal': total_nominal,
         })
         return context
 

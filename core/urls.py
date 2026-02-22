@@ -30,6 +30,7 @@ urlpatterns = [
 
     # Analytics
     path('analytics/', views.AnalyticsView.as_view(), name='analytics'),
+    path('analysis/reseller-sku/', views.ResellerSkuAnalysisView.as_view(), name='reseller_sku_analysis'),
 
     # Master Data
     path('master/', views.master_data_dashboard, name='master_dashboard'),

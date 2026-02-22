@@ -68,7 +68,15 @@
                             </ul>
                         </details>
                     </li>
-                    <li><a href="{% url 'analytics' %}" class="font-bold text-primary">Statistik & Analitik</a></li>
+                    <li>
+                        <details>
+                            <summary class="font-bold text-primary"><i data-lucide="bar-chart-3"></i> Analitik</summary>
+                            <ul>
+                                <li><a href="{% url 'analytics' %}">Statistik & Analitik</a></li>
+                                <li><a href="{% url 'reseller_sku_analysis' %}">Analisa SKU per Reseller</a></li>
+                            </ul>
+                        </details>
+                    </li>
                     
                     <li class="mt-2 border-t pt-2">
                         <form method="post" action="{% url 'logout' %}">
