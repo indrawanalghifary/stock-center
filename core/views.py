@@ -6,7 +6,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import ListView, FormView, CreateView, DetailView, UpdateView, DeleteView
 from django.contrib import messages
 from django.db import transaction
-from django.db.models import Sum, Q
+from django.db.models import Sum, Q, F
 from django.utils import timezone
 from django.urls import reverse_lazy, reverse
 from django import forms
@@ -921,10 +921,10 @@ class AnalyticsView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         now = timezone.now()
-        
+
         start_date = self.request.GET.get('start_date')
         end_date = self.request.GET.get('end_date')
-        
+
         # Base query for analytics in the selected range
         base_trx_query = TransactionDetail.objects.filter(transaction__status='FINAL')
         base_movement_query = StockMovement.objects.all()
@@ -935,7 +935,7 @@ class AnalyticsView(ListView):
         if end_date:
             base_trx_query = base_trx_query.filter(transaction__created_at__date__lte=end_date)
             base_movement_query = base_movement_query.filter(created_at__date__lte=end_date)
-            
+
         if not start_date and not end_date:
             # Default to current month
             base_trx_query = base_trx_query.filter(transaction__created_at__year=now.year, transaction__created_at__month=now.month)
@@ -947,14 +947,14 @@ class AnalyticsView(ListView):
         if is_reseller:
             base_trx_query = base_trx_query.filter(transaction__reseller=reseller)
 
-        # 1. Group by Product (Top Products)
+        # 1. Group by Product (Top Products) - Top 10 SKUs
         total_period_sales = base_trx_query.aggregate(total=Sum('subtotal'))['total'] or 0
         product_grouping = base_trx_query.values(
             'variant__product__name', 'variant__sku'
         ).annotate(
             total_qty=Sum('qty'),
             total_value=Sum('subtotal')
-        ).order_by('-total_qty')
+        ).order_by('-total_qty')[:10]
 
         # 2. Group by Reseller (Leaderboard - available to all)
         reseller_grouping = base_trx_query.values(
@@ -964,7 +964,7 @@ class AnalyticsView(ListView):
             total_qty=Sum('qty'),
             total_value=Sum('subtotal')
         ).order_by('-total_value')
-        
+
         top_reseller_name = "-"
         if reseller_grouping.exists():
             top_reseller_name = reseller_grouping[0]['transaction__reseller__name']
@@ -984,7 +984,7 @@ class AnalyticsView(ListView):
         return_rate = 0
         if not is_reseller:
             total_out = base_trx_query.aggregate(total=Sum('qty'))['total'] or 0
-            
+
             # Base return query
             base_return_query = ReturnDetail.objects.filter(return_header__status='FINAL')
             if start_date:
@@ -993,12 +993,39 @@ class AnalyticsView(ListView):
                 base_return_query = base_return_query.filter(return_header__created_at__date__lte=end_date)
             if not start_date and not end_date:
                 base_return_query = base_return_query.filter(return_header__created_at__year=now.year, return_header__created_at__month=now.month)
-            
+
             total_ret = base_return_query.aggregate(total=Sum('qty'))['total'] or 0
             if total_out > 0:
                 return_rate = (total_ret / total_out) * 100
 
-        # 3. Movement Summary (Admins only)
+        # 3. Stock Movement Statistics by Type (IN, OUT, RETURN) - Admins only
+        stock_movement_stats = []
+        if not is_reseller:
+            movement_summary = base_movement_query.values('movement_type').annotate(
+                total_qty=Sum('qty'),
+                total_nominal=Sum(F('qty') * F('variant__default_price'))
+            ).order_by('movement_type')
+            stock_movement_stats = list(movement_summary)
+
+        # 4. Top 10 Resellers by Debt (current_balance) - Admins only
+        top_reseller_debts = []
+        if not is_reseller:
+            top_reseller_debts = list(Reseller.objects.filter(
+                current_balance__gt=0
+            ).order_by('-current_balance')[:10].values('id', 'name', 'current_balance'))
+
+        # 5. Reseller Pickup Ranking (by quantity and nominal) - Admins only
+        reseller_pickup_ranking = []
+        if not is_reseller:
+            reseller_pickup_ranking = list(base_trx_query.values(
+                'transaction__reseller__id',
+                'transaction__reseller__name'
+            ).annotate(
+                pickup_qty=Sum('qty'),
+                pickup_nominal=Sum('subtotal')
+            ).order_by('-pickup_qty')[:10])
+
+        # Movement summary for template (backward compatibility)
         movement_summary = []
         if not is_reseller:
             movement_summary = base_movement_query.values('movement_type').annotate(total_qty=Sum('qty'))
@@ -1067,6 +1094,9 @@ class AnalyticsView(ListView):
             'top_category_name': top_category_name,
             'return_rate': return_rate,
             'movement_summary': movement_summary,
+            'stock_movement_stats': stock_movement_stats,
+            'top_reseller_debts': top_reseller_debts,
+            'reseller_pickup_ranking': reseller_pickup_ranking,
             'sales_trend': sales_trend,
             'is_reseller': is_reseller,
         })

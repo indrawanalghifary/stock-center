@@ -49,31 +49,46 @@
                 <div class="stat-desc text-primary-content opacity-70">Periode terpilih</div>
             </div>
         </div>
-        
+
         {% if not is_reseller %}
+        <!-- Stock Movement Stats -->
         <div class="stats shadow bg-base-100">
             <div class="stat p-4">
-                <div class="stat-title opacity-70">Top Reseller</div>
-                <div class="stat-value text-xl text-secondary">{{ top_reseller_name|truncatechars:15 }}</div>
-                <div class="stat-desc">Belanja terbanyak</div>
-            </div>
-        </div>
-
-        <div class="stats shadow bg-base-100">
-            <div class="stat p-4">
-                <div class="stat-title opacity-70">Kategori Terlaris</div>
-                <div class="stat-value text-xl text-accent">{{ top_category_name }}</div>
-                <div class="stat-desc">Qty terbanyak</div>
-            </div>
-        </div>
-
-        <div class="stats shadow bg-base-100">
-            <div class="stat p-4">
-                <div class="stat-title opacity-70">Return Rate</div>
-                <div class="stat-value text-xl {% if return_rate > 5 %}text-error{% else %}text-success{% endif %}">
-                    {{ return_rate|floatformat:1 }}%
+                <div class="stat-title opacity-70">Stok Masuk</div>
+                <div class="stat-value text-xl text-success">
+                    {% for m in stock_movement_stats %}
+                        {% if m.movement_type == 'IN' %}{{ m.total_qty|default:0 }}{% endif %}
+                    {% endfor %}
                 </div>
-                <div class="stat-desc">Rasio barang kembali</div>
+                <div class="stat-desc">
+                    Rp {% for m in stock_movement_stats %}{% if m.movement_type == 'IN' %}{{ m.total_nominal|default:0|floatformat:0|intcomma }}{% endif %}{% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="stats shadow bg-base-100">
+            <div class="stat p-4">
+                <div class="stat-title opacity-70">Stok Keluar</div>
+                <div class="stat-value text-xl text-error">
+                    {% for m in stock_movement_stats %}
+                        {% if m.movement_type == 'OUT' %}{{ m.total_qty|default:0 }}{% endif %}
+                    {% endfor %}
+                </div>
+                <div class="stat-desc">
+                    Rp {% for m in stock_movement_stats %}{% if m.movement_type == 'OUT' %}{{ m.total_nominal|default:0|floatformat:0|intcomma }}{% endif %}{% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="stats shadow bg-base-100">
+            <div class="stat p-4">
+                <div class="stat-title opacity-70">Stok Return</div>
+                <div class="stat-value text-xl text-warning">
+                    {% for m in stock_movement_stats %}
+                        {% if m.movement_type == 'RETURN' %}{{ m.total_qty|default:0 }}{% endif %}
+                    {% endfor %}
+                </div>
+                <div class="stat-desc">
+                    Rp {% for m in stock_movement_stats %}{% if m.movement_type == 'RETURN' %}{{ m.total_nominal|default:0|floatformat:0|intcomma }}{% endif %}{% endfor %}
+                </div>
             </div>
         </div>
         {% else %}
@@ -88,15 +103,19 @@
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        
-        <!-- Grouping: By Product -->
+
+        <!-- Top 10 SKUs Terlaris -->
         <div class="card bg-base-100 shadow-sm border border-base-200">
             <div class="card-body p-4">
-                <h3 class="card-title text-sm opacity-70 uppercase">Produk Berdasarkan Kuantitas</h3>
+                <div class="flex justify-between items-center mb-2">
+                    <h3 class="card-title text-sm opacity-70 uppercase text-primary">🏆 Top 10 SKU Terlaris</h3>
+                    <div class="badge badge-primary badge-sm">Berdasarkan Qty</div>
+                </div>
                 <div class="overflow-x-auto">
                     <table class="table table-sm w-full">
                         <thead>
                             <tr class="bg-base-200">
+                                <th class="w-12">Rank</th>
                                 <th>Produk</th>
                                 <th class="text-right">Qty</th>
                                 <th class="text-right">Total Nilai</th>
@@ -104,16 +123,22 @@
                         </thead>
                         <tbody>
                             {% for p in product_grouping %}
-                            <tr class="hover">
+                            <tr class="hover {% if forloop.counter <= 3 %}bg-primary/5{% endif %}">
+                                <td class="text-center">
+                                    {% if forloop.counter == 1 %}🥇
+                                    {% elif forloop.counter == 2 %}🥈
+                                    {% elif forloop.counter == 3 %}🥉
+                                    {% else %}{{ forloop.counter }}{% endif %}
+                                </td>
                                 <td>
                                     <div class="font-bold">{{ p.variant__product__name }}</div>
                                     <div class="text-xs opacity-50">{{ p.variant__sku }}</div>
                                 </td>
-                                <td class="text-right font-mono">{{ p.total_qty }}</td>
+                                <td class="text-right font-mono font-bold">{{ p.total_qty }}</td>
                                 <td class="text-right">Rp {{ p.total_value|floatformat:0|intcomma }}</td>
                             </tr>
                             {% empty %}
-                            <tr><td colspan="3" class="text-center py-4 opacity-50">Tidak ada data transaksi</td></tr>
+                            <tr><td colspan="4" class="text-center py-4 opacity-50">Tidak ada data transaksi</td></tr>
                             {% endfor %}
                         </tbody>
                     </table>
@@ -174,6 +199,86 @@
     </div>
 
     {% if not is_reseller %}
+    <!-- Additional Stats Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+        <!-- Top 10 Reseller Hutang Terbanyak -->
+        <div class="card bg-base-100 shadow-sm border border-base-200">
+            <div class="card-body p-4">
+                <div class="flex justify-between items-center mb-2">
+                    <h3 class="card-title text-sm opacity-70 uppercase text-error">💰 Top 10 Hutang Reseller</h3>
+                    <div class="badge badge-error badge-sm">Piutang</div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="table table-sm w-full">
+                        <thead>
+                            <tr class="bg-base-200">
+                                <th class="w-12">Rank</th>
+                                <th>Reseller</th>
+                                <th class="text-right">Hutang</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for r in top_reseller_debts %}
+                            <tr class="hover {% if forloop.counter <= 3 %}bg-error/5{% endif %}">
+                                <td class="text-center">
+                                    {% if forloop.counter == 1 %}🥇
+                                    {% elif forloop.counter == 2 %}🥈
+                                    {% elif forloop.counter == 3 %}🥉
+                                    {% else %}{{ forloop.counter }}{% endif %}
+                                </td>
+                                <td class="font-bold">{{ r.name }}</td>
+                                <td class="text-right font-bold text-error">Rp {{ r.current_balance|floatformat:0|intcomma }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="3" class="text-center py-4 opacity-50">Tidak ada hutang reseller</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ranking Pengambilan Reseller -->
+        <div class="card bg-base-100 shadow-sm border border-base-200">
+            <div class="card-body p-4">
+                <div class="flex justify-between items-center mb-2">
+                    <h3 class="card-title text-sm opacity-70 uppercase text-accent">📦 Ranking Pengambilan Reseller</h3>
+                    <div class="badge badge-accent badge-sm">Berdasarkan Qty</div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="table table-sm w-full">
+                        <thead>
+                            <tr class="bg-base-200">
+                                <th class="w-12">Rank</th>
+                                <th>Reseller</th>
+                                <th class="text-right">Qty</th>
+                                <th class="text-right">Nominal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for r in reseller_pickup_ranking %}
+                            <tr class="hover {% if forloop.counter <= 3 %}bg-accent/5{% endif %}">
+                                <td class="text-center">
+                                    {% if forloop.counter == 1 %}🥇
+                                    {% elif forloop.counter == 2 %}🥈
+                                    {% elif forloop.counter == 3 %}🥉
+                                    {% else %}{{ forloop.counter }}{% endif %}
+                                </td>
+                                <td class="font-bold">{{ r.transaction__reseller__name }}</td>
+                                <td class="text-right font-mono font-bold">{{ r.pickup_qty }}</td>
+                                <td class="text-right">Rp {{ r.pickup_nominal|floatformat:0|intcomma }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="4" class="text-center py-4 opacity-50">Tidak ada data pengambilan</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Log Movement Section -->
     <div class="card bg-base-100 shadow-sm border border-base-200">
         <div class="card-body p-4">
@@ -204,7 +309,7 @@
                             <td>{{ m.created_at|date:"d/m/y H:i" }}</td>
                             <td class="whitespace-nowrap">{{ m.variant.product.name }}</td>
                             <td>
-                                <span class="badge badge-xs 
+                                <span class="badge badge-xs
                                     {% if m.movement_type == 'IN' %}badge-success{% elif m.movement_type == 'OUT' %}badge-error{% else %}badge-warning{% endif %}">
                                     {{ m.movement_type }}
                                 </span>
