@@ -80,4 +80,7 @@ urlpatterns = [
     path('variants/bulk-barcode/', views.bulk_barcode, name='bulk_barcode'),
     path('invoices/<int:pk>/qrcode/', views.invoice_qrcode, name='invoice_qrcode'),
     path('scan-lookup/', views.scan_lookup, name='scan_lookup'),
+    
+    # API
+    path('api/variants/<int:variant_id>/', views.api_variant_detail, name='api_variant_detail'),
 ]

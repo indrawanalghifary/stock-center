@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto bg-base-100 shadow-xl rounded-box p-6 border border-base-200">
+    <h2 class="text-2xl font-bold mb-6 text-center">{{ title }}</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        
+        {% for field in form %}
+        <div class="form-control w-full mb-4">
+            {% if field.field.widget.input_type == "checkbox" %}
+                <!-- Checkbox simple -->
+                <div class="flex items-center gap-3">
+                    {{ field }}
+                    <label class="label cursor-pointer">
+                        <span class="label-text font-semibold">{{ field.label }}</span>
+                    </label>
+                </div>
+            {% else %}
+                <!-- Non-checkbox fields -->
+                <label class="label">
+                    <span class="label-text font-semibold">
+                        {{ field.label }}
+                    </span>
+                    {% if field.field.required %}<span class="label-text-alt text-error">* Wajib</span>{% endif %}
+                </label>
+                
+                <div class="flex items-center">
+                    {{ field }}
+                </div>
+            {% endif %}
+            
+            {% if field.help_text %}
+                <label class="label"><span class="label-text-alt opacity-70">{{ field.help_text }}</span></label>
+            {% endif %}
+            
+            {% if field.errors %}
+                <div class="text-error text-xs mt-1">{{ field.errors.0 }}</div>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        <!-- Default Price Display -->
+        <div class="form-control w-full mb-4 bg-info/10 p-4 rounded-lg border border-info" id="default-price-container" style="display: none;">
+            <label class="label">
+                <span class="label-text font-semibold">Harga Standar</span>
+            </label>
+            <div class="text-2xl font-bold text-info" id="default-price-display">-</div>
+        </div>
+
+        <div class="flex gap-2 mt-8">
+            <a href="{{ request.META.HTTP_REFERER|default:'..' }}" class="btn btn-ghost flex-1">Batal</a>
+            <button type="submit" class="btn btn-primary flex-1">Simpan</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+        const variantSelect = document.querySelector('select[name="variant"]');
+        const defaultPriceContainer = document.getElementById('default-price-container');
+        const defaultPriceDisplay = document.getElementById('default-price-display');
+
+        // Fetch variant data from API to get default price
+        async function loadVariantPrice(variantId) {
+            if (!variantId) {
+                defaultPriceContainer.style.display = 'none';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/variants/${variantId}/`);
+                const data = await response.json();
+                if (data.default_price) {
+                    defaultPriceDisplay.textContent = new Intl.NumberFormat('id-ID', {
+                        style: 'currency',
+                        currency: 'IDR',
+                        minimumFractionDigits: 0
+                    }).format(data.default_price);
+                    defaultPriceContainer.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error loading variant:', error);
+                defaultPriceContainer.style.display = 'none';
+            }
+        }
+
+        // Listen for variant selection change
+        if (variantSelect) {
+            variantSelect.addEventListener('change', function() {
+                loadVariantPrice(this.value);
+            });
+
+            // Load price on initial load if variant is selected
+            if (variantSelect.value) {
+                loadVariantPrice(variantSelect.value);
+            }
+        }
+
+        // Initialize TomSelect for searchable selects
+        document.querySelectorAll('.searchable-select').forEach(el => {
+            new TomSelect(el, {
+                create: false,
+                sortField: {
+                    field: "text",
+                    direction: "asc"
+                },
+                placeholder: "Cari data...",
+                plugins: ['dropdown_input'],
+            });
+
+            // Re-attach listener after TomSelect initialization
+            if (el.name === 'variant') {
+                el.addEventListener('change', function() {
+                    loadVariantPrice(this.value);
+                });
+            }
+        });
+    });
+</script>
+{% endblock %}

@@ -287,7 +287,7 @@ class ResellerPriceListView(AdminRequiredMixin, ListView):
 class ResellerPriceCreateView(AdminRequiredMixin, CreateView):
     model = ResellerPrice
     form_class = ResellerPriceForm
-    template_name = 'master/form.html'
+    template_name = 'master/reseller_price_form.html'
     success_url = reverse_lazy('reseller_price_list')
 
     def get_initial(self):
@@ -306,7 +306,7 @@ class ResellerPriceCreateView(AdminRequiredMixin, CreateView):
 class ResellerPriceUpdateView(AdminRequiredMixin, UpdateView):
     model = ResellerPrice
     form_class = ResellerPriceForm
-    template_name = 'master/form.html'
+    template_name = 'master/reseller_price_form.html'
     success_url = reverse_lazy('reseller_price_list')
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -1452,3 +1452,17 @@ class VariantDetailView(DetailView):
                 context['reseller_price'] = special_price.custom_price
                 
         return context
+
+@login_required
+def api_variant_detail(request, variant_id):
+    """API endpoint to get variant details including default price"""
+    try:
+        variant = Variant.objects.get(id=variant_id)
+        return JsonResponse({
+            'id': variant.id,
+            'sku': variant.sku,
+            'default_price': float(variant.default_price),
+            'product': variant.product.name,
+        })
+    except Variant.DoesNotExist:
+        return JsonResponse({'error': 'Variant not found'}, status=404)
