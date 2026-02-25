@@ -5,10 +5,10 @@
 {% block content %}
 <div class="max-w-md mx-auto bg-base-100 shadow-xl rounded-box p-6">
     <h2 class="text-2xl font-bold mb-6 text-center">Tambah Stok Masuk</h2>
-    
+
     <form method="post">
         {% csrf_token %}
-        
+
         {% if form.non_field_errors %}
         <div class="alert alert-error mb-4">
             {{ form.non_field_errors }}
@@ -19,7 +19,7 @@
             <label class="label">
                 <span class="label-text font-semibold">Gudang Tujuan</span>
             </label>
-            {{ form.warehouse }} <!-- Render default select, styled via CSS or customized later -->
+            {{ form.warehouse }}
             <div class="text-error text-sm">{{ form.warehouse.errors }}</div>
         </div>
 
@@ -29,6 +29,7 @@
             </label>
             {{ form.variant }}
             <div class="text-error text-sm">{{ form.variant.errors }}</div>
+            <p class="text-xs opacity-60 mt-1">💡 Ketik untuk mencari SKU atau nama produk</p>
         </div>
 
         <div class="form-control w-full mb-4">
@@ -38,7 +39,7 @@
             {{ form.qty }}
             <div class="text-error text-sm">{{ form.qty.errors }}</div>
         </div>
-        
+
         <div class="form-control w-full mb-6">
              <label class="label">
                 <span class="label-text font-semibold">Catatan (Optional)</span>
@@ -54,7 +55,101 @@
 </div>
 
 <script>
-    // Simple script to add DaisyUI classes to Django rendered fields if needed
-    document.querySelectorAll('select').forEach(el => el.classList.add('select', 'select-bordered', 'w-full'));
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize TomSelect on variant field
+        const variantField = document.getElementById('{{ form.variant.id_for_label }}');
+        if (variantField) {
+            new TomSelect('#{{ form.variant.id_for_label }}', {
+                placeholder: 'Cari produk (SKU / Nama)...',
+                allowClear: true,
+                create: false,
+                highlight: true,
+                diacritics: true,
+                minInputLength: 1,
+                render: {
+                    option: function(data, escape) {
+                        return '<div class="p-2">' +
+                            '<div class="font-semibold">' + escape(data.text) + '</div>' +
+                            '</div>';
+                    },
+                    item: function(data, escape) {
+                        return '<div>' + escape(data.text) + '</div>';
+                    }
+                },
+                onInitialize: function() {
+                    this.control_input.style.width = '100%';
+                }
+            });
+        }
+
+        // Initialize TomSelect on warehouse field
+        const warehouseField = document.getElementById('{{ form.warehouse.id_for_label }}');
+        if (warehouseField) {
+            new TomSelect('#{{ form.warehouse.id_for_label }}', {
+                placeholder: 'Pilih gudang',
+                allowClear: true,
+                create: false,
+                highlight: true,
+                diacritics: true,
+                render: {
+                    option: function(data, escape) {
+                        return '<div class="p-2">' + escape(data.text) + '</div>';
+                    },
+                    item: function(data, escape) {
+                        return '<div>' + escape(data.text) + '</div>';
+                    }
+                }
+            });
+        }
+    });
 </script>
+
+<style>
+    .ts-wrapper.form-control .ts-input {
+        min-height: 48px;
+        padding: 0.5rem 1rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+    }
+
+    .ts-wrapper.focus .ts-input {
+        border-color: #8b5cf6;
+        box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.1);
+    }
+
+    .ts-dropdown {
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        z-index: 50;
+        margin-top: 4px;
+    }
+
+    .ts-dropdown .option {
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+    }
+
+    .ts-dropdown .option.highlighted {
+        background-color: #8b5cf6;
+        color: white;
+    }
+
+    .ts-dropdown .option.selected {
+        background-color: #f3f4f6;
+    }
+
+    .ts-wrapper .ts-input {
+        cursor: pointer;
+    }
+
+    .ts-wrapper .ts-input .item {
+        background-color: #f3f4f6;
+        border-radius: 0.25rem;
+        padding: 0.25rem 0.5rem;
+        margin-right: 0.5rem;
+    }
+</style>
 {% endblock %}

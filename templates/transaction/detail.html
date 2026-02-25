@@ -42,6 +42,7 @@
                         <th>Qty</th>
                         <th class="text-right">Harga</th>
                         <th class="text-right">Subtotal</th>
+                        {% if transaction.status == 'DRAFT' %}<th class="text-center">Aksi</th>{% endif %}
                     </tr>
                 </thead>
                 <tbody>
@@ -54,17 +55,32 @@
                         <td>{{ item.qty }}</td>
                         <td class="text-right">Rp {{ item.price|floatformat:0|intcomma }}</td>
                         <td class="text-right">Rp {{ item.subtotal|floatformat:0|intcomma }}</td>
+                        {% if transaction.status == 'DRAFT' %}
+                        <td class="text-center">
+                            <a href="{% url 'transaction_detail_update' transaction.pk item.pk %}" class="btn btn-xs btn-outline">
+                                <i data-lucide="edit-2"></i>
+                            </a>
+                            <a href="{% url 'transaction_detail_delete' transaction.pk item.pk %}" class="btn btn-xs btn-outline btn-error">
+                                <i data-lucide="trash-2"></i>
+                            </a>
+                        </td>
+                        {% endif %}
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="4" class="text-center py-4">Belum ada item.</td>
+                        <td colspan="{% if transaction.status == 'DRAFT' %}5{% else %}4{% endif %}" class="text-center py-4">Belum ada item.</td>
                     </tr>
                     {% endfor %}
                 </tbody>
                 <tfoot>
                      <tr>
-                        <td colspan="3" class="text-right font-bold">Total</td>
-                        <td class="text-right font-bold">Rp {{ transaction.get_total|floatformat:0|intcomma }}</td> 
+                        <td colspan="{% if transaction.status == 'DRAFT' %}4{% else %}3{% endif %}" class="text-right font-bold">Total</td>
+                        <td class="text-right font-bold">
+                            <div class="flex flex-col items-end">
+                                <span>Qty: {{ transaction.get_total_qty }}</span>
+                                <span>Rp {{ transaction.get_total|floatformat:0|intcomma }}</span>
+                            </div>
+                        </td> 
                     </tr>
                 </tfoot>
             </table>

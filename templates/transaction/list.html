@@ -87,6 +87,11 @@
                         <a href="{% url 'transaction_detail' trx.pk %}" class="btn btn-sm btn-ghost" title="Detail Transaksi">
                             <i data-lucide="eye"></i>
                         </a>
+                        {% if trx.status == 'DRAFT' %}
+                        <a href="{% url 'transaction_delete' trx.pk %}" class="btn btn-sm btn-ghost text-error" title="Hapus Transaksi">
+                            <i data-lucide="trash-2"></i>
+                        </a>
+                        {% endif %}
                         {% if trx.status == 'FINAL' %}
                             {% with invoice=trx.invoice_set.first %}
                                 {% if invoice %}

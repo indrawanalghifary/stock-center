@@ -403,15 +403,21 @@ class InvoiceListView(ListView):
         query = self.request.GET.get('q')
         if query:
             if query.isdigit():
-                 queryset = queryset.filter(id=query)
+                 queryset = queryset.filter(Q(id=query) | Q(reseller__name__icontains=query))
             else:
                  queryset = queryset.filter(reseller__name__icontains=query)
         
-        # Filters
+        # Filter Reseller
+        reseller_id = self.request.GET.get('reseller_id')
+        if reseller_id:
+            queryset = queryset.filter(reseller_id=reseller_id)
+        
+        # Filter Status
         status = self.request.GET.get('status')
         if status:
             queryset = queryset.filter(status=status)
             
+        # Filter Date Range
         start_date = self.request.GET.get('start_date')
         end_date = self.request.GET.get('end_date')
         if start_date:
@@ -424,6 +430,23 @@ class InvoiceListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['status_choices'] = Invoice.STATUS_CHOICES
+        context['resellers'] = Reseller.objects.all().order_by('name')
+        
+        # Calculate total for filtered invoices
+        queryset = self.get_queryset()
+        total_amount = queryset.aggregate(total=Sum('total_amount'))['total'] or 0
+        paid_amount = queryset.aggregate(total=Sum('paid_amount'))['total'] or 0
+        remaining = total_amount - paid_amount
+        
+        context['total_amount'] = total_amount
+        context['paid_amount'] = paid_amount
+        context['remaining_balance'] = remaining
+        context['invoice_count'] = queryset.count()
+        context['selected_reseller'] = self.request.GET.get('reseller_id')
+        context['selected_status'] = self.request.GET.get('status')
+        context['selected_start_date'] = self.request.GET.get('start_date')
+        context['selected_end_date'] = self.request.GET.get('end_date')
+        
         return context
 
 @method_decorator(login_required, name='dispatch')
@@ -503,11 +526,15 @@ class InventoryListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
-        # 1. Hitung Total Nominal untuk SELURUH hasil filter (bukan cuma yang di halaman ini)
+        # 1. Hitung Total Nominal dan Total Qty untuk SELURUH hasil filter (bukan cuma yang di halaman ini)
         from django.db.models import F, Sum, DecimalField
         filtered_qs = self.get_queryset()
         total_nominal = filtered_qs.aggregate(
             total=Sum(F('qty_available') * F('variant__default_price'), output_field=DecimalField())
+        )['total'] or 0
+        
+        total_qty = filtered_qs.aggregate(
+            total=Sum('qty_available')
         )['total'] or 0
         
         # 2. Tambahkan nominal_value ke objek yang sedang ditampilkan di HALAMAN ini saja
@@ -516,6 +543,7 @@ class InventoryListView(ListView):
             s.nominal_value = s.qty_available * s.variant.default_price
             
         context['total_nominal'] = total_nominal
+        context['total_qty'] = total_qty
         context['warehouses'] = Warehouse.objects.all()
         context['categories'] = Product.objects.values_list('category', flat=True).distinct().order_by('category')
         context['brands'] = Product.objects.values_list('brand', flat=True).distinct().order_by('brand')
@@ -704,6 +732,117 @@ class TransactionDetailView(DetailView, FormView):
             messages.error(self.request, f"Failed to finalize: {e}")
             # Reset status if save failed partially (though signal handles atomic usually, but pre_save validation might fail)
             self.object.refresh_from_db()
+            return redirect('transaction_detail', pk=self.object.pk)
+
+@method_decorator(login_required, name='dispatch')
+class TransactionDetailUpdateView(UpdateView):
+    """Edit TransactionDetail item"""
+    model = TransactionDetail
+    template_name = 'transaction/detail_form.html'
+    fields = ['qty']
+    
+    def get_object(self, queryset=None):
+        return get_object_or_404(TransactionDetail, pk=self.kwargs['detail_pk'])
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['transaction'] = self.object.transaction
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        transaction = self.object.transaction
+        
+        # Hanya bisa edit jika status DRAFT
+        if transaction.status != 'DRAFT':
+            messages.error(request, "Hanya bisa edit item pada transaksi DRAFT.")
+            return redirect('transaction_detail', pk=transaction.pk)
+        
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+    
+    def form_valid(self, form):
+        old_qty = self.object.qty
+        new_qty = form.cleaned_data['qty']
+        
+        # Validate stock if qty increased
+        if new_qty > old_qty:
+            qty_increase = new_qty - old_qty
+            warehouse = self.object.transaction.warehouse
+            variant = self.object.variant
+            stock = WarehouseStock.objects.filter(warehouse=warehouse, variant=variant).first()
+            available = stock.qty_available if stock else 0
+            
+            if qty_increase > available:
+                messages.error(self.request, f"Stok tidak cukup untuk penambahan. Tersedia: {available}.")
+                return redirect('transaction_detail', pk=self.object.transaction.pk)
+        
+        self.object = form.save()
+        messages.success(self.request, "Item berhasil diupdate.")
+        return redirect('transaction_detail', pk=self.object.transaction.pk)
+    
+    def get_success_url(self):
+        return reverse('transaction_detail', kwargs={'pk': self.object.transaction.pk})
+
+@method_decorator(login_required, name='dispatch')
+class TransactionDetailDeleteView(DeleteView):
+    """Delete TransactionDetail item"""
+    model = TransactionDetail
+    template_name = 'transaction/detail_confirm_delete.html'
+    
+    def get_object(self, queryset=None):
+        return get_object_or_404(TransactionDetail, pk=self.kwargs['detail_pk'])
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['transaction'] = self.object.transaction
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        transaction = self.object.transaction
+        
+        # Hanya bisa delete jika status DRAFT
+        if transaction.status != 'DRAFT':
+            messages.error(request, "Hanya bisa hapus item pada transaksi DRAFT.")
+            return redirect('transaction_detail', pk=transaction.pk)
+        
+        # Confirm delete
+        if 'confirm' in request.POST:
+            messages.success(request, "Item berhasil dihapus.")
+            transaction_pk = transaction.pk
+            self.object.delete()
+            return redirect('transaction_detail', pk=transaction_pk)
+        else:
+            return redirect('transaction_detail', pk=transaction.pk)
+    
+    def get_success_url(self):
+        return reverse('transaction_detail', kwargs={'pk': self.object.transaction.pk})
+
+@method_decorator(login_required, name='dispatch')
+class TransactionDeleteView(DeleteView):
+    """Delete Transaction (only if DRAFT)"""
+    model = Transaction
+    template_name = 'transaction/confirm_delete.html'
+    success_url = reverse_lazy('transaction_list')
+    
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        
+        # Hanya bisa delete jika status DRAFT
+        if self.object.status != 'DRAFT':
+            messages.error(request, "Hanya bisa hapus transaksi dengan status DRAFT.")
+            return redirect('transaction_detail', pk=self.object.pk)
+        
+        # Confirm delete
+        if 'confirm' in request.POST:
+            messages.success(request, "Transaksi berhasil dihapus.")
+            self.object.delete()
+            return redirect('transaction_list')
+        else:
             return redirect('transaction_detail', pk=self.object.pk)
 
 @method_decorator(login_required, name='dispatch')
@@ -919,19 +1058,28 @@ class AnalyticsView(ListView):
 
     def get_queryset(self):
         queryset = StockMovement.objects.select_related('variant__product', 'warehouse').order_by('-created_at')
-        
+
         start_date = self.request.GET.get('start_date')
         end_date = self.request.GET.get('end_date')
-        
+
         if start_date:
             queryset = queryset.filter(created_at__date__gte=start_date)
         if end_date:
             queryset = queryset.filter(created_at__date__lte=end_date)
-            
+
         if not start_date and not end_date:
             # Default to current month if no range provided
+            from datetime import datetime
             now = timezone.now()
-            queryset = queryset.filter(created_at__year=now.year, created_at__month=now.month)
+            month_start = datetime(now.year, now.month, 1, 0, 0, 0)
+            if now.month == 12:
+                month_end = datetime(now.year + 1, 1, 1, 0, 0, 0)
+            else:
+                month_end = datetime(now.year, now.month + 1, 1, 0, 0, 0)
+            queryset = queryset.filter(
+                created_at__gte=month_start,
+                created_at__lt=month_end
+            )
 
         return queryset
 
@@ -954,9 +1102,21 @@ class AnalyticsView(ListView):
             base_movement_query = base_movement_query.filter(created_at__date__lte=end_date)
 
         if not start_date and not end_date:
-            # Default to current month
-            base_trx_query = base_trx_query.filter(transaction__created_at__year=now.year, transaction__created_at__month=now.month)
-            base_movement_query = base_movement_query.filter(created_at__year=now.year, created_at__month=now.month)
+            # Default to current month using datetime range
+            from datetime import datetime
+            month_start = datetime(now.year, now.month, 1, 0, 0, 0)
+            if now.month == 12:
+                month_end = datetime(now.year + 1, 1, 1, 0, 0, 0)
+            else:
+                month_end = datetime(now.year, now.month + 1, 1, 0, 0, 0)
+            base_trx_query = base_trx_query.filter(
+                transaction__created_at__gte=month_start,
+                transaction__created_at__lt=month_end
+            )
+            base_movement_query = base_movement_query.filter(
+                created_at__gte=month_start,
+                created_at__lt=month_end
+            )
 
         is_reseller = hasattr(self.request.user, 'reseller_profile')
         reseller = self.request.user.reseller_profile if is_reseller else None
@@ -1009,7 +1169,17 @@ class AnalyticsView(ListView):
             if end_date:
                 base_return_query = base_return_query.filter(return_header__created_at__date__lte=end_date)
             if not start_date and not end_date:
-                base_return_query = base_return_query.filter(return_header__created_at__year=now.year, return_header__created_at__month=now.month)
+                # Use datetime range instead of __year/__month
+                from datetime import datetime
+                month_start = datetime(now.year, now.month, 1, 0, 0, 0)
+                if now.month == 12:
+                    month_end = datetime(now.year + 1, 1, 1, 0, 0, 0)
+                else:
+                    month_end = datetime(now.year, now.month + 1, 1, 0, 0, 0)
+                base_return_query = base_return_query.filter(
+                    return_header__created_at__gte=month_start,
+                    return_header__created_at__lt=month_end
+                )
 
             total_ret = base_return_query.aggregate(total=Sum('qty'))['total'] or 0
             if total_out > 0:
@@ -1055,11 +1225,11 @@ class AnalyticsView(ListView):
             # Daily Trend for the selected range
             s_date = datetime.datetime.strptime(start_date, '%Y-%m-%d').date()
             e_date = datetime.datetime.strptime(end_date, '%Y-%m-%d').date()
-            
-            # Limit to 60 days to prevent chart clutter, otherwise maybe group by week? 
+
+            # Limit to 60 days to prevent chart clutter, otherwise maybe group by week?
             # For now, let's just do daily.
             delta = e_date - s_date
-            
+
             curr = s_date
             while curr <= e_date:
                 daily_sales_query = TransactionDetail.objects.filter(
@@ -1068,33 +1238,40 @@ class AnalyticsView(ListView):
                 )
                 if is_reseller:
                     daily_sales_query = daily_sales_query.filter(transaction__reseller=reseller)
-                
+
                 total_val = daily_sales_query.aggregate(total=Sum('subtotal'))['total'] or 0
                 sales_trend.append({
                     'label': curr.strftime('%d %b'),
                     'value': float(total_val)
                 })
                 curr += datetime.timedelta(days=1)
-                
+
                 # Safety break if range is too long (e.g. > 90 days)
                 if len(sales_trend) > 90:
                     break
         else:
             # Default: Last 6 Months (Monthly)
             for i in range(5, -1, -1):
-                # Calculate month start
+                # Calculate month start and end
                 target_date = now.replace(day=1) - datetime.timedelta(days=i*30)
                 target_date = target_date.replace(day=1)
                 t_year, t_month = target_date.year, target_date.month
-                
+
+                # Use datetime range instead of __year/__month
+                month_start = datetime.datetime(t_year, t_month, 1, 0, 0, 0)
+                if t_month == 12:
+                    month_end = datetime.datetime(t_year + 1, 1, 1, 0, 0, 0)
+                else:
+                    month_end = datetime.datetime(t_year, t_month + 1, 1, 0, 0, 0)
+
                 monthly_sales_query = TransactionDetail.objects.filter(
                     transaction__status='FINAL',
-                    transaction__created_at__year=t_year,
-                    transaction__created_at__month=t_month
+                    transaction__created_at__gte=month_start,
+                    transaction__created_at__lt=month_end
                 )
                 if is_reseller:
                     monthly_sales_query = monthly_sales_query.filter(transaction__reseller=reseller)
-                
+
                 total_val = monthly_sales_query.aggregate(total=Sum('subtotal'))['total'] or 0
                 sales_trend.append({
                     'label': target_date.strftime('%b %Y'),
@@ -1143,10 +1320,20 @@ class ResellerSkuAnalysisView(ListView):
             queryset = queryset.filter(transaction__created_at__date__lte=end_date)
 
         if not start_date and not end_date:
+            # Default: show current month data
+            # Use timezone-aware datetime for compatibility with MySQL timezone settings
+            from datetime import datetime
             now = timezone.now()
+            month_start = datetime(now.year, now.month, 1, 0, 0, 0)
+            if now.month == 12:
+                month_end = datetime(now.year + 1, 1, 1, 0, 0, 0)
+            else:
+                month_end = datetime(now.year, now.month + 1, 1, 0, 0, 0)
+
+            # Filter using date range - Django will handle timezone conversion
             queryset = queryset.filter(
-                transaction__created_at__year=now.year,
-                transaction__created_at__month=now.month
+                transaction__created_at__gte=month_start,
+                transaction__created_at__lt=month_end
             )
 
         if reseller_id:
@@ -1171,9 +1358,17 @@ class ResellerSkuAnalysisView(ListView):
             base_query = base_query.filter(transaction__created_at__date__lte=end_date)
 
         if not start_date and not end_date:
+            # Default: show current month data
+            from datetime import datetime
+            month_start = datetime(now.year, now.month, 1, 0, 0, 0)
+            if now.month == 12:
+                month_end = datetime(now.year + 1, 1, 1, 0, 0, 0)
+            else:
+                month_end = datetime(now.year, now.month + 1, 1, 0, 0, 0)
+
             base_query = base_query.filter(
-                transaction__created_at__year=now.year,
-                transaction__created_at__month=now.month
+                transaction__created_at__gte=month_start,
+                transaction__created_at__lt=month_end
             )
 
         if reseller_id:

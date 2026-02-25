@@ -18,7 +18,11 @@ def transaction_finalized(sender, instance, **kwargs):
     5. Updates Reseller balance.
     """
     if instance.pk:
-        old_instance = Transaction.objects.get(pk=instance.pk)
+        try:
+            old_instance = Transaction.objects.get(pk=instance.pk)
+        except Transaction.DoesNotExist:
+            # Skip if instance doesn't exist yet (e.g., during loaddata)
+            return
         if old_instance.status == 'DRAFT' and instance.status == 'FINAL':
             with transaction.atomic():
                 details = instance.details.all()

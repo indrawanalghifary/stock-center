@@ -104,6 +104,10 @@ class Transaction(models.Model):
     def get_total(self):
         return self.details.aggregate(total=models.Sum('subtotal'))['total'] or 0
 
+    @property
+    def get_total_qty(self):
+        return self.details.aggregate(total=models.Sum('qty'))['total'] or 0
+
 class TransactionDetail(models.Model):
     transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE, related_name='details')
     variant = models.ForeignKey(Variant, on_delete=models.CASCADE)

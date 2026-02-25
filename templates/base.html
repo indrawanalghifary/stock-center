@@ -24,6 +24,7 @@
             font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
         }
     </style>
+    {% block extra_css %}{% endblock %}
     <script>
         // Init Theme immediately to prevent flash
         (function() {
@@ -195,5 +196,6 @@
             updateThemeIcon(currentTheme);
         });
     </script>
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

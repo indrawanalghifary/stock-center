@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}Hapus Item Transaksi #{{ transaction.id }}{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <div class="breadcrumbs text-sm mb-4">
+        <ul>
+            <li><a href="{% url 'transaction_list' %}">Transaksi</a></li>
+            <li><a href="{% url 'transaction_detail' transaction.pk %}">Transaksi #{{ transaction.id }}</a></li>
+            <li>Hapus Item</li>
+        </ul>
+    </div>
+
+    <div class="alert alert-error shadow-lg mb-4">
+        <div>
+            <i data-lucide="alert-circle"></i>
+            <span>Apakah Anda yakin ingin menghapus item ini?</span>
+        </div>
+    </div>
+
+    <div class="bg-base-100 shadow rounded-box p-6">
+        <h2 class="text-2xl font-bold mb-4">Hapus Item Transaksi</h2>
+        
+        <div class="bg-warning/10 border border-warning rounded p-4 mb-4">
+            <div class="space-y-2">
+                <p><strong>Produk:</strong> {{ object.variant.product.name }}</p>
+                <p><strong>SKU:</strong> {{ object.variant.sku }}</p>
+                <p><strong>Quantity:</strong> {{ object.qty }}</p>
+                <p><strong>Harga:</strong> Rp {{ object.price|floatformat:0|intcomma }}</p>
+                <p><strong>Subtotal:</strong> Rp {{ object.subtotal|floatformat:0|intcomma }}</p>
+            </div>
+        </div>
+
+        <div class="alert alert-info">
+            <div>
+                <i data-lucide="info"></i>
+                <span>Item ini akan dihapus dari transaksi #{{ transaction.id }}.</span>
+            </div>
+        </div>
+
+        <form method="post" class="space-y-4 mt-6">
+            {% csrf_token %}
+            
+            <div class="flex gap-2 justify-end">
+                <a href="{% url 'transaction_detail' transaction.pk %}" class="btn btn-outline">
+                    Batal
+                </a>
+                <button type="submit" name="confirm" value="yes" class="btn btn-error">
+                    <i data-lucide="trash-2"></i> Hapus Item
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize lucide icons
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    });
+</script>
+{% endblock %}

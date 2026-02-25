@@ -1,0 +1,7603 @@
+[
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2026-02-25T17:40:10.110Z",
+    "user": 1,
+    "content_type": 17,
+    "object_id": "3",
+    "object_repr": "TRX-3 - onesport",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 2,
+  "fields": {
+    "action_time": "2026-02-25T17:40:10.110Z",
+    "user": 1,
+    "content_type": 17,
+    "object_id": "2",
+    "object_repr": "TRX-2 - onesport",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 3,
+  "fields": {
+    "action_time": "2026-02-25T17:40:26.370Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "1",
+    "object_repr": "PACK-1 - onesport (2 items)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$Azd9d5meD7KPnjrqZPKRtn$9/GWDqcTEAVwQpP+z42Lrrtv2N1D6IbLgyRzE25qIc4=",
+    "last_login": "2026-02-25T17:24:54.673Z",
+    "is_superuser": true,
+    "username": "indra",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-02-22T13:16:12.599Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$uDqZ4zVhsqKS5ZFWkQyVTE$lJJHd0jiYd29ai26lwq864TjqpZ7zib5ZBKW5NSZws4=",
+    "last_login": "2026-02-25T17:10:20.267Z",
+    "is_superuser": false,
+    "username": "duloh",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-02-22T14:26:13.752Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$eIbvInE7loLtgbCtfBr995$Vcd473wVsscq6AAjBnN/OYuDqW6q6lLaMJ07mP7ftzo=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "imon",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-02-24T15:55:59.445Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$1FY9QcHmp7AKpMZwD1fseB$K3Ih2uNc7TV648VIHyaig0mb7q1JVMBYiaN4CLsnJjo=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "angga",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-02-25T14:55:13.378Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 5,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$uyEU1BfdwDwz4XMgYnNj7j$P/mADyyeQcZX091IwAhdLr81ge7RnTvl3MAMBiiStCg=",
+    "last_login": "2026-02-25T17:25:36.314Z",
+    "is_superuser": false,
+    "username": "onesport",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-02-25T14:56:42.895Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "149lzwenylui854s52nmkywuvtfauy17",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSG8KS7d-w1kYAapGkhKuzL-uzbpQrf3nHNfLMK21rgNWuKM7MwkO_1uCfKD2g7wDu3Wee5tXebEd4UfdPBrR3peDvfvoMKo33pyBicLkoJDVyTJrBRpoZJ3iYoR3lgQCbUiEEGTBS2DR6-LkyGBK-z9AdxvN84:1vuakw:rYLNk9K2tRwHivhFIgH4cOhF2gCrb7Ep0ZXWgZEe8rs",
+    "expire_date": "2026-03-09T18:34:06.693Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "2ug589c3fjlmsbbs966c6htxp8qpfmz4",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSG8KS7d-w1kYAapGkhKuzL-uzbpQrf3nHNfLMK21rgNWuKM7MwkO_1uCfKD2g7wDu3Wee5tXebEd4UfdPBrR3peDvfvoMKo33pyBicLkoJDVyTJrBRpoZJ3iYoR3lgQCbUiEEGTBS2DR6-LkyGBK-z9AdxvN84:1vvHMO:G83b5xJZSRw6dlV-6ZgVgWdnTBxtsMU7UMAPrQN7b6g",
+    "expire_date": "2026-03-11T16:03:36.625Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "fj5smmexwnnzamgvlrza0v8zg8ntu1i2",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSG8KS7d-w1kYAapGkhKuzL-uzbpQrf3nHNfLMK21rgNWuKM7MwkO_1uCfKD2g7wDu3Wee5tXebEd4UfdPBrR3peDvfvoMKo33pyBicLkoJDVyTJrBRpoZJ3iYoR3lgQCbUiEEGTBS2DR6-LkyGBK-z9AdxvN84:1vvId4:Qgajp_-nwGjWExhLarZXuCKnbedOQpet8LLxPUJQz58",
+    "expire_date": "2026-03-11T17:24:54.676Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "help4y89at9lj2icy7lczr4lob4nzgwh",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSG8KS7d-w1kYAapGkhKuzL-uzbpQrf3nHNfLMK21rgNWuKM7MwkO_1uCfKD2g7wDu3Wee5tXebEd4UfdPBrR3peDvfvoMKo33pyBicLkoJDVyTJrBRpoZJ3iYoR3lgQCbUiEEGTBS2DR6-LkyGBK-z9AdxvN84:1vu9N2:QSlA--O8PNSMt526fmr_3khoJk6NOcpO6H1gh_It11E",
+    "expire_date": "2026-03-08T13:19:36.225Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "pcwcmruh9nbiejfxijg7oxqjl84grjou",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSG8KS7d-w1kYAapGkhKuzL-uzbpQrf3nHNfLMK21rgNWuKM7MwkO_1uCfKD2g7wDu3Wee5tXebEd4UfdPBrR3peDvfvoMKo33pyBicLkoJDVyTJrBRpoZJ3iYoR3lgQCbUiEEGTBS2DR6-LkyGBK-z9AdxvN84:1vuRhy:ndFvYp58yd3ddXBxkPiRF8DnwIsOeE_fbnwdMTGMXIE",
+    "expire_date": "2026-03-09T08:54:26.512Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "srsi8u41l3ok4pge7iwncng7psr8zj2x",
+  "fields": {
+    "session_data": ".eJxVjE0OwiAYBe_C2hAK8ufSvWcgD_iQqqFJaVfGu9smXeh2Zt57s4B1qWHtNIcxswvT7PTLItKT2i7yA-0-8TS1ZR4j3xN-2M5vU6bX9Wj_Dip63daFcC4yQQ-QWkXhPKhYD6GhAGNVNM6bQpR8GlJGlG7DIhaY7IWy7PMFEqE5Gg:1vvIdk:JOv7qIbQ3-GFnwDn1S2TKRkPsAWkUk5WOJ7yxn-vR5Y",
+    "expire_date": "2026-03-11T17:25:36.316Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "wjuck3dzyl2fiuqsq2pa6rmi7gx7v3iw",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSG8KS7d-w1kYAapGkhKuzL-uzbpQrf3nHNfLMK21rgNWuKM7MwkO_1uCfKD2g7wDu3Wee5tXebEd4UfdPBrR3peDvfvoMKo33pyBicLkoJDVyTJrBRpoZJ3iYoR3lgQCbUiEEGTBS2DR6-LkyGBK-z9AdxvN84:1vuAOT:-4P-TNWbvLnv3Htb3ZHXefMsplcQGj2aD6Cy4_Bk1Ts",
+    "expire_date": "2026-03-08T14:25:09.060Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "z1yxaoozsjuveneskvjq3nusrb3jj8bu",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSG8KS7d-w1kYAapGkhKuzL-uzbpQrf3nHNfLMK21rgNWuKM7MwkO_1uCfKD2g7wDu3Wee5tXebEd4UfdPBrR3peDvfvoMKo33pyBicLkoJDVyTJrBRpoZJ3iYoR3lgQCbUiEEGTBS2DR6-LkyGBK-z9AdxvN84:1vuvl5:pXqKBfbYvYpVVPTyI-RhEBzV09kYfjTNFm_VQpXk-kg",
+    "expire_date": "2026-03-10T16:59:39.944Z"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 1,
+  "fields": {
+    "name": "7/8",
+    "category": "7/8",
+    "brand": "Nebula",
+    "is_active": true
+  }
+},
+{
+  "model": "core.product",
+  "pk": 2,
+  "fields": {
+    "name": "HOTPANTS",
+    "category": "HOTPANTS",
+    "brand": "Nebula",
+    "is_active": true
+  }
+},
+{
+  "model": "core.product",
+  "pk": 3,
+  "fields": {
+    "name": "JOGGER",
+    "category": "JOGGER",
+    "brand": "Nebula",
+    "is_active": true
+  }
+},
+{
+  "model": "core.product",
+  "pk": 4,
+  "fields": {
+    "name": "KAOS KUMIS",
+    "category": "KAOS KUMIS",
+    "brand": "Nebula",
+    "is_active": true
+  }
+},
+{
+  "model": "core.product",
+  "pk": 5,
+  "fields": {
+    "name": "KAOS POLOS",
+    "category": "KAOS POLOS",
+    "brand": "Nebula",
+    "is_active": true
+  }
+},
+{
+  "model": "core.product",
+  "pk": 6,
+  "fields": {
+    "name": "LONGPANTS",
+    "category": "LONGPANTS",
+    "brand": "Nebula",
+    "is_active": true
+  }
+},
+{
+  "model": "core.product",
+  "pk": 7,
+  "fields": {
+    "name": "N 01 L/L",
+    "category": "N 01 L/L",
+    "brand": "Nebula",
+    "is_active": true
+  }
+},
+{
+  "model": "core.product",
+  "pk": 8,
+  "fields": {
+    "name": "N 01 RUN",
+    "category": "N 01 RUN",
+    "brand": "Nebula",
+    "is_active": true
+  }
+},
+{
+  "model": "core.product",
+  "pk": 9,
+  "fields": {
+    "name": "N 01 S/L",
+    "category": "N 01 S/L",
+    "brand": "Nebula",
+    "is_active": true
+  }
+},
+{
+  "model": "core.product",
+  "pk": 10,
+  "fields": {
+    "name": "N 02 RUN",
+    "category": "N 02 RUN",
+    "brand": "Nebula",
+    "is_active": true
+  }
+},
+{
+  "model": "core.product",
+  "pk": 11,
+  "fields": {
+    "name": "N 02 S/L",
+    "category": "N 02 S/L",
+    "brand": "Nebula",
+    "is_active": true
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 1,
+  "fields": {
+    "product": 1,
+    "sku": "71M",
+    "color": "HITAM",
+    "size": "M",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 2,
+  "fields": {
+    "product": 1,
+    "sku": "71L",
+    "color": "HITAM",
+    "size": "L",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 3,
+  "fields": {
+    "product": 1,
+    "sku": "71X",
+    "color": "HITAM",
+    "size": "XL",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 4,
+  "fields": {
+    "product": 1,
+    "sku": "71XX",
+    "color": "HITAM",
+    "size": "XXL",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 5,
+  "fields": {
+    "product": 1,
+    "sku": "71XXX",
+    "color": "HITAM",
+    "size": "XXXL",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 6,
+  "fields": {
+    "product": 1,
+    "sku": "72M",
+    "color": "PUTIH",
+    "size": "M",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 7,
+  "fields": {
+    "product": 1,
+    "sku": "72L",
+    "color": "PUTIH",
+    "size": "L",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 8,
+  "fields": {
+    "product": 1,
+    "sku": "72X",
+    "color": "PUTIH",
+    "size": "XL",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 9,
+  "fields": {
+    "product": 1,
+    "sku": "72XX",
+    "color": "PUTIH",
+    "size": "XXL",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 10,
+  "fields": {
+    "product": 1,
+    "sku": "72XXX",
+    "color": "PUTIH",
+    "size": "XXXL",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 11,
+  "fields": {
+    "product": 1,
+    "sku": "76M",
+    "color": "MERAH",
+    "size": "M",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 12,
+  "fields": {
+    "product": 1,
+    "sku": "76L",
+    "color": "MERAH",
+    "size": "L",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 13,
+  "fields": {
+    "product": 1,
+    "sku": "76X",
+    "color": "MERAH",
+    "size": "XL",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 14,
+  "fields": {
+    "product": 1,
+    "sku": "76XX",
+    "color": "MERAH",
+    "size": "XXL",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 15,
+  "fields": {
+    "product": 1,
+    "sku": "76XXX",
+    "color": "MERAH",
+    "size": "XXXL",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 16,
+  "fields": {
+    "product": 1,
+    "sku": "77M",
+    "color": "NAVY",
+    "size": "M",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 17,
+  "fields": {
+    "product": 1,
+    "sku": "77L",
+    "color": "NAVY",
+    "size": "L",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 18,
+  "fields": {
+    "product": 1,
+    "sku": "77X",
+    "color": "NAVY",
+    "size": "XL",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 19,
+  "fields": {
+    "product": 1,
+    "sku": "77XX",
+    "color": "NAVY",
+    "size": "XXL",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 20,
+  "fields": {
+    "product": 1,
+    "sku": "77XXX",
+    "color": "NAVY",
+    "size": "XXXL",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 21,
+  "fields": {
+    "product": 1,
+    "sku": "75M",
+    "color": "ARMY",
+    "size": "M",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 22,
+  "fields": {
+    "product": 1,
+    "sku": "75L",
+    "color": "ARMY",
+    "size": "L",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 23,
+  "fields": {
+    "product": 1,
+    "sku": "75X",
+    "color": "ARMY",
+    "size": "XL",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 24,
+  "fields": {
+    "product": 1,
+    "sku": "75XX",
+    "color": "ARMY",
+    "size": "XXL",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 25,
+  "fields": {
+    "product": 1,
+    "sku": "75XXX",
+    "color": "ARMY",
+    "size": "XXXL",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 26,
+  "fields": {
+    "product": 1,
+    "sku": "73M",
+    "color": "GREY",
+    "size": "M",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 27,
+  "fields": {
+    "product": 1,
+    "sku": "73L",
+    "color": "GREY",
+    "size": "L",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 28,
+  "fields": {
+    "product": 1,
+    "sku": "73X",
+    "color": "GREY",
+    "size": "XL",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 29,
+  "fields": {
+    "product": 1,
+    "sku": "73XX",
+    "color": "GREY",
+    "size": "XXL",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 30,
+  "fields": {
+    "product": 1,
+    "sku": "73XXX",
+    "color": "GREY",
+    "size": "XXXL",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 31,
+  "fields": {
+    "product": 1,
+    "sku": "711M",
+    "color": "SAGE",
+    "size": "M",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 32,
+  "fields": {
+    "product": 1,
+    "sku": "711L",
+    "color": "SAGE",
+    "size": "L",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 33,
+  "fields": {
+    "product": 1,
+    "sku": "711X",
+    "color": "SAGE",
+    "size": "XL",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 34,
+  "fields": {
+    "product": 1,
+    "sku": "711XX",
+    "color": "SAGE",
+    "size": "XXL",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 35,
+  "fields": {
+    "product": 1,
+    "sku": "711XXX",
+    "color": "SAGE",
+    "size": "XXXL",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 36,
+  "fields": {
+    "product": 1,
+    "sku": "79M",
+    "color": "DUSTY PINK",
+    "size": "M",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 37,
+  "fields": {
+    "product": 1,
+    "sku": "79L",
+    "color": "DUSTY PINK",
+    "size": "L",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 38,
+  "fields": {
+    "product": 1,
+    "sku": "79X",
+    "color": "DUSTY PINK",
+    "size": "XL",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 39,
+  "fields": {
+    "product": 1,
+    "sku": "79XX",
+    "color": "DUSTY PINK",
+    "size": "XXL",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 40,
+  "fields": {
+    "product": 1,
+    "sku": "79XXX",
+    "color": "DUSTY PINK",
+    "size": "XXXL",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 41,
+  "fields": {
+    "product": 1,
+    "sku": "78M",
+    "color": "PINK FANTA",
+    "size": "M",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 42,
+  "fields": {
+    "product": 1,
+    "sku": "78L",
+    "color": "PINK FANTA",
+    "size": "L",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 43,
+  "fields": {
+    "product": 1,
+    "sku": "78X",
+    "color": "PINK FANTA",
+    "size": "XL",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 44,
+  "fields": {
+    "product": 1,
+    "sku": "78XX",
+    "color": "PINK FANTA",
+    "size": "XXL",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 45,
+  "fields": {
+    "product": 1,
+    "sku": "78XXX",
+    "color": "PINK FANTA",
+    "size": "XXXL",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 46,
+  "fields": {
+    "product": 1,
+    "sku": "710M",
+    "color": "SOFT PEACH",
+    "size": "M",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 47,
+  "fields": {
+    "product": 1,
+    "sku": "710L",
+    "color": "SOFT PEACH",
+    "size": "L",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 48,
+  "fields": {
+    "product": 1,
+    "sku": "710X",
+    "color": "SOFT PEACH",
+    "size": "XL",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 49,
+  "fields": {
+    "product": 1,
+    "sku": "710XX",
+    "color": "SOFT PEACH",
+    "size": "XXL",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 50,
+  "fields": {
+    "product": 1,
+    "sku": "710XXX",
+    "color": "SOFT PEACH",
+    "size": "XXXL",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 51,
+  "fields": {
+    "product": 1,
+    "sku": "74M",
+    "color": "COKSU",
+    "size": "M",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 52,
+  "fields": {
+    "product": 1,
+    "sku": "74L",
+    "color": "COKSU",
+    "size": "L",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 53,
+  "fields": {
+    "product": 1,
+    "sku": "74X",
+    "color": "COKSU",
+    "size": "XL",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 54,
+  "fields": {
+    "product": 1,
+    "sku": "74XX",
+    "color": "COKSU",
+    "size": "XXL",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 55,
+  "fields": {
+    "product": 1,
+    "sku": "7XXX",
+    "color": "COKSU",
+    "size": "XXXL",
+    "default_price": "25000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 56,
+  "fields": {
+    "product": 2,
+    "sku": "H1M",
+    "color": "HITAM",
+    "size": "M",
+    "default_price": "38000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 57,
+  "fields": {
+    "product": 2,
+    "sku": "H1L",
+    "color": "HITAM",
+    "size": "L",
+    "default_price": "38000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 58,
+  "fields": {
+    "product": 2,
+    "sku": "H1X",
+    "color": "HITAM",
+    "size": "XL",
+    "default_price": "38000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 59,
+  "fields": {
+    "product": 2,
+    "sku": "H1XX",
+    "color": "HITAM",
+    "size": "XXL",
+    "default_price": "38000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 60,
+  "fields": {
+    "product": 2,
+    "sku": "H1XXX",
+    "color": "HITAM",
+    "size": "XXXL",
+    "default_price": "38000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 61,
+  "fields": {
+    "product": 2,
+    "sku": "H2M",
+    "color": "PUTIH",
+    "size": "M",
+    "default_price": "38000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 62,
+  "fields": {
+    "product": 2,
+    "sku": "H2L",
+    "color": "PUTIH",
+    "size": "L",
+    "default_price": "38000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 63,
+  "fields": {
+    "product": 2,
+    "sku": "H2X",
+    "color": "PUTIH",
+    "size": "XL",
+    "default_price": "38000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 64,
+  "fields": {
+    "product": 2,
+    "sku": "H2XX",
+    "color": "PUTIH",
+    "size": "XXL",
+    "default_price": "38000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 65,
+  "fields": {
+    "product": 2,
+    "sku": "H2XXX",
+    "color": "PUTIH",
+    "size": "XXXL",
+    "default_price": "38000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 66,
+  "fields": {
+    "product": 2,
+    "sku": "H3M",
+    "color": "GREY",
+    "size": "M",
+    "default_price": "38000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 67,
+  "fields": {
+    "product": 2,
+    "sku": "H3L",
+    "color": "GREY",
+    "size": "L",
+    "default_price": "38000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 68,
+  "fields": {
+    "product": 2,
+    "sku": "H3X",
+    "color": "GREY",
+    "size": "XL",
+    "default_price": "38000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 69,
+  "fields": {
+    "product": 2,
+    "sku": "H3XX",
+    "color": "GREY",
+    "size": "XXL",
+    "default_price": "38000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 70,
+  "fields": {
+    "product": 2,
+    "sku": "H3XXX",
+    "color": "GREY",
+    "size": "XXXL",
+    "default_price": "38000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 71,
+  "fields": {
+    "product": 2,
+    "sku": "H4M",
+    "color": "COKSU",
+    "size": "M",
+    "default_price": "38000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 72,
+  "fields": {
+    "product": 2,
+    "sku": "H4L",
+    "color": "COKSU",
+    "size": "L",
+    "default_price": "38000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 73,
+  "fields": {
+    "product": 2,
+    "sku": "H4X",
+    "color": "COKSU",
+    "size": "XL",
+    "default_price": "38000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 74,
+  "fields": {
+    "product": 2,
+    "sku": "H4XX",
+    "color": "COKSU",
+    "size": "XXL",
+    "default_price": "38000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 75,
+  "fields": {
+    "product": 2,
+    "sku": "H4XXX",
+    "color": "COKSU",
+    "size": "XXXL",
+    "default_price": "38000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 76,
+  "fields": {
+    "product": 2,
+    "sku": "H5M",
+    "color": "ARMY",
+    "size": "M",
+    "default_price": "38000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 77,
+  "fields": {
+    "product": 2,
+    "sku": "H5L",
+    "color": "ARMY",
+    "size": "L",
+    "default_price": "38000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 78,
+  "fields": {
+    "product": 2,
+    "sku": "H5X",
+    "color": "ARMY",
+    "size": "XL",
+    "default_price": "38000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 79,
+  "fields": {
+    "product": 2,
+    "sku": "H5XX",
+    "color": "ARMY",
+    "size": "XXL",
+    "default_price": "38000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 80,
+  "fields": {
+    "product": 2,
+    "sku": "H5XXX",
+    "color": "ARMY",
+    "size": "XXXL",
+    "default_price": "38000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 81,
+  "fields": {
+    "product": 3,
+    "sku": "J1M",
+    "color": "HITAM",
+    "size": "M",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 82,
+  "fields": {
+    "product": 3,
+    "sku": "J1L",
+    "color": "HITAM",
+    "size": "L",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 83,
+  "fields": {
+    "product": 3,
+    "sku": "J1X",
+    "color": "HITAM",
+    "size": "XL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 84,
+  "fields": {
+    "product": 3,
+    "sku": "J1XX",
+    "color": "HITAM",
+    "size": "XXL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 85,
+  "fields": {
+    "product": 3,
+    "sku": "J1XXX",
+    "color": "HITAM",
+    "size": "XXXL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 86,
+  "fields": {
+    "product": 3,
+    "sku": "J2M",
+    "color": "PUTIH",
+    "size": "M",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 87,
+  "fields": {
+    "product": 3,
+    "sku": "J2L",
+    "color": "PUTIH",
+    "size": "L",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 88,
+  "fields": {
+    "product": 3,
+    "sku": "J2X",
+    "color": "PUTIH",
+    "size": "XL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 89,
+  "fields": {
+    "product": 3,
+    "sku": "J2XX",
+    "color": "PUTIH",
+    "size": "XXL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 90,
+  "fields": {
+    "product": 3,
+    "sku": "J2XXX",
+    "color": "PUTIH",
+    "size": "XXXL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 91,
+  "fields": {
+    "product": 3,
+    "sku": "J6M",
+    "color": "MERAH",
+    "size": "M",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 92,
+  "fields": {
+    "product": 3,
+    "sku": "J6L",
+    "color": "MERAH",
+    "size": "L",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 93,
+  "fields": {
+    "product": 3,
+    "sku": "J6X",
+    "color": "MERAH",
+    "size": "XL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 94,
+  "fields": {
+    "product": 3,
+    "sku": "J6XX",
+    "color": "MERAH",
+    "size": "XXL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 95,
+  "fields": {
+    "product": 3,
+    "sku": "J6XXX",
+    "color": "MERAH",
+    "size": "XXXL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 96,
+  "fields": {
+    "product": 3,
+    "sku": "J7M",
+    "color": "NAVY",
+    "size": "M",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 97,
+  "fields": {
+    "product": 3,
+    "sku": "J7L",
+    "color": "NAVY",
+    "size": "L",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 98,
+  "fields": {
+    "product": 3,
+    "sku": "J7X",
+    "color": "NAVY",
+    "size": "XL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 99,
+  "fields": {
+    "product": 3,
+    "sku": "J7XX",
+    "color": "NAVY",
+    "size": "XXL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 100,
+  "fields": {
+    "product": 3,
+    "sku": "J7XXX",
+    "color": "NAVY",
+    "size": "XXXL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 101,
+  "fields": {
+    "product": 3,
+    "sku": "J5M",
+    "color": "ARMY",
+    "size": "M",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 102,
+  "fields": {
+    "product": 3,
+    "sku": "J5L",
+    "color": "ARMY",
+    "size": "L",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 103,
+  "fields": {
+    "product": 3,
+    "sku": "J5X",
+    "color": "ARMY",
+    "size": "XL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 104,
+  "fields": {
+    "product": 3,
+    "sku": "J5XX",
+    "color": "ARMY",
+    "size": "XXL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 105,
+  "fields": {
+    "product": 3,
+    "sku": "J5XXX",
+    "color": "ARMY",
+    "size": "XXXL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 106,
+  "fields": {
+    "product": 3,
+    "sku": "J12M",
+    "color": "BLUE ROYAL",
+    "size": "M",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 107,
+  "fields": {
+    "product": 3,
+    "sku": "J12L",
+    "color": "BLUE ROYAL",
+    "size": "L",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 108,
+  "fields": {
+    "product": 3,
+    "sku": "J12X",
+    "color": "BLUE ROYAL",
+    "size": "XL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 109,
+  "fields": {
+    "product": 3,
+    "sku": "J12XX",
+    "color": "BLUE ROYAL",
+    "size": "XXL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 110,
+  "fields": {
+    "product": 3,
+    "sku": "J12XXX",
+    "color": "BLUE ROYAL",
+    "size": "XXXL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 111,
+  "fields": {
+    "product": 3,
+    "sku": "J8M",
+    "color": "PINK FANTA",
+    "size": "M",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 112,
+  "fields": {
+    "product": 3,
+    "sku": "J8L",
+    "color": "PINK FANTA",
+    "size": "L",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 113,
+  "fields": {
+    "product": 3,
+    "sku": "J8X",
+    "color": "PINK FANTA",
+    "size": "XL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 114,
+  "fields": {
+    "product": 3,
+    "sku": "J8XX",
+    "color": "PINK FANTA",
+    "size": "XXL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 115,
+  "fields": {
+    "product": 3,
+    "sku": "J8XXX",
+    "color": "PINK FANTA",
+    "size": "XXXL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 116,
+  "fields": {
+    "product": 3,
+    "sku": "J9M",
+    "color": "DUSTY PINK",
+    "size": "M",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 117,
+  "fields": {
+    "product": 3,
+    "sku": "J9L",
+    "color": "DUSTY PINK",
+    "size": "L",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 118,
+  "fields": {
+    "product": 3,
+    "sku": "J9X",
+    "color": "DUSTY PINK",
+    "size": "XL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 119,
+  "fields": {
+    "product": 3,
+    "sku": "J9XX",
+    "color": "DUSTY PINK",
+    "size": "XXL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 120,
+  "fields": {
+    "product": 3,
+    "sku": "J9XXX",
+    "color": "DUSTY PINK",
+    "size": "XXXL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 121,
+  "fields": {
+    "product": 3,
+    "sku": "J4M",
+    "color": "COKSU",
+    "size": "M",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 122,
+  "fields": {
+    "product": 3,
+    "sku": "J4L",
+    "color": "COKSU",
+    "size": "L",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 123,
+  "fields": {
+    "product": 3,
+    "sku": "J4X",
+    "color": "COKSU",
+    "size": "XL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 124,
+  "fields": {
+    "product": 3,
+    "sku": "J4XX",
+    "color": "COKSU",
+    "size": "XXL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 125,
+  "fields": {
+    "product": 3,
+    "sku": "J4XXX",
+    "color": "COKSU",
+    "size": "XXXL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 126,
+  "fields": {
+    "product": 3,
+    "sku": "J3M",
+    "color": "SOFT GREY",
+    "size": "M",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 127,
+  "fields": {
+    "product": 3,
+    "sku": "J3L",
+    "color": "SOFT GREY",
+    "size": "L",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 128,
+  "fields": {
+    "product": 3,
+    "sku": "J3X",
+    "color": "SOFT GREY",
+    "size": "XL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 129,
+  "fields": {
+    "product": 3,
+    "sku": "J3XX",
+    "color": "SOFT GREY",
+    "size": "XXL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 130,
+  "fields": {
+    "product": 3,
+    "sku": "J3XXX",
+    "color": "SOFT GREY",
+    "size": "XXXL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 131,
+  "fields": {
+    "product": 3,
+    "sku": "J13M",
+    "color": "SOFT YELLOW",
+    "size": "M",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 132,
+  "fields": {
+    "product": 3,
+    "sku": "J13L",
+    "color": "SOFT YELLOW",
+    "size": "L",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 133,
+  "fields": {
+    "product": 3,
+    "sku": "J13X",
+    "color": "SOFT YELLOW",
+    "size": "XL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 134,
+  "fields": {
+    "product": 3,
+    "sku": "J13XX",
+    "color": "SOFT YELLOW",
+    "size": "XXL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 135,
+  "fields": {
+    "product": 3,
+    "sku": "J13XXX",
+    "color": "SOFT YELLOW",
+    "size": "XXXL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 136,
+  "fields": {
+    "product": 3,
+    "sku": "J10M",
+    "color": "SOFT PEACH",
+    "size": "M",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 137,
+  "fields": {
+    "product": 3,
+    "sku": "J10L",
+    "color": "SOFT PEACH",
+    "size": "L",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 138,
+  "fields": {
+    "product": 3,
+    "sku": "J10X",
+    "color": "SOFT PEACH",
+    "size": "XL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 139,
+  "fields": {
+    "product": 3,
+    "sku": "J10XX",
+    "color": "SOFT PEACH",
+    "size": "XXL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 140,
+  "fields": {
+    "product": 3,
+    "sku": "J10XXX",
+    "color": "SOFT PEACH",
+    "size": "XXXL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 141,
+  "fields": {
+    "product": 3,
+    "sku": "J11M",
+    "color": "SAGE",
+    "size": "M",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 142,
+  "fields": {
+    "product": 3,
+    "sku": "J11L",
+    "color": "SAGE",
+    "size": "L",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 143,
+  "fields": {
+    "product": 3,
+    "sku": "J11X",
+    "color": "SAGE",
+    "size": "XL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 144,
+  "fields": {
+    "product": 3,
+    "sku": "J11XX",
+    "color": "SAGE",
+    "size": "XXL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 145,
+  "fields": {
+    "product": 3,
+    "sku": "J11XXX",
+    "color": "SAGE",
+    "size": "XXXL",
+    "default_price": "27200.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 146,
+  "fields": {
+    "product": 4,
+    "sku": "KK1M",
+    "color": "HITAM",
+    "size": "M",
+    "default_price": "32000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 147,
+  "fields": {
+    "product": 4,
+    "sku": "KK1L",
+    "color": "HITAM",
+    "size": "L",
+    "default_price": "32000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 148,
+  "fields": {
+    "product": 4,
+    "sku": "KK1X",
+    "color": "HITAM",
+    "size": "XL",
+    "default_price": "32000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 149,
+  "fields": {
+    "product": 4,
+    "sku": "KK1XX",
+    "color": "HITAM",
+    "size": "XXL",
+    "default_price": "32000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 150,
+  "fields": {
+    "product": 4,
+    "sku": "KK2M",
+    "color": "PUTIH",
+    "size": "M",
+    "default_price": "32000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 151,
+  "fields": {
+    "product": 4,
+    "sku": "KK2L",
+    "color": "PUTIH",
+    "size": "L",
+    "default_price": "32000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 152,
+  "fields": {
+    "product": 4,
+    "sku": "KK2X",
+    "color": "PUTIH",
+    "size": "XL",
+    "default_price": "32000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 153,
+  "fields": {
+    "product": 4,
+    "sku": "KK2XX",
+    "color": "PUTIH",
+    "size": "XXL",
+    "default_price": "32000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 154,
+  "fields": {
+    "product": 4,
+    "sku": "KK17M",
+    "color": "KHAKI",
+    "size": "M",
+    "default_price": "32000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 155,
+  "fields": {
+    "product": 4,
+    "sku": "KK17L",
+    "color": "KHAKI",
+    "size": "L",
+    "default_price": "32000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 156,
+  "fields": {
+    "product": 4,
+    "sku": "KK17X",
+    "color": "KHAKI",
+    "size": "XL",
+    "default_price": "32000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 157,
+  "fields": {
+    "product": 4,
+    "sku": "KK17XX",
+    "color": "KHAKI",
+    "size": "XXL",
+    "default_price": "32000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 158,
+  "fields": {
+    "product": 4,
+    "sku": "KK9M",
+    "color": "DUSTY PINK",
+    "size": "M",
+    "default_price": "32000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 159,
+  "fields": {
+    "product": 4,
+    "sku": "KK9L",
+    "color": "DUSTY PINK",
+    "size": "L",
+    "default_price": "32000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 160,
+  "fields": {
+    "product": 4,
+    "sku": "KK9X",
+    "color": "DUSTY PINK",
+    "size": "XL",
+    "default_price": "32000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 161,
+  "fields": {
+    "product": 4,
+    "sku": "KK9XX",
+    "color": "DUSTY PINK",
+    "size": "XXL",
+    "default_price": "32000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 162,
+  "fields": {
+    "product": 4,
+    "sku": "KK14M",
+    "color": "BLUE SKY",
+    "size": "M",
+    "default_price": "32000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 163,
+  "fields": {
+    "product": 4,
+    "sku": "KK14L",
+    "color": "BLUE SKY",
+    "size": "L",
+    "default_price": "32000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 164,
+  "fields": {
+    "product": 4,
+    "sku": "KK14X",
+    "color": "BLUE SKY",
+    "size": "XL",
+    "default_price": "32000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 165,
+  "fields": {
+    "product": 4,
+    "sku": "KK14XX",
+    "color": "BLUE SKY",
+    "size": "XXL",
+    "default_price": "32000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 166,
+  "fields": {
+    "product": 5,
+    "sku": "KP1M",
+    "color": "HITAM",
+    "size": "M",
+    "default_price": "31000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 167,
+  "fields": {
+    "product": 5,
+    "sku": "KP1L",
+    "color": "HITAM",
+    "size": "L",
+    "default_price": "31000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 168,
+  "fields": {
+    "product": 5,
+    "sku": "KP1X",
+    "color": "HITAM",
+    "size": "XL",
+    "default_price": "31000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 169,
+  "fields": {
+    "product": 5,
+    "sku": "KP1XX",
+    "color": "HITAM",
+    "size": "XXL",
+    "default_price": "31000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 170,
+  "fields": {
+    "product": 5,
+    "sku": "KP2M",
+    "color": "PUTIH",
+    "size": "M",
+    "default_price": "31000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 171,
+  "fields": {
+    "product": 5,
+    "sku": "KP2L",
+    "color": "PUTIH",
+    "size": "L",
+    "default_price": "31000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 172,
+  "fields": {
+    "product": 5,
+    "sku": "KP2X",
+    "color": "PUTIH",
+    "size": "XL",
+    "default_price": "31000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 173,
+  "fields": {
+    "product": 5,
+    "sku": "KP2XX",
+    "color": "PUTIH",
+    "size": "XXL",
+    "default_price": "31000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 174,
+  "fields": {
+    "product": 5,
+    "sku": "KP17M",
+    "color": "KHAKI",
+    "size": "M",
+    "default_price": "31000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 175,
+  "fields": {
+    "product": 5,
+    "sku": "KP17L",
+    "color": "KHAKI",
+    "size": "L",
+    "default_price": "31000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 176,
+  "fields": {
+    "product": 5,
+    "sku": "KP17X",
+    "color": "KHAKI",
+    "size": "XL",
+    "default_price": "31000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 177,
+  "fields": {
+    "product": 5,
+    "sku": "KP17XX",
+    "color": "KHAKI",
+    "size": "XXL",
+    "default_price": "31000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 178,
+  "fields": {
+    "product": 5,
+    "sku": "KP9M",
+    "color": "DUSTY PINK",
+    "size": "M",
+    "default_price": "31000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 179,
+  "fields": {
+    "product": 5,
+    "sku": "KP9L",
+    "color": "DUSTY PINK",
+    "size": "L",
+    "default_price": "31000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 180,
+  "fields": {
+    "product": 5,
+    "sku": "KP9X",
+    "color": "DUSTY PINK",
+    "size": "XL",
+    "default_price": "31000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 181,
+  "fields": {
+    "product": 5,
+    "sku": "KP9XX",
+    "color": "DUSTY PINK",
+    "size": "XXL",
+    "default_price": "31000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 182,
+  "fields": {
+    "product": 5,
+    "sku": "KP14M",
+    "color": "BLUE SKY",
+    "size": "M",
+    "default_price": "31000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 183,
+  "fields": {
+    "product": 5,
+    "sku": "KP14L",
+    "color": "BLUE SKY",
+    "size": "L",
+    "default_price": "31000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 184,
+  "fields": {
+    "product": 5,
+    "sku": "KP14X",
+    "color": "BLUE SKY",
+    "size": "XL",
+    "default_price": "31000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 185,
+  "fields": {
+    "product": 5,
+    "sku": "KP14XX",
+    "color": "BLUE SKY",
+    "size": "XXL",
+    "default_price": "31000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 186,
+  "fields": {
+    "product": 6,
+    "sku": "L1M",
+    "color": "HITAM",
+    "size": "M",
+    "default_price": "43000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 187,
+  "fields": {
+    "product": 6,
+    "sku": "L1L",
+    "color": "HITAM",
+    "size": "L",
+    "default_price": "43000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 188,
+  "fields": {
+    "product": 6,
+    "sku": "L1X",
+    "color": "HITAM",
+    "size": "XL",
+    "default_price": "43000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 189,
+  "fields": {
+    "product": 6,
+    "sku": "L1XX",
+    "color": "HITAM",
+    "size": "XXL",
+    "default_price": "43000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 190,
+  "fields": {
+    "product": 6,
+    "sku": "L1XXX",
+    "color": "HITAM",
+    "size": "XXXL",
+    "default_price": "43000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 191,
+  "fields": {
+    "product": 6,
+    "sku": "L2M",
+    "color": "PUTIH",
+    "size": "M",
+    "default_price": "43000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 192,
+  "fields": {
+    "product": 6,
+    "sku": "L2L",
+    "color": "PUTIH",
+    "size": "L",
+    "default_price": "43000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 193,
+  "fields": {
+    "product": 6,
+    "sku": "L2X",
+    "color": "PUTIH",
+    "size": "XL",
+    "default_price": "43000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 194,
+  "fields": {
+    "product": 6,
+    "sku": "L2XX",
+    "color": "PUTIH",
+    "size": "XXL",
+    "default_price": "43000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 195,
+  "fields": {
+    "product": 6,
+    "sku": "L2XXX",
+    "color": "PUTIH",
+    "size": "XXXL",
+    "default_price": "43000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 196,
+  "fields": {
+    "product": 6,
+    "sku": "L3M",
+    "color": "GREY",
+    "size": "M",
+    "default_price": "43000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 197,
+  "fields": {
+    "product": 6,
+    "sku": "L3L",
+    "color": "GREY",
+    "size": "L",
+    "default_price": "43000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 198,
+  "fields": {
+    "product": 6,
+    "sku": "L3X",
+    "color": "GREY",
+    "size": "XL",
+    "default_price": "43000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 199,
+  "fields": {
+    "product": 6,
+    "sku": "L3XX",
+    "color": "GREY",
+    "size": "XXL",
+    "default_price": "43000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 200,
+  "fields": {
+    "product": 6,
+    "sku": "L3XXX",
+    "color": "GREY",
+    "size": "XXXL",
+    "default_price": "43000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 201,
+  "fields": {
+    "product": 6,
+    "sku": "L4M",
+    "color": "COKSU",
+    "size": "M",
+    "default_price": "43000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 202,
+  "fields": {
+    "product": 6,
+    "sku": "L4L",
+    "color": "COKSU",
+    "size": "L",
+    "default_price": "43000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 203,
+  "fields": {
+    "product": 6,
+    "sku": "L4X",
+    "color": "COKSU",
+    "size": "XL",
+    "default_price": "43000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 204,
+  "fields": {
+    "product": 6,
+    "sku": "L4XX",
+    "color": "COKSU",
+    "size": "XXL",
+    "default_price": "43000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 205,
+  "fields": {
+    "product": 6,
+    "sku": "L4XXX",
+    "color": "COKSU",
+    "size": "XXXL",
+    "default_price": "43000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 206,
+  "fields": {
+    "product": 6,
+    "sku": "L5M",
+    "color": "ARMY",
+    "size": "M",
+    "default_price": "43000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 207,
+  "fields": {
+    "product": 6,
+    "sku": "L5L",
+    "color": "ARMY",
+    "size": "L",
+    "default_price": "43000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 208,
+  "fields": {
+    "product": 6,
+    "sku": "L5X",
+    "color": "ARMY",
+    "size": "XL",
+    "default_price": "43000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 209,
+  "fields": {
+    "product": 6,
+    "sku": "L5XX",
+    "color": "ARMY",
+    "size": "XXL",
+    "default_price": "43000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 210,
+  "fields": {
+    "product": 6,
+    "sku": "L5XXX",
+    "color": "ARMY",
+    "size": "XXXL",
+    "default_price": "43000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 211,
+  "fields": {
+    "product": 7,
+    "sku": "1NLL1M",
+    "color": "HITAM",
+    "size": "M",
+    "default_price": "38000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 212,
+  "fields": {
+    "product": 7,
+    "sku": "1NLL1L",
+    "color": "HITAM",
+    "size": "L",
+    "default_price": "38000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 213,
+  "fields": {
+    "product": 7,
+    "sku": "1NLL1X",
+    "color": "HITAM",
+    "size": "XL",
+    "default_price": "38000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 214,
+  "fields": {
+    "product": 7,
+    "sku": "1NLL1XX",
+    "color": "HITAM",
+    "size": "XXL",
+    "default_price": "38000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 215,
+  "fields": {
+    "product": 7,
+    "sku": "1NLL1XXX",
+    "color": "HITAM",
+    "size": "XXXL",
+    "default_price": "38000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 216,
+  "fields": {
+    "product": 8,
+    "sku": "1N1M",
+    "color": "HITAM",
+    "size": "M",
+    "default_price": "22000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 217,
+  "fields": {
+    "product": 8,
+    "sku": "1N1L",
+    "color": "HITAM",
+    "size": "L",
+    "default_price": "22000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 218,
+  "fields": {
+    "product": 8,
+    "sku": "1N1X",
+    "color": "HITAM",
+    "size": "XL",
+    "default_price": "22000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 219,
+  "fields": {
+    "product": 8,
+    "sku": "1N1XX",
+    "color": "HITAM",
+    "size": "XXL",
+    "default_price": "22000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 220,
+  "fields": {
+    "product": 8,
+    "sku": "1N1XXX",
+    "color": "HITAM",
+    "size": "XXXL",
+    "default_price": "22000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 221,
+  "fields": {
+    "product": 9,
+    "sku": "1NSL1M",
+    "color": "HITAM",
+    "size": "M",
+    "default_price": "32000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 222,
+  "fields": {
+    "product": 9,
+    "sku": "1NSL1L",
+    "color": "HITAM",
+    "size": "L",
+    "default_price": "32000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 223,
+  "fields": {
+    "product": 9,
+    "sku": "1NSL1X",
+    "color": "HITAM",
+    "size": "XL",
+    "default_price": "32000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 224,
+  "fields": {
+    "product": 9,
+    "sku": "1NSL1XX",
+    "color": "HITAM",
+    "size": "XXL",
+    "default_price": "32000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 225,
+  "fields": {
+    "product": 9,
+    "sku": "1NSL1XXX",
+    "color": "HITAM",
+    "size": "XXXL",
+    "default_price": "32000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 226,
+  "fields": {
+    "product": 10,
+    "sku": "2N1M",
+    "color": "HITAM",
+    "size": "M",
+    "default_price": "22000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 227,
+  "fields": {
+    "product": 10,
+    "sku": "2N1L",
+    "color": "HITAM",
+    "size": "L",
+    "default_price": "22000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 228,
+  "fields": {
+    "product": 10,
+    "sku": "2N1X",
+    "color": "HITAM",
+    "size": "XL",
+    "default_price": "22000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 229,
+  "fields": {
+    "product": 10,
+    "sku": "2N1XX",
+    "color": "HITAM",
+    "size": "XXL",
+    "default_price": "22000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 230,
+  "fields": {
+    "product": 10,
+    "sku": "2N1XXX",
+    "color": "HITAM",
+    "size": "XXXL",
+    "default_price": "22000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 231,
+  "fields": {
+    "product": 10,
+    "sku": "2N2M",
+    "color": "PUTIH",
+    "size": "M",
+    "default_price": "22000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 232,
+  "fields": {
+    "product": 10,
+    "sku": "2N2L",
+    "color": "PUTIH",
+    "size": "L",
+    "default_price": "22000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 233,
+  "fields": {
+    "product": 10,
+    "sku": "2N2X",
+    "color": "PUTIH",
+    "size": "XL",
+    "default_price": "22000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 234,
+  "fields": {
+    "product": 10,
+    "sku": "2N2XX",
+    "color": "PUTIH",
+    "size": "XXL",
+    "default_price": "22000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 235,
+  "fields": {
+    "product": 10,
+    "sku": "2N2XXX",
+    "color": "PUTIH",
+    "size": "XXXL",
+    "default_price": "22000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 236,
+  "fields": {
+    "product": 10,
+    "sku": "2N15M",
+    "color": "OLIVE",
+    "size": "M",
+    "default_price": "22000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 237,
+  "fields": {
+    "product": 10,
+    "sku": "2N15L",
+    "color": "OLIVE",
+    "size": "L",
+    "default_price": "22000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 238,
+  "fields": {
+    "product": 10,
+    "sku": "2N15X",
+    "color": "OLIVE",
+    "size": "XL",
+    "default_price": "22000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 239,
+  "fields": {
+    "product": 10,
+    "sku": "2N15XX",
+    "color": "OLIVE",
+    "size": "XXL",
+    "default_price": "22000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 240,
+  "fields": {
+    "product": 10,
+    "sku": "2N15XXX",
+    "color": "OLIVE",
+    "size": "XXXL",
+    "default_price": "22000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 241,
+  "fields": {
+    "product": 10,
+    "sku": "2N16M",
+    "color": "DUST OREN",
+    "size": "M",
+    "default_price": "22000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 242,
+  "fields": {
+    "product": 10,
+    "sku": "2N16L",
+    "color": "DUST OREN",
+    "size": "L",
+    "default_price": "22000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 243,
+  "fields": {
+    "product": 10,
+    "sku": "2N16X",
+    "color": "DUST OREN",
+    "size": "XL",
+    "default_price": "22000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 244,
+  "fields": {
+    "product": 10,
+    "sku": "2N16XX",
+    "color": "DUST OREN",
+    "size": "XXL",
+    "default_price": "22000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 245,
+  "fields": {
+    "product": 10,
+    "sku": "2N16XXX",
+    "color": "DUST OREN",
+    "size": "XXXL",
+    "default_price": "22000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 246,
+  "fields": {
+    "product": 11,
+    "sku": "2NSL1M",
+    "color": "HITAM",
+    "size": "M",
+    "default_price": "32000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 247,
+  "fields": {
+    "product": 11,
+    "sku": "2NSL1L",
+    "color": "HITAM",
+    "size": "L",
+    "default_price": "32000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 248,
+  "fields": {
+    "product": 11,
+    "sku": "2NSL1X",
+    "color": "HITAM",
+    "size": "XL",
+    "default_price": "32000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 249,
+  "fields": {
+    "product": 11,
+    "sku": "2NSL1XX",
+    "color": "HITAM",
+    "size": "XXL",
+    "default_price": "32000.00"
+  }
+},
+{
+  "model": "core.variant",
+  "pk": 250,
+  "fields": {
+    "product": 11,
+    "sku": "2NSL1XXX",
+    "color": "HITAM",
+    "size": "XXXL",
+    "default_price": "32000.00"
+  }
+},
+{
+  "model": "core.warehouse",
+  "pk": 1,
+  "fields": {
+    "name": "gudang center",
+    "location": "cibangun",
+    "is_active": true
+  }
+},
+{
+  "model": "core.reseller",
+  "pk": 1,
+  "fields": {
+    "user": 2,
+    "name": "duloh",
+    "phone": "082122343803",
+    "address": "Tasikmalaya",
+    "credit_limit": "0.00",
+    "current_balance": "0.00"
+  }
+},
+{
+  "model": "core.reseller",
+  "pk": 2,
+  "fields": {
+    "user": 3,
+    "name": "imon marley dede engkus ce enok ai maskupah",
+    "phone": "82136592838",
+    "address": "cibangun",
+    "credit_limit": "0.00",
+    "current_balance": "0.00"
+  }
+},
+{
+  "model": "core.reseller",
+  "pk": 3,
+  "fields": {
+    "user": 4,
+    "name": "Angga",
+    "phone": "083865027440",
+    "address": "Cibangun",
+    "credit_limit": "0.00",
+    "current_balance": "13402800.00"
+  }
+},
+{
+  "model": "core.reseller",
+  "pk": 4,
+  "fields": {
+    "user": 5,
+    "name": "onesport",
+    "phone": "080000000",
+    "address": "Cibangun",
+    "credit_limit": "0.00",
+    "current_balance": "0.00"
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 1,
+  "fields": {
+    "warehouse": 1,
+    "variant": 1,
+    "qty_available": 323
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 2,
+  "fields": {
+    "warehouse": 1,
+    "variant": 2,
+    "qty_available": 3
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 3,
+  "fields": {
+    "warehouse": 1,
+    "variant": 3,
+    "qty_available": 3
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 4,
+  "fields": {
+    "warehouse": 1,
+    "variant": 4,
+    "qty_available": 0
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 5,
+  "fields": {
+    "warehouse": 1,
+    "variant": 5,
+    "qty_available": 17
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 6,
+  "fields": {
+    "warehouse": 1,
+    "variant": 6,
+    "qty_available": 16
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 7,
+  "fields": {
+    "warehouse": 1,
+    "variant": 7,
+    "qty_available": 74
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 8,
+  "fields": {
+    "warehouse": 1,
+    "variant": 8,
+    "qty_available": 38
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 9,
+  "fields": {
+    "warehouse": 1,
+    "variant": 9,
+    "qty_available": 42
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 10,
+  "fields": {
+    "warehouse": 1,
+    "variant": 10,
+    "qty_available": 73
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 11,
+  "fields": {
+    "warehouse": 1,
+    "variant": 11,
+    "qty_available": 37
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 12,
+  "fields": {
+    "warehouse": 1,
+    "variant": 12,
+    "qty_available": 114
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 13,
+  "fields": {
+    "warehouse": 1,
+    "variant": 13,
+    "qty_available": 46
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 14,
+  "fields": {
+    "warehouse": 1,
+    "variant": 14,
+    "qty_available": 0
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 15,
+  "fields": {
+    "warehouse": 1,
+    "variant": 15,
+    "qty_available": 59
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 16,
+  "fields": {
+    "warehouse": 1,
+    "variant": 16,
+    "qty_available": 74
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 17,
+  "fields": {
+    "warehouse": 1,
+    "variant": 17,
+    "qty_available": 82
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 18,
+  "fields": {
+    "warehouse": 1,
+    "variant": 18,
+    "qty_available": 71
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 19,
+  "fields": {
+    "warehouse": 1,
+    "variant": 19,
+    "qty_available": 0
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 20,
+  "fields": {
+    "warehouse": 1,
+    "variant": 20,
+    "qty_available": 0
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 21,
+  "fields": {
+    "warehouse": 1,
+    "variant": 21,
+    "qty_available": 88
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 22,
+  "fields": {
+    "warehouse": 1,
+    "variant": 22,
+    "qty_available": 88
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 23,
+  "fields": {
+    "warehouse": 1,
+    "variant": 23,
+    "qty_available": 54
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 24,
+  "fields": {
+    "warehouse": 1,
+    "variant": 24,
+    "qty_available": 26
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 25,
+  "fields": {
+    "warehouse": 1,
+    "variant": 25,
+    "qty_available": 0
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 26,
+  "fields": {
+    "warehouse": 1,
+    "variant": 26,
+    "qty_available": 27
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 27,
+  "fields": {
+    "warehouse": 1,
+    "variant": 27,
+    "qty_available": 48
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 28,
+  "fields": {
+    "warehouse": 1,
+    "variant": 28,
+    "qty_available": 70
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 29,
+  "fields": {
+    "warehouse": 1,
+    "variant": 29,
+    "qty_available": 57
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 30,
+  "fields": {
+    "warehouse": 1,
+    "variant": 30,
+    "qty_available": 68
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 31,
+  "fields": {
+    "warehouse": 1,
+    "variant": 31,
+    "qty_available": 58
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 32,
+  "fields": {
+    "warehouse": 1,
+    "variant": 32,
+    "qty_available": 25
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 33,
+  "fields": {
+    "warehouse": 1,
+    "variant": 33,
+    "qty_available": 46
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 34,
+  "fields": {
+    "warehouse": 1,
+    "variant": 34,
+    "qty_available": 29
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 35,
+  "fields": {
+    "warehouse": 1,
+    "variant": 35,
+    "qty_available": 0
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 36,
+  "fields": {
+    "warehouse": 1,
+    "variant": 36,
+    "qty_available": 43
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 37,
+  "fields": {
+    "warehouse": 1,
+    "variant": 37,
+    "qty_available": 63
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 38,
+  "fields": {
+    "warehouse": 1,
+    "variant": 38,
+    "qty_available": 0
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 39,
+  "fields": {
+    "warehouse": 1,
+    "variant": 39,
+    "qty_available": 43
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 40,
+  "fields": {
+    "warehouse": 1,
+    "variant": 40,
+    "qty_available": 92
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 41,
+  "fields": {
+    "warehouse": 1,
+    "variant": 41,
+    "qty_available": 39
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 42,
+  "fields": {
+    "warehouse": 1,
+    "variant": 42,
+    "qty_available": 84
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 43,
+  "fields": {
+    "warehouse": 1,
+    "variant": 43,
+    "qty_available": 52
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 44,
+  "fields": {
+    "warehouse": 1,
+    "variant": 44,
+    "qty_available": 42
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 45,
+  "fields": {
+    "warehouse": 1,
+    "variant": 45,
+    "qty_available": 2
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 46,
+  "fields": {
+    "warehouse": 1,
+    "variant": 46,
+    "qty_available": 56
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 47,
+  "fields": {
+    "warehouse": 1,
+    "variant": 47,
+    "qty_available": 46
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 48,
+  "fields": {
+    "warehouse": 1,
+    "variant": 48,
+    "qty_available": 76
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 49,
+  "fields": {
+    "warehouse": 1,
+    "variant": 49,
+    "qty_available": 53
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 50,
+  "fields": {
+    "warehouse": 1,
+    "variant": 50,
+    "qty_available": 71
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 51,
+  "fields": {
+    "warehouse": 1,
+    "variant": 51,
+    "qty_available": 56
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 52,
+  "fields": {
+    "warehouse": 1,
+    "variant": 52,
+    "qty_available": 38
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 53,
+  "fields": {
+    "warehouse": 1,
+    "variant": 53,
+    "qty_available": 3
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 54,
+  "fields": {
+    "warehouse": 1,
+    "variant": 54,
+    "qty_available": 32
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 55,
+  "fields": {
+    "warehouse": 1,
+    "variant": 55,
+    "qty_available": 90
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 56,
+  "fields": {
+    "warehouse": 1,
+    "variant": 56,
+    "qty_available": 261
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 57,
+  "fields": {
+    "warehouse": 1,
+    "variant": 57,
+    "qty_available": 148
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 58,
+  "fields": {
+    "warehouse": 1,
+    "variant": 58,
+    "qty_available": 190
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 59,
+  "fields": {
+    "warehouse": 1,
+    "variant": 59,
+    "qty_available": 25
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 60,
+  "fields": {
+    "warehouse": 1,
+    "variant": 60,
+    "qty_available": 10
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 61,
+  "fields": {
+    "warehouse": 1,
+    "variant": 61,
+    "qty_available": 74
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 62,
+  "fields": {
+    "warehouse": 1,
+    "variant": 62,
+    "qty_available": 181
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 63,
+  "fields": {
+    "warehouse": 1,
+    "variant": 63,
+    "qty_available": 4
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 64,
+  "fields": {
+    "warehouse": 1,
+    "variant": 64,
+    "qty_available": 65
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 65,
+  "fields": {
+    "warehouse": 1,
+    "variant": 65,
+    "qty_available": 0
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 66,
+  "fields": {
+    "warehouse": 1,
+    "variant": 66,
+    "qty_available": 109
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 67,
+  "fields": {
+    "warehouse": 1,
+    "variant": 67,
+    "qty_available": 15
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 68,
+  "fields": {
+    "warehouse": 1,
+    "variant": 68,
+    "qty_available": 0
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 69,
+  "fields": {
+    "warehouse": 1,
+    "variant": 69,
+    "qty_available": 57
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 70,
+  "fields": {
+    "warehouse": 1,
+    "variant": 70,
+    "qty_available": 96
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 71,
+  "fields": {
+    "warehouse": 1,
+    "variant": 71,
+    "qty_available": 182
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 72,
+  "fields": {
+    "warehouse": 1,
+    "variant": 72,
+    "qty_available": 40
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 73,
+  "fields": {
+    "warehouse": 1,
+    "variant": 73,
+    "qty_available": 97
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 74,
+  "fields": {
+    "warehouse": 1,
+    "variant": 74,
+    "qty_available": 106
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 75,
+  "fields": {
+    "warehouse": 1,
+    "variant": 75,
+    "qty_available": 59
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 76,
+  "fields": {
+    "warehouse": 1,
+    "variant": 76,
+    "qty_available": 105
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 77,
+  "fields": {
+    "warehouse": 1,
+    "variant": 77,
+    "qty_available": 83
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 78,
+  "fields": {
+    "warehouse": 1,
+    "variant": 78,
+    "qty_available": 43
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 79,
+  "fields": {
+    "warehouse": 1,
+    "variant": 79,
+    "qty_available": 84
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 80,
+  "fields": {
+    "warehouse": 1,
+    "variant": 80,
+    "qty_available": 38
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 81,
+  "fields": {
+    "warehouse": 1,
+    "variant": 81,
+    "qty_available": 52
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 82,
+  "fields": {
+    "warehouse": 1,
+    "variant": 82,
+    "qty_available": 5
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 83,
+  "fields": {
+    "warehouse": 1,
+    "variant": 83,
+    "qty_available": 0
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 84,
+  "fields": {
+    "warehouse": 1,
+    "variant": 84,
+    "qty_available": 0
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 85,
+  "fields": {
+    "warehouse": 1,
+    "variant": 85,
+    "qty_available": 26
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 86,
+  "fields": {
+    "warehouse": 1,
+    "variant": 86,
+    "qty_available": 214
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 87,
+  "fields": {
+    "warehouse": 1,
+    "variant": 87,
+    "qty_available": 109
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 88,
+  "fields": {
+    "warehouse": 1,
+    "variant": 88,
+    "qty_available": 0
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 89,
+  "fields": {
+    "warehouse": 1,
+    "variant": 89,
+    "qty_available": 44
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 90,
+  "fields": {
+    "warehouse": 1,
+    "variant": 90,
+    "qty_available": 19
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 91,
+  "fields": {
+    "warehouse": 1,
+    "variant": 91,
+    "qty_available": 323
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 92,
+  "fields": {
+    "warehouse": 1,
+    "variant": 92,
+    "qty_available": 123
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 93,
+  "fields": {
+    "warehouse": 1,
+    "variant": 93,
+    "qty_available": 42
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 94,
+  "fields": {
+    "warehouse": 1,
+    "variant": 94,
+    "qty_available": 113
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 95,
+  "fields": {
+    "warehouse": 1,
+    "variant": 95,
+    "qty_available": 104
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 96,
+  "fields": {
+    "warehouse": 1,
+    "variant": 96,
+    "qty_available": 70
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 97,
+  "fields": {
+    "warehouse": 1,
+    "variant": 97,
+    "qty_available": 44
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 98,
+  "fields": {
+    "warehouse": 1,
+    "variant": 98,
+    "qty_available": 28
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 99,
+  "fields": {
+    "warehouse": 1,
+    "variant": 99,
+    "qty_available": 37
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 100,
+  "fields": {
+    "warehouse": 1,
+    "variant": 100,
+    "qty_available": 88
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 101,
+  "fields": {
+    "warehouse": 1,
+    "variant": 101,
+    "qty_available": 65
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 102,
+  "fields": {
+    "warehouse": 1,
+    "variant": 102,
+    "qty_available": 84
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 103,
+  "fields": {
+    "warehouse": 1,
+    "variant": 103,
+    "qty_available": 133
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 104,
+  "fields": {
+    "warehouse": 1,
+    "variant": 104,
+    "qty_available": 67
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 105,
+  "fields": {
+    "warehouse": 1,
+    "variant": 105,
+    "qty_available": 176
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 106,
+  "fields": {
+    "warehouse": 1,
+    "variant": 106,
+    "qty_available": 75
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 107,
+  "fields": {
+    "warehouse": 1,
+    "variant": 107,
+    "qty_available": 74
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 108,
+  "fields": {
+    "warehouse": 1,
+    "variant": 108,
+    "qty_available": 54
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 109,
+  "fields": {
+    "warehouse": 1,
+    "variant": 109,
+    "qty_available": 113
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 110,
+  "fields": {
+    "warehouse": 1,
+    "variant": 110,
+    "qty_available": 151
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 111,
+  "fields": {
+    "warehouse": 1,
+    "variant": 111,
+    "qty_available": 135
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 112,
+  "fields": {
+    "warehouse": 1,
+    "variant": 112,
+    "qty_available": 116
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 113,
+  "fields": {
+    "warehouse": 1,
+    "variant": 113,
+    "qty_available": 1
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 114,
+  "fields": {
+    "warehouse": 1,
+    "variant": 114,
+    "qty_available": 77
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 115,
+  "fields": {
+    "warehouse": 1,
+    "variant": 115,
+    "qty_available": 77
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 116,
+  "fields": {
+    "warehouse": 1,
+    "variant": 116,
+    "qty_available": 83
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 117,
+  "fields": {
+    "warehouse": 1,
+    "variant": 117,
+    "qty_available": 126
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 118,
+  "fields": {
+    "warehouse": 1,
+    "variant": 118,
+    "qty_available": 105
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 119,
+  "fields": {
+    "warehouse": 1,
+    "variant": 119,
+    "qty_available": 85
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 120,
+  "fields": {
+    "warehouse": 1,
+    "variant": 120,
+    "qty_available": 71
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 121,
+  "fields": {
+    "warehouse": 1,
+    "variant": 121,
+    "qty_available": 85
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 122,
+  "fields": {
+    "warehouse": 1,
+    "variant": 122,
+    "qty_available": 110
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 123,
+  "fields": {
+    "warehouse": 1,
+    "variant": 123,
+    "qty_available": 74
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 124,
+  "fields": {
+    "warehouse": 1,
+    "variant": 124,
+    "qty_available": 112
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 125,
+  "fields": {
+    "warehouse": 1,
+    "variant": 125,
+    "qty_available": 56
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 126,
+  "fields": {
+    "warehouse": 1,
+    "variant": 126,
+    "qty_available": 152
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 127,
+  "fields": {
+    "warehouse": 1,
+    "variant": 127,
+    "qty_available": 120
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 128,
+  "fields": {
+    "warehouse": 1,
+    "variant": 128,
+    "qty_available": 111
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 129,
+  "fields": {
+    "warehouse": 1,
+    "variant": 129,
+    "qty_available": 83
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 130,
+  "fields": {
+    "warehouse": 1,
+    "variant": 130,
+    "qty_available": 4
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 131,
+  "fields": {
+    "warehouse": 1,
+    "variant": 131,
+    "qty_available": 79
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 132,
+  "fields": {
+    "warehouse": 1,
+    "variant": 132,
+    "qty_available": 53
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 133,
+  "fields": {
+    "warehouse": 1,
+    "variant": 133,
+    "qty_available": 125
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 134,
+  "fields": {
+    "warehouse": 1,
+    "variant": 134,
+    "qty_available": 81
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 135,
+  "fields": {
+    "warehouse": 1,
+    "variant": 135,
+    "qty_available": 56
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 136,
+  "fields": {
+    "warehouse": 1,
+    "variant": 136,
+    "qty_available": 113
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 137,
+  "fields": {
+    "warehouse": 1,
+    "variant": 137,
+    "qty_available": 49
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 138,
+  "fields": {
+    "warehouse": 1,
+    "variant": 138,
+    "qty_available": 11
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 139,
+  "fields": {
+    "warehouse": 1,
+    "variant": 139,
+    "qty_available": 97
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 140,
+  "fields": {
+    "warehouse": 1,
+    "variant": 140,
+    "qty_available": 46
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 141,
+  "fields": {
+    "warehouse": 1,
+    "variant": 141,
+    "qty_available": 109
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 142,
+  "fields": {
+    "warehouse": 1,
+    "variant": 142,
+    "qty_available": 94
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 143,
+  "fields": {
+    "warehouse": 1,
+    "variant": 143,
+    "qty_available": 60
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 144,
+  "fields": {
+    "warehouse": 1,
+    "variant": 144,
+    "qty_available": 19
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 145,
+  "fields": {
+    "warehouse": 1,
+    "variant": 145,
+    "qty_available": 18
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 146,
+  "fields": {
+    "warehouse": 1,
+    "variant": 146,
+    "qty_available": 14
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 147,
+  "fields": {
+    "warehouse": 1,
+    "variant": 147,
+    "qty_available": 41
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 148,
+  "fields": {
+    "warehouse": 1,
+    "variant": 148,
+    "qty_available": 19
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 149,
+  "fields": {
+    "warehouse": 1,
+    "variant": 149,
+    "qty_available": 25
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 150,
+  "fields": {
+    "warehouse": 1,
+    "variant": 150,
+    "qty_available": 16
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 151,
+  "fields": {
+    "warehouse": 1,
+    "variant": 151,
+    "qty_available": 14
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 152,
+  "fields": {
+    "warehouse": 1,
+    "variant": 152,
+    "qty_available": 7
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 153,
+  "fields": {
+    "warehouse": 1,
+    "variant": 153,
+    "qty_available": 4
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 154,
+  "fields": {
+    "warehouse": 1,
+    "variant": 154,
+    "qty_available": 8
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 155,
+  "fields": {
+    "warehouse": 1,
+    "variant": 155,
+    "qty_available": 5
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 156,
+  "fields": {
+    "warehouse": 1,
+    "variant": 156,
+    "qty_available": 14
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 157,
+  "fields": {
+    "warehouse": 1,
+    "variant": 157,
+    "qty_available": 7
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 158,
+  "fields": {
+    "warehouse": 1,
+    "variant": 158,
+    "qty_available": 33
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 159,
+  "fields": {
+    "warehouse": 1,
+    "variant": 159,
+    "qty_available": 15
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 160,
+  "fields": {
+    "warehouse": 1,
+    "variant": 160,
+    "qty_available": 13
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 161,
+  "fields": {
+    "warehouse": 1,
+    "variant": 161,
+    "qty_available": 7
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 162,
+  "fields": {
+    "warehouse": 1,
+    "variant": 162,
+    "qty_available": 14
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 163,
+  "fields": {
+    "warehouse": 1,
+    "variant": 163,
+    "qty_available": 10
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 164,
+  "fields": {
+    "warehouse": 1,
+    "variant": 164,
+    "qty_available": 4
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 165,
+  "fields": {
+    "warehouse": 1,
+    "variant": 165,
+    "qty_available": 15
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 166,
+  "fields": {
+    "warehouse": 1,
+    "variant": 166,
+    "qty_available": 6
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 167,
+  "fields": {
+    "warehouse": 1,
+    "variant": 167,
+    "qty_available": 5
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 168,
+  "fields": {
+    "warehouse": 1,
+    "variant": 168,
+    "qty_available": 24
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 169,
+  "fields": {
+    "warehouse": 1,
+    "variant": 169,
+    "qty_available": 0
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 170,
+  "fields": {
+    "warehouse": 1,
+    "variant": 170,
+    "qty_available": 56
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 171,
+  "fields": {
+    "warehouse": 1,
+    "variant": 171,
+    "qty_available": 43
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 172,
+  "fields": {
+    "warehouse": 1,
+    "variant": 172,
+    "qty_available": 57
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 173,
+  "fields": {
+    "warehouse": 1,
+    "variant": 173,
+    "qty_available": 36
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 174,
+  "fields": {
+    "warehouse": 1,
+    "variant": 174,
+    "qty_available": 14
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 175,
+  "fields": {
+    "warehouse": 1,
+    "variant": 175,
+    "qty_available": 21
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 176,
+  "fields": {
+    "warehouse": 1,
+    "variant": 176,
+    "qty_available": 23
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 177,
+  "fields": {
+    "warehouse": 1,
+    "variant": 177,
+    "qty_available": 4
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 178,
+  "fields": {
+    "warehouse": 1,
+    "variant": 178,
+    "qty_available": 18
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 179,
+  "fields": {
+    "warehouse": 1,
+    "variant": 179,
+    "qty_available": 20
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 180,
+  "fields": {
+    "warehouse": 1,
+    "variant": 180,
+    "qty_available": 24
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 181,
+  "fields": {
+    "warehouse": 1,
+    "variant": 181,
+    "qty_available": 9
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 182,
+  "fields": {
+    "warehouse": 1,
+    "variant": 182,
+    "qty_available": 18
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 183,
+  "fields": {
+    "warehouse": 1,
+    "variant": 183,
+    "qty_available": 2
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 184,
+  "fields": {
+    "warehouse": 1,
+    "variant": 184,
+    "qty_available": 1
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 185,
+  "fields": {
+    "warehouse": 1,
+    "variant": 185,
+    "qty_available": 0
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 186,
+  "fields": {
+    "warehouse": 1,
+    "variant": 186,
+    "qty_available": 98
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 187,
+  "fields": {
+    "warehouse": 1,
+    "variant": 187,
+    "qty_available": 14
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 188,
+  "fields": {
+    "warehouse": 1,
+    "variant": 188,
+    "qty_available": 39
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 189,
+  "fields": {
+    "warehouse": 1,
+    "variant": 189,
+    "qty_available": 46
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 190,
+  "fields": {
+    "warehouse": 1,
+    "variant": 190,
+    "qty_available": 22
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 191,
+  "fields": {
+    "warehouse": 1,
+    "variant": 191,
+    "qty_available": 6
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 192,
+  "fields": {
+    "warehouse": 1,
+    "variant": 192,
+    "qty_available": 8
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 193,
+  "fields": {
+    "warehouse": 1,
+    "variant": 193,
+    "qty_available": 1
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 194,
+  "fields": {
+    "warehouse": 1,
+    "variant": 194,
+    "qty_available": 16
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 195,
+  "fields": {
+    "warehouse": 1,
+    "variant": 195,
+    "qty_available": 12
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 196,
+  "fields": {
+    "warehouse": 1,
+    "variant": 196,
+    "qty_available": 6
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 197,
+  "fields": {
+    "warehouse": 1,
+    "variant": 197,
+    "qty_available": 1
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 198,
+  "fields": {
+    "warehouse": 1,
+    "variant": 198,
+    "qty_available": 7
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 199,
+  "fields": {
+    "warehouse": 1,
+    "variant": 199,
+    "qty_available": 0
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 200,
+  "fields": {
+    "warehouse": 1,
+    "variant": 200,
+    "qty_available": 14
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 201,
+  "fields": {
+    "warehouse": 1,
+    "variant": 201,
+    "qty_available": 0
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 202,
+  "fields": {
+    "warehouse": 1,
+    "variant": 202,
+    "qty_available": 16
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 203,
+  "fields": {
+    "warehouse": 1,
+    "variant": 203,
+    "qty_available": 8
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 204,
+  "fields": {
+    "warehouse": 1,
+    "variant": 204,
+    "qty_available": 13
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 205,
+  "fields": {
+    "warehouse": 1,
+    "variant": 205,
+    "qty_available": 0
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 206,
+  "fields": {
+    "warehouse": 1,
+    "variant": 206,
+    "qty_available": 36
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 207,
+  "fields": {
+    "warehouse": 1,
+    "variant": 207,
+    "qty_available": 7
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 208,
+  "fields": {
+    "warehouse": 1,
+    "variant": 208,
+    "qty_available": 18
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 209,
+  "fields": {
+    "warehouse": 1,
+    "variant": 209,
+    "qty_available": 1
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 210,
+  "fields": {
+    "warehouse": 1,
+    "variant": 210,
+    "qty_available": 9
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 211,
+  "fields": {
+    "warehouse": 1,
+    "variant": 211,
+    "qty_available": 29
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 212,
+  "fields": {
+    "warehouse": 1,
+    "variant": 212,
+    "qty_available": 35
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 213,
+  "fields": {
+    "warehouse": 1,
+    "variant": 213,
+    "qty_available": 35
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 214,
+  "fields": {
+    "warehouse": 1,
+    "variant": 214,
+    "qty_available": 39
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 215,
+  "fields": {
+    "warehouse": 1,
+    "variant": 215,
+    "qty_available": 0
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 216,
+  "fields": {
+    "warehouse": 1,
+    "variant": 216,
+    "qty_available": 55
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 217,
+  "fields": {
+    "warehouse": 1,
+    "variant": 217,
+    "qty_available": 39
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 218,
+  "fields": {
+    "warehouse": 1,
+    "variant": 218,
+    "qty_available": 88
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 219,
+  "fields": {
+    "warehouse": 1,
+    "variant": 219,
+    "qty_available": 58
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 220,
+  "fields": {
+    "warehouse": 1,
+    "variant": 220,
+    "qty_available": 16
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 221,
+  "fields": {
+    "warehouse": 1,
+    "variant": 221,
+    "qty_available": 39
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 222,
+  "fields": {
+    "warehouse": 1,
+    "variant": 222,
+    "qty_available": 31
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 223,
+  "fields": {
+    "warehouse": 1,
+    "variant": 223,
+    "qty_available": 47
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 224,
+  "fields": {
+    "warehouse": 1,
+    "variant": 224,
+    "qty_available": 13
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 225,
+  "fields": {
+    "warehouse": 1,
+    "variant": 225,
+    "qty_available": 40
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 226,
+  "fields": {
+    "warehouse": 1,
+    "variant": 226,
+    "qty_available": 96
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 227,
+  "fields": {
+    "warehouse": 1,
+    "variant": 227,
+    "qty_available": 75
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 228,
+  "fields": {
+    "warehouse": 1,
+    "variant": 228,
+    "qty_available": 15
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 229,
+  "fields": {
+    "warehouse": 1,
+    "variant": 229,
+    "qty_available": 249
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 230,
+  "fields": {
+    "warehouse": 1,
+    "variant": 230,
+    "qty_available": 293
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 231,
+  "fields": {
+    "warehouse": 1,
+    "variant": 231,
+    "qty_available": 30
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 232,
+  "fields": {
+    "warehouse": 1,
+    "variant": 232,
+    "qty_available": 30
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 233,
+  "fields": {
+    "warehouse": 1,
+    "variant": 233,
+    "qty_available": 31
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 234,
+  "fields": {
+    "warehouse": 1,
+    "variant": 234,
+    "qty_available": 33
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 235,
+  "fields": {
+    "warehouse": 1,
+    "variant": 235,
+    "qty_available": 31
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 236,
+  "fields": {
+    "warehouse": 1,
+    "variant": 236,
+    "qty_available": 30
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 237,
+  "fields": {
+    "warehouse": 1,
+    "variant": 237,
+    "qty_available": 31
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 238,
+  "fields": {
+    "warehouse": 1,
+    "variant": 238,
+    "qty_available": 31
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 239,
+  "fields": {
+    "warehouse": 1,
+    "variant": 239,
+    "qty_available": 32
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 240,
+  "fields": {
+    "warehouse": 1,
+    "variant": 240,
+    "qty_available": 31
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 241,
+  "fields": {
+    "warehouse": 1,
+    "variant": 241,
+    "qty_available": 0
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 242,
+  "fields": {
+    "warehouse": 1,
+    "variant": 242,
+    "qty_available": 31
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 243,
+  "fields": {
+    "warehouse": 1,
+    "variant": 243,
+    "qty_available": 31
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 244,
+  "fields": {
+    "warehouse": 1,
+    "variant": 244,
+    "qty_available": 30
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 245,
+  "fields": {
+    "warehouse": 1,
+    "variant": 245,
+    "qty_available": 32
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 246,
+  "fields": {
+    "warehouse": 1,
+    "variant": 246,
+    "qty_available": 66
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 247,
+  "fields": {
+    "warehouse": 1,
+    "variant": 247,
+    "qty_available": 35
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 248,
+  "fields": {
+    "warehouse": 1,
+    "variant": 248,
+    "qty_available": 40
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 249,
+  "fields": {
+    "warehouse": 1,
+    "variant": 249,
+    "qty_available": 63
+  }
+},
+{
+  "model": "core.warehousestock",
+  "pk": 250,
+  "fields": {
+    "warehouse": 1,
+    "variant": 250,
+    "qty_available": 30
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 1,
+  "fields": {
+    "warehouse": 1,
+    "variant": 149,
+    "movement_type": "IN",
+    "qty": 14,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:06:50.114Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 2,
+  "fields": {
+    "warehouse": 1,
+    "variant": 162,
+    "movement_type": "IN",
+    "qty": 4,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:07:17.899Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 3,
+  "fields": {
+    "warehouse": 1,
+    "variant": 163,
+    "movement_type": "IN",
+    "qty": 4,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:07:40.125Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 4,
+  "fields": {
+    "warehouse": 1,
+    "variant": 165,
+    "movement_type": "IN",
+    "qty": 3,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:08:02.657Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 5,
+  "fields": {
+    "warehouse": 1,
+    "variant": 183,
+    "movement_type": "IN",
+    "qty": 1,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:08:23.404Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 6,
+  "fields": {
+    "warehouse": 1,
+    "variant": 174,
+    "movement_type": "IN",
+    "qty": 1,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:08:58.161Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 7,
+  "fields": {
+    "warehouse": 1,
+    "variant": 176,
+    "movement_type": "IN",
+    "qty": 14,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:09:18.553Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 8,
+  "fields": {
+    "warehouse": 1,
+    "variant": 57,
+    "movement_type": "IN",
+    "qty": 44,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:09:45.374Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 9,
+  "fields": {
+    "warehouse": 1,
+    "variant": 58,
+    "movement_type": "IN",
+    "qty": 87,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:10:03.961Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 10,
+  "fields": {
+    "warehouse": 1,
+    "variant": 59,
+    "movement_type": "IN",
+    "qty": 1,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:10:20.879Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 11,
+  "fields": {
+    "warehouse": 1,
+    "variant": 59,
+    "movement_type": "IN",
+    "qty": 3,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:10:35.842Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 12,
+  "fields": {
+    "warehouse": 1,
+    "variant": 71,
+    "movement_type": "IN",
+    "qty": 19,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:10:52.990Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 13,
+  "fields": {
+    "warehouse": 1,
+    "variant": 188,
+    "movement_type": "IN",
+    "qty": 1,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:11:18.777Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 14,
+  "fields": {
+    "warehouse": 1,
+    "variant": 189,
+    "movement_type": "IN",
+    "qty": 1,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:12:10.064Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 15,
+  "fields": {
+    "warehouse": 1,
+    "variant": 190,
+    "movement_type": "IN",
+    "qty": 1,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:12:41.495Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 16,
+  "fields": {
+    "warehouse": 1,
+    "variant": 81,
+    "movement_type": "IN",
+    "qty": 51,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:13:01.864Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 17,
+  "fields": {
+    "warehouse": 1,
+    "variant": 85,
+    "movement_type": "IN",
+    "qty": 66,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:13:32.988Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 18,
+  "fields": {
+    "warehouse": 1,
+    "variant": 98,
+    "movement_type": "IN",
+    "qty": 6,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:14:43.836Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 19,
+  "fields": {
+    "warehouse": 1,
+    "variant": 99,
+    "movement_type": "IN",
+    "qty": 1,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:15:06.576Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 20,
+  "fields": {
+    "warehouse": 1,
+    "variant": 87,
+    "movement_type": "IN",
+    "qty": 2,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:15:27.422Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 21,
+  "fields": {
+    "warehouse": 1,
+    "variant": 101,
+    "movement_type": "IN",
+    "qty": 1,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:15:46.882Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 22,
+  "fields": {
+    "warehouse": 1,
+    "variant": 104,
+    "movement_type": "IN",
+    "qty": 1,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:16:05.719Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 23,
+  "fields": {
+    "warehouse": 1,
+    "variant": 217,
+    "movement_type": "IN",
+    "qty": 1,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:16:41.234Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 24,
+  "fields": {
+    "warehouse": 1,
+    "variant": 227,
+    "movement_type": "IN",
+    "qty": 21,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:17:00.977Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 25,
+  "fields": {
+    "warehouse": 1,
+    "variant": 230,
+    "movement_type": "IN",
+    "qty": 1,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:17:28.276Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 26,
+  "fields": {
+    "warehouse": 1,
+    "variant": 240,
+    "movement_type": "IN",
+    "qty": 1,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:18:20.602Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 27,
+  "fields": {
+    "warehouse": 1,
+    "variant": 1,
+    "movement_type": "IN",
+    "qty": 21,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:19:19.418Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 28,
+  "fields": {
+    "warehouse": 1,
+    "variant": 39,
+    "movement_type": "IN",
+    "qty": 28,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:19:48.995Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 29,
+  "fields": {
+    "warehouse": 1,
+    "variant": 52,
+    "movement_type": "IN",
+    "qty": 19,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:20:06.602Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 30,
+  "fields": {
+    "warehouse": 1,
+    "variant": 54,
+    "movement_type": "IN",
+    "qty": 1,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:20:29.236Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 31,
+  "fields": {
+    "warehouse": 1,
+    "variant": 29,
+    "movement_type": "IN",
+    "qty": 45,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:21:01.664Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 32,
+  "fields": {
+    "warehouse": 1,
+    "variant": 31,
+    "movement_type": "IN",
+    "qty": 1,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:21:16.280Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 33,
+  "fields": {
+    "warehouse": 1,
+    "variant": 9,
+    "movement_type": "IN",
+    "qty": 1,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:21:32.596Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 34,
+  "fields": {
+    "warehouse": 1,
+    "variant": 68,
+    "movement_type": "IN",
+    "qty": 1,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:23:57.207Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 35,
+  "fields": {
+    "warehouse": 1,
+    "variant": 4,
+    "movement_type": "IN",
+    "qty": 2,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:28:41.322Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 36,
+  "fields": {
+    "warehouse": 1,
+    "variant": 19,
+    "movement_type": "IN",
+    "qty": 2,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:34:23.012Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 37,
+  "fields": {
+    "warehouse": 1,
+    "variant": 185,
+    "movement_type": "IN",
+    "qty": 1,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:37:54.151Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 38,
+  "fields": {
+    "warehouse": 1,
+    "variant": 84,
+    "movement_type": "IN",
+    "qty": 26,
+    "ref_type": "ADJUST",
+    "ref_id": null,
+    "user": 1,
+    "created_at": "2026-02-25T15:41:57.988Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 39,
+  "fields": {
+    "warehouse": 1,
+    "variant": 56,
+    "movement_type": "OUT",
+    "qty": -19,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.190Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 40,
+  "fields": {
+    "warehouse": 1,
+    "variant": 57,
+    "movement_type": "OUT",
+    "qty": -18,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.195Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 41,
+  "fields": {
+    "warehouse": 1,
+    "variant": 58,
+    "movement_type": "OUT",
+    "qty": -30,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.197Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 42,
+  "fields": {
+    "warehouse": 1,
+    "variant": 59,
+    "movement_type": "OUT",
+    "qty": -6,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.200Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 43,
+  "fields": {
+    "warehouse": 1,
+    "variant": 60,
+    "movement_type": "OUT",
+    "qty": -12,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.204Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 44,
+  "fields": {
+    "warehouse": 1,
+    "variant": 61,
+    "movement_type": "OUT",
+    "qty": -1,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.207Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 45,
+  "fields": {
+    "warehouse": 1,
+    "variant": 63,
+    "movement_type": "OUT",
+    "qty": -1,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.213Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 46,
+  "fields": {
+    "warehouse": 1,
+    "variant": 71,
+    "movement_type": "OUT",
+    "qty": -1,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.215Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 47,
+  "fields": {
+    "warehouse": 1,
+    "variant": 72,
+    "movement_type": "OUT",
+    "qty": -1,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.220Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 48,
+  "fields": {
+    "warehouse": 1,
+    "variant": 75,
+    "movement_type": "OUT",
+    "qty": -3,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.223Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 49,
+  "fields": {
+    "warehouse": 1,
+    "variant": 66,
+    "movement_type": "OUT",
+    "qty": -2,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.227Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 50,
+  "fields": {
+    "warehouse": 1,
+    "variant": 67,
+    "movement_type": "OUT",
+    "qty": -1,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.230Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 51,
+  "fields": {
+    "warehouse": 1,
+    "variant": 68,
+    "movement_type": "OUT",
+    "qty": -2,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.233Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 52,
+  "fields": {
+    "warehouse": 1,
+    "variant": 69,
+    "movement_type": "OUT",
+    "qty": -4,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.236Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 53,
+  "fields": {
+    "warehouse": 1,
+    "variant": 70,
+    "movement_type": "OUT",
+    "qty": -4,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.239Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 54,
+  "fields": {
+    "warehouse": 1,
+    "variant": 76,
+    "movement_type": "OUT",
+    "qty": -1,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.242Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 55,
+  "fields": {
+    "warehouse": 1,
+    "variant": 77,
+    "movement_type": "OUT",
+    "qty": -2,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.245Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 56,
+  "fields": {
+    "warehouse": 1,
+    "variant": 78,
+    "movement_type": "OUT",
+    "qty": -3,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.248Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 57,
+  "fields": {
+    "warehouse": 1,
+    "variant": 79,
+    "movement_type": "OUT",
+    "qty": -2,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.251Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 58,
+  "fields": {
+    "warehouse": 1,
+    "variant": 80,
+    "movement_type": "OUT",
+    "qty": -1,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.255Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 59,
+  "fields": {
+    "warehouse": 1,
+    "variant": 226,
+    "movement_type": "OUT",
+    "qty": -8,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.259Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 60,
+  "fields": {
+    "warehouse": 1,
+    "variant": 227,
+    "movement_type": "OUT",
+    "qty": -12,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.263Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 61,
+  "fields": {
+    "warehouse": 1,
+    "variant": 228,
+    "movement_type": "OUT",
+    "qty": -2,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.265Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 62,
+  "fields": {
+    "warehouse": 1,
+    "variant": 229,
+    "movement_type": "OUT",
+    "qty": -5,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.269Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 63,
+  "fields": {
+    "warehouse": 1,
+    "variant": 187,
+    "movement_type": "OUT",
+    "qty": -2,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.272Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 64,
+  "fields": {
+    "warehouse": 1,
+    "variant": 189,
+    "movement_type": "OUT",
+    "qty": -1,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.275Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 65,
+  "fields": {
+    "warehouse": 1,
+    "variant": 191,
+    "movement_type": "OUT",
+    "qty": -1,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.278Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 66,
+  "fields": {
+    "warehouse": 1,
+    "variant": 3,
+    "movement_type": "OUT",
+    "qty": -7,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.281Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 67,
+  "fields": {
+    "warehouse": 1,
+    "variant": 4,
+    "movement_type": "OUT",
+    "qty": -8,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.284Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 68,
+  "fields": {
+    "warehouse": 1,
+    "variant": 7,
+    "movement_type": "OUT",
+    "qty": -1,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.287Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 69,
+  "fields": {
+    "warehouse": 1,
+    "variant": 8,
+    "movement_type": "OUT",
+    "qty": -3,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.296Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 70,
+  "fields": {
+    "warehouse": 1,
+    "variant": 9,
+    "movement_type": "OUT",
+    "qty": -2,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.301Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 71,
+  "fields": {
+    "warehouse": 1,
+    "variant": 51,
+    "movement_type": "OUT",
+    "qty": -1,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.311Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 72,
+  "fields": {
+    "warehouse": 1,
+    "variant": 53,
+    "movement_type": "OUT",
+    "qty": -2,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.315Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 73,
+  "fields": {
+    "warehouse": 1,
+    "variant": 54,
+    "movement_type": "OUT",
+    "qty": -1,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.319Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 74,
+  "fields": {
+    "warehouse": 1,
+    "variant": 13,
+    "movement_type": "OUT",
+    "qty": -1,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.327Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 75,
+  "fields": {
+    "warehouse": 1,
+    "variant": 47,
+    "movement_type": "OUT",
+    "qty": -1,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.332Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 76,
+  "fields": {
+    "warehouse": 1,
+    "variant": 16,
+    "movement_type": "OUT",
+    "qty": -1,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.335Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 77,
+  "fields": {
+    "warehouse": 1,
+    "variant": 17,
+    "movement_type": "OUT",
+    "qty": -1,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.339Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 78,
+  "fields": {
+    "warehouse": 1,
+    "variant": 18,
+    "movement_type": "OUT",
+    "qty": -2,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.342Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 79,
+  "fields": {
+    "warehouse": 1,
+    "variant": 19,
+    "movement_type": "OUT",
+    "qty": -2,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.345Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 80,
+  "fields": {
+    "warehouse": 1,
+    "variant": 38,
+    "movement_type": "OUT",
+    "qty": -1,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.348Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 81,
+  "fields": {
+    "warehouse": 1,
+    "variant": 159,
+    "movement_type": "OUT",
+    "qty": -1,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.358Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 82,
+  "fields": {
+    "warehouse": 1,
+    "variant": 146,
+    "movement_type": "OUT",
+    "qty": -1,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.361Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 83,
+  "fields": {
+    "warehouse": 1,
+    "variant": 150,
+    "movement_type": "OUT",
+    "qty": -2,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.366Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 84,
+  "fields": {
+    "warehouse": 1,
+    "variant": 180,
+    "movement_type": "OUT",
+    "qty": -1,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.371Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 85,
+  "fields": {
+    "warehouse": 1,
+    "variant": 166,
+    "movement_type": "OUT",
+    "qty": -2,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.377Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 86,
+  "fields": {
+    "warehouse": 1,
+    "variant": 169,
+    "movement_type": "OUT",
+    "qty": -2,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.381Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 87,
+  "fields": {
+    "warehouse": 1,
+    "variant": 170,
+    "movement_type": "OUT",
+    "qty": -1,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.384Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 88,
+  "fields": {
+    "warehouse": 1,
+    "variant": 171,
+    "movement_type": "OUT",
+    "qty": -1,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.387Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 89,
+  "fields": {
+    "warehouse": 1,
+    "variant": 184,
+    "movement_type": "OUT",
+    "qty": -1,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.389Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 90,
+  "fields": {
+    "warehouse": 1,
+    "variant": 185,
+    "movement_type": "OUT",
+    "qty": -1,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.392Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 91,
+  "fields": {
+    "warehouse": 1,
+    "variant": 83,
+    "movement_type": "OUT",
+    "qty": -18,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.395Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 92,
+  "fields": {
+    "warehouse": 1,
+    "variant": 131,
+    "movement_type": "OUT",
+    "qty": -20,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.398Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 93,
+  "fields": {
+    "warehouse": 1,
+    "variant": 58,
+    "movement_type": "OUT",
+    "qty": -20,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.401Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 94,
+  "fields": {
+    "warehouse": 1,
+    "variant": 66,
+    "movement_type": "OUT",
+    "qty": -20,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.404Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 95,
+  "fields": {
+    "warehouse": 1,
+    "variant": 148,
+    "movement_type": "OUT",
+    "qty": -10,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.407Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 96,
+  "fields": {
+    "warehouse": 1,
+    "variant": 158,
+    "movement_type": "OUT",
+    "qty": -5,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.410Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 97,
+  "fields": {
+    "warehouse": 1,
+    "variant": 160,
+    "movement_type": "OUT",
+    "qty": -5,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.414Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 98,
+  "fields": {
+    "warehouse": 1,
+    "variant": 161,
+    "movement_type": "OUT",
+    "qty": -5,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.417Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 99,
+  "fields": {
+    "warehouse": 1,
+    "variant": 169,
+    "movement_type": "OUT",
+    "qty": -5,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.420Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 100,
+  "fields": {
+    "warehouse": 1,
+    "variant": 71,
+    "movement_type": "OUT",
+    "qty": -20,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.426Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 101,
+  "fields": {
+    "warehouse": 1,
+    "variant": 9,
+    "movement_type": "OUT",
+    "qty": -10,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.445Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 102,
+  "fields": {
+    "warehouse": 1,
+    "variant": 98,
+    "movement_type": "OUT",
+    "qty": -20,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.449Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 103,
+  "fields": {
+    "warehouse": 1,
+    "variant": 84,
+    "movement_type": "OUT",
+    "qty": -26,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.452Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 104,
+  "fields": {
+    "warehouse": 1,
+    "variant": 85,
+    "movement_type": "OUT",
+    "qty": -40,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.456Z"
+  }
+},
+{
+  "model": "core.stockmovement",
+  "pk": 105,
+  "fields": {
+    "warehouse": 1,
+    "variant": 69,
+    "movement_type": "OUT",
+    "qty": -5,
+    "ref_type": "TRX",
+    "ref_id": 1,
+    "user": 1,
+    "created_at": "2026-02-25T15:47:00.460Z"
+  }
+},
+{
+  "model": "core.transaction",
+  "pk": 1,
+  "fields": {
+    "reseller": 3,
+    "warehouse": 1,
+    "user": 1,
+    "status": "FINAL",
+    "created_at": "2026-02-25T14:59:56.078Z"
+  }
+},
+{
+  "model": "core.transaction",
+  "pk": 4,
+  "fields": {
+    "reseller": 4,
+    "warehouse": 1,
+    "user": 5,
+    "status": "DRAFT",
+    "created_at": "2026-02-25T18:42:42.195Z"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 1,
+  "fields": {
+    "transaction": 1,
+    "variant": 56,
+    "qty": 19,
+    "price": "38000.00",
+    "subtotal": "722000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 2,
+  "fields": {
+    "transaction": 1,
+    "variant": 57,
+    "qty": 18,
+    "price": "38000.00",
+    "subtotal": "684000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 3,
+  "fields": {
+    "transaction": 1,
+    "variant": 58,
+    "qty": 30,
+    "price": "38000.00",
+    "subtotal": "1140000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 4,
+  "fields": {
+    "transaction": 1,
+    "variant": 59,
+    "qty": 6,
+    "price": "38000.00",
+    "subtotal": "228000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 5,
+  "fields": {
+    "transaction": 1,
+    "variant": 60,
+    "qty": 12,
+    "price": "38000.00",
+    "subtotal": "456000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 6,
+  "fields": {
+    "transaction": 1,
+    "variant": 61,
+    "qty": 1,
+    "price": "38000.00",
+    "subtotal": "38000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 7,
+  "fields": {
+    "transaction": 1,
+    "variant": 63,
+    "qty": 1,
+    "price": "38000.00",
+    "subtotal": "38000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 8,
+  "fields": {
+    "transaction": 1,
+    "variant": 71,
+    "qty": 1,
+    "price": "38000.00",
+    "subtotal": "38000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 9,
+  "fields": {
+    "transaction": 1,
+    "variant": 72,
+    "qty": 1,
+    "price": "38000.00",
+    "subtotal": "38000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 10,
+  "fields": {
+    "transaction": 1,
+    "variant": 75,
+    "qty": 3,
+    "price": "38000.00",
+    "subtotal": "114000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 11,
+  "fields": {
+    "transaction": 1,
+    "variant": 66,
+    "qty": 2,
+    "price": "38000.00",
+    "subtotal": "76000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 12,
+  "fields": {
+    "transaction": 1,
+    "variant": 67,
+    "qty": 1,
+    "price": "38000.00",
+    "subtotal": "38000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 13,
+  "fields": {
+    "transaction": 1,
+    "variant": 68,
+    "qty": 2,
+    "price": "38000.00",
+    "subtotal": "76000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 14,
+  "fields": {
+    "transaction": 1,
+    "variant": 69,
+    "qty": 4,
+    "price": "38000.00",
+    "subtotal": "152000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 15,
+  "fields": {
+    "transaction": 1,
+    "variant": 70,
+    "qty": 4,
+    "price": "38000.00",
+    "subtotal": "152000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 16,
+  "fields": {
+    "transaction": 1,
+    "variant": 76,
+    "qty": 1,
+    "price": "38000.00",
+    "subtotal": "38000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 17,
+  "fields": {
+    "transaction": 1,
+    "variant": 77,
+    "qty": 2,
+    "price": "38000.00",
+    "subtotal": "76000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 18,
+  "fields": {
+    "transaction": 1,
+    "variant": 78,
+    "qty": 3,
+    "price": "38000.00",
+    "subtotal": "114000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 19,
+  "fields": {
+    "transaction": 1,
+    "variant": 79,
+    "qty": 2,
+    "price": "38000.00",
+    "subtotal": "76000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 20,
+  "fields": {
+    "transaction": 1,
+    "variant": 80,
+    "qty": 1,
+    "price": "38000.00",
+    "subtotal": "38000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 21,
+  "fields": {
+    "transaction": 1,
+    "variant": 226,
+    "qty": 8,
+    "price": "22000.00",
+    "subtotal": "176000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 22,
+  "fields": {
+    "transaction": 1,
+    "variant": 227,
+    "qty": 12,
+    "price": "22000.00",
+    "subtotal": "264000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 23,
+  "fields": {
+    "transaction": 1,
+    "variant": 228,
+    "qty": 2,
+    "price": "22000.00",
+    "subtotal": "44000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 24,
+  "fields": {
+    "transaction": 1,
+    "variant": 229,
+    "qty": 5,
+    "price": "22000.00",
+    "subtotal": "110000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 25,
+  "fields": {
+    "transaction": 1,
+    "variant": 187,
+    "qty": 2,
+    "price": "43000.00",
+    "subtotal": "86000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 26,
+  "fields": {
+    "transaction": 1,
+    "variant": 189,
+    "qty": 1,
+    "price": "43000.00",
+    "subtotal": "43000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 27,
+  "fields": {
+    "transaction": 1,
+    "variant": 191,
+    "qty": 1,
+    "price": "43000.00",
+    "subtotal": "43000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 28,
+  "fields": {
+    "transaction": 1,
+    "variant": 3,
+    "qty": 7,
+    "price": "25000.00",
+    "subtotal": "175000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 29,
+  "fields": {
+    "transaction": 1,
+    "variant": 4,
+    "qty": 8,
+    "price": "25000.00",
+    "subtotal": "200000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 30,
+  "fields": {
+    "transaction": 1,
+    "variant": 7,
+    "qty": 1,
+    "price": "25000.00",
+    "subtotal": "25000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 31,
+  "fields": {
+    "transaction": 1,
+    "variant": 8,
+    "qty": 3,
+    "price": "25000.00",
+    "subtotal": "75000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 32,
+  "fields": {
+    "transaction": 1,
+    "variant": 9,
+    "qty": 2,
+    "price": "25000.00",
+    "subtotal": "50000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 33,
+  "fields": {
+    "transaction": 1,
+    "variant": 51,
+    "qty": 1,
+    "price": "25000.00",
+    "subtotal": "25000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 34,
+  "fields": {
+    "transaction": 1,
+    "variant": 53,
+    "qty": 2,
+    "price": "25000.00",
+    "subtotal": "50000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 35,
+  "fields": {
+    "transaction": 1,
+    "variant": 54,
+    "qty": 1,
+    "price": "25000.00",
+    "subtotal": "25000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 36,
+  "fields": {
+    "transaction": 1,
+    "variant": 13,
+    "qty": 1,
+    "price": "25000.00",
+    "subtotal": "25000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 37,
+  "fields": {
+    "transaction": 1,
+    "variant": 47,
+    "qty": 1,
+    "price": "25000.00",
+    "subtotal": "25000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 38,
+  "fields": {
+    "transaction": 1,
+    "variant": 16,
+    "qty": 1,
+    "price": "25000.00",
+    "subtotal": "25000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 39,
+  "fields": {
+    "transaction": 1,
+    "variant": 17,
+    "qty": 1,
+    "price": "25000.00",
+    "subtotal": "25000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 40,
+  "fields": {
+    "transaction": 1,
+    "variant": 18,
+    "qty": 2,
+    "price": "25000.00",
+    "subtotal": "50000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 41,
+  "fields": {
+    "transaction": 1,
+    "variant": 19,
+    "qty": 2,
+    "price": "25000.00",
+    "subtotal": "50000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 42,
+  "fields": {
+    "transaction": 1,
+    "variant": 38,
+    "qty": 1,
+    "price": "25000.00",
+    "subtotal": "25000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 43,
+  "fields": {
+    "transaction": 1,
+    "variant": 159,
+    "qty": 1,
+    "price": "32000.00",
+    "subtotal": "32000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 44,
+  "fields": {
+    "transaction": 1,
+    "variant": 146,
+    "qty": 1,
+    "price": "32000.00",
+    "subtotal": "32000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 45,
+  "fields": {
+    "transaction": 1,
+    "variant": 150,
+    "qty": 2,
+    "price": "32000.00",
+    "subtotal": "64000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 46,
+  "fields": {
+    "transaction": 1,
+    "variant": 180,
+    "qty": 1,
+    "price": "31000.00",
+    "subtotal": "31000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 47,
+  "fields": {
+    "transaction": 1,
+    "variant": 166,
+    "qty": 2,
+    "price": "31000.00",
+    "subtotal": "62000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 48,
+  "fields": {
+    "transaction": 1,
+    "variant": 169,
+    "qty": 2,
+    "price": "31000.00",
+    "subtotal": "62000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 49,
+  "fields": {
+    "transaction": 1,
+    "variant": 170,
+    "qty": 1,
+    "price": "31000.00",
+    "subtotal": "31000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 50,
+  "fields": {
+    "transaction": 1,
+    "variant": 171,
+    "qty": 1,
+    "price": "31000.00",
+    "subtotal": "31000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 51,
+  "fields": {
+    "transaction": 1,
+    "variant": 184,
+    "qty": 1,
+    "price": "31000.00",
+    "subtotal": "31000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 52,
+  "fields": {
+    "transaction": 1,
+    "variant": 185,
+    "qty": 1,
+    "price": "31000.00",
+    "subtotal": "31000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 53,
+  "fields": {
+    "transaction": 1,
+    "variant": 83,
+    "qty": 18,
+    "price": "27200.00",
+    "subtotal": "489600.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 54,
+  "fields": {
+    "transaction": 1,
+    "variant": 131,
+    "qty": 20,
+    "price": "27200.00",
+    "subtotal": "544000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 55,
+  "fields": {
+    "transaction": 1,
+    "variant": 58,
+    "qty": 20,
+    "price": "38000.00",
+    "subtotal": "760000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 56,
+  "fields": {
+    "transaction": 1,
+    "variant": 66,
+    "qty": 20,
+    "price": "38000.00",
+    "subtotal": "760000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 57,
+  "fields": {
+    "transaction": 1,
+    "variant": 148,
+    "qty": 10,
+    "price": "32000.00",
+    "subtotal": "320000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 58,
+  "fields": {
+    "transaction": 1,
+    "variant": 158,
+    "qty": 5,
+    "price": "32000.00",
+    "subtotal": "160000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 59,
+  "fields": {
+    "transaction": 1,
+    "variant": 160,
+    "qty": 5,
+    "price": "32000.00",
+    "subtotal": "160000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 60,
+  "fields": {
+    "transaction": 1,
+    "variant": 161,
+    "qty": 5,
+    "price": "32000.00",
+    "subtotal": "160000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 61,
+  "fields": {
+    "transaction": 1,
+    "variant": 169,
+    "qty": 5,
+    "price": "31000.00",
+    "subtotal": "155000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 62,
+  "fields": {
+    "transaction": 1,
+    "variant": 71,
+    "qty": 20,
+    "price": "38000.00",
+    "subtotal": "760000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 63,
+  "fields": {
+    "transaction": 1,
+    "variant": 9,
+    "qty": 10,
+    "price": "25000.00",
+    "subtotal": "250000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 64,
+  "fields": {
+    "transaction": 1,
+    "variant": 98,
+    "qty": 20,
+    "price": "27200.00",
+    "subtotal": "544000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 65,
+  "fields": {
+    "transaction": 1,
+    "variant": 84,
+    "qty": 26,
+    "price": "27200.00",
+    "subtotal": "707200.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 66,
+  "fields": {
+    "transaction": 1,
+    "variant": 85,
+    "qty": 40,
+    "price": "27200.00",
+    "subtotal": "1088000.00"
+  }
+},
+{
+  "model": "core.transactiondetail",
+  "pk": 67,
+  "fields": {
+    "transaction": 1,
+    "variant": 69,
+    "qty": 5,
+    "price": "38000.00",
+    "subtotal": "190000.00"
+  }
+},
+{
+  "model": "core.invoice",
+  "pk": 1,
+  "fields": {
+    "reseller": 3,
+    "transaction": 1,
+    "total_amount": "13402800.00",
+    "paid_amount": "0.00",
+    "status": "UNPAID",
+    "created_at": "2026-02-25T15:47:00.461Z"
+  }
+}
+]

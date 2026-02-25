@@ -67,10 +67,18 @@
     <div class="stats shadow w-full bg-base-100 border border-base-200">
         <div class="stat">
             <div class="stat-figure text-primary">
+                <i data-lucide="package" class="w-8 h-8"></i>
+            </div>
+            <div class="stat-title text-sm opacity-70">Total Stok (Sesuai Filter)</div>
+            <div class="stat-value text-primary text-2xl">{{ total_qty }}</div>
+            <div class="stat-desc text-xs">unit</div>
+        </div>
+        <div class="stat">
+            <div class="stat-figure text-secondary">
                 <i data-lucide="banknote" class="w-8 h-8"></i>
             </div>
             <div class="stat-title text-sm opacity-70">Total Nilai Nominal Stok (Sesuai Filter)</div>
-            <div class="stat-value text-primary text-2xl">Rp {{ total_nominal|floatformat:0 }}</div>
+            <div class="stat-value text-secondary text-2xl">Rp {{ total_nominal|floatformat:0 }}</div>
             <div class="stat-desc text-xs">Dihitung dari (Stok x Harga Default)</div>
         </div>
     </div>

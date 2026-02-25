@@ -7,36 +7,73 @@
 <div class="flex flex-col gap-4 mb-6">
     <h1 class="text-2xl font-bold">Daftar Piutang / Invoice</h1>
 
-    <form method="get" class="bg-base-100 p-4 rounded-box shadow-sm border border-base-200">
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="card bg-base-100 shadow-sm border border-base-200">
+            <div class="card-body p-4">
+                <div class="text-sm opacity-70">Total Invoice</div>
+                <div class="text-2xl font-bold">{{ invoice_count }}</div>
+            </div>
+        </div>
+        <div class="card bg-success/10 shadow-sm border border-success">
+            <div class="card-body p-4">
+                <div class="text-sm opacity-70">Total Tagihan</div>
+                <div class="text-xl font-bold text-success">Rp {{ total_amount|floatformat:0|intcomma }}</div>
+            </div>
+        </div>
+        <div class="card bg-info/10 shadow-sm border border-info">
+            <div class="card-body p-4">
+                <div class="text-sm opacity-70">Terbayar</div>
+                <div class="text-xl font-bold text-info">Rp {{ paid_amount|floatformat:0|intcomma }}</div>
+            </div>
+        </div>
+        <div class="card bg-error/10 shadow-sm border border-error">
+            <div class="card-body p-4">
+                <div class="text-sm opacity-70">Sisa Piutang</div>
+                <div class="text-xl font-bold text-error">Rp {{ remaining_balance|floatformat:0|intcomma }}</div>
+            </div>
+        </div>
+    </div>
+
+    <form method="get" class="bg-base-100 p-4 rounded-box shadow-sm border border-base-200" id="filter-form">
+        {% csrf_token %}
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2 items-end">
-            <!-- Search -->
-            <div class="form-control lg:col-span-2">
-                <label class="label"><span class="label-text-alt">Pencarian</span></label>
-                <div class="join w-full">
-                    <input type="text" name="q" placeholder="ID / Reseller..." class="input input-bordered join-item w-full" value="{{ request.GET.q|default:'' }}">
-                    <button class="btn join-item"><i data-lucide="search"></i></button>
-                </div>
+            <!-- Reseller (TomSelect) -->
+            <div class="form-control">
+                <label class="label"><span class="label-text-alt">Reseller</span></label>
+                <select name="reseller_id" id="reseller-select" class="select select-bordered w-full" placeholder="Pilih Reseller...">
+                    <option value="">Semua Reseller</option>
+                    {% for reseller in resellers %}
+                    <option value="{{ reseller.id }}" {% if selected_reseller == reseller.id|stringformat:"s" %}selected{% endif %}>{{ reseller.name }}</option>
+                    {% endfor %}
+                </select>
             </div>
 
-            <!-- Filters -->
+            <!-- Status -->
              <div class="form-control">
                 <label class="label"><span class="label-text-alt">Status</span></label>
-                <select name="status" class="select select-bordered w-full" onchange="this.form.submit()">
+                <select name="status" class="select select-bordered w-full" id="status-select">
                     <option value="">Semua Status</option>
                     {% for code, label in status_choices %}
-                    <option value="{{ code }}" {% if request.GET.status == code %}selected{% endif %}>{{ label }}</option>
+                    <option value="{{ code }}" {% if selected_status == code %}selected{% endif %}>{{ label }}</option>
                     {% endfor %}
                 </select>
             </div>
 
             <div class="form-control">
                 <label class="label"><span class="label-text-alt">Dari Tanggal</span></label>
-                <input type="date" name="start_date" class="input input-bordered w-full" value="{{ request.GET.start_date|default:'' }}" onchange="this.form.submit()">
+                <input type="date" name="start_date" class="input input-bordered w-full" id="start-date" value="{{ selected_start_date|default:'' }}">
             </div>
 
             <div class="form-control">
                 <label class="label"><span class="label-text-alt">Sampai Tanggal</span></label>
-                <input type="date" name="end_date" class="input input-bordered w-full" value="{{ request.GET.end_date|default:'' }}" onchange="this.form.submit()">
+                <input type="date" name="end_date" class="input input-bordered w-full" id="end-date" value="{{ selected_end_date|default:'' }}">
+            </div>
+
+            <div class="form-control">
+                <button type="button" class="btn btn-outline w-full" onclick="window.location.href='{% url 'invoice_list' %}'">
+                    <i data-lucide="refresh-cw"></i> Reset
+                </button>
             </div>
         </div>
     </form>
@@ -110,4 +147,33 @@
 </div>
 
 {% include 'partials/pagination.html' %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize TomSelect for reseller dropdown
+        new TomSelect('#reseller-select', {
+            create: false,
+            placeholder: 'Pilih Reseller...'
+        });
+
+        // Get form and filter inputs
+        const form = document.getElementById('filter-form');
+        const statusSelect = document.getElementById('status-select');
+        const startDateInput = document.getElementById('start-date');
+        const endDateInput = document.getElementById('end-date');
+        const resellerSelect = document.getElementById('reseller-select');
+
+        // Submit form on filter change
+        const submitForm = function() {
+            form.submit();
+        };
+
+        statusSelect.addEventListener('change', submitForm);
+        startDateInput.addEventListener('change', submitForm);
+        endDateInput.addEventListener('change', submitForm);
+        resellerSelect.addEventListener('change', submitForm);
+    });
+</script>
+{% endblock %}
 {% endblock %}
