@@ -14,7 +14,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 import json
 from .models import WarehouseStock, StockMovement, Variant, Warehouse, Transaction, TransactionDetail, Invoice, Payment, ReturnHeader, ReturnDetail, Product, ResellerPrice, Reseller, PackingTask, PackingItem
-from .forms import UserForm, StockAdjustmentForm, TransactionCreateForm, TransactionDetailForm, PaymentForm, ResellerForm, ProductForm, VariantForm, ResellerPriceForm, WarehouseForm
+from .forms import UserForm, StockAdjustmentForm, TransactionCreateForm, TransactionDetailForm, PaymentForm, ResellerForm, ProductForm, VariantForm, ResellerPriceForm, WarehouseForm, StockOpnameForm
 
 class AdminRequiredMixin(UserPassesTestMixin):
     def test_func(self):
@@ -1456,7 +1456,7 @@ def scanner_advanced(request):
 def process_scanned_data(request):
     try:
         data = json.loads(request.body)
-        mode = data.get('mode') # PACKING, STOCK, ORDER
+        mode = data.get('mode') # PACKING, OPNAME, ORDER
         warehouse_id = data.get('warehouse_id')
         reseller_id = data.get('reseller_id')
         items = data.get('items', []) # List of {sku: ..., qty: ...}
@@ -1468,7 +1468,9 @@ def process_scanned_data(request):
         unknown_skus = []
         processed_count = 0
         
-        if mode == 'STOCK':
+        # support both new 'OPNAME' mode and old 'STOCK' keyword for backwards compatibility
+        if mode in ('OPNAME', 'STOCK'):
+            # Update stock to exact quantity (like manual opname)
             with transaction.atomic():
                 for item in items:
                     variant = Variant.objects.filter(sku=item['sku']).first()
@@ -1476,28 +1478,39 @@ def process_scanned_data(request):
                          unknown_skus.append(item['sku'])
                          continue
                     
-                    qty = int(item['qty'])
+                    qty_opname = int(item['qty'])
                     stock, created = WarehouseStock.objects.get_or_create(
                         warehouse=warehouse,
-                        variant=variant
+                        variant=variant,
+                        defaults={'qty_available': 0}
                     )
-                    stock.qty_available += qty 
+                    
+                    old_qty = stock.qty_available
+                    qty_diff = qty_opname - old_qty
+                    
+                    # Update stock to opname value
+                    stock.qty_available = qty_opname
                     stock.save()
 
-                    StockMovement.objects.create(
-                        warehouse=warehouse,
-                        variant=variant,
-                        movement_type='IN',
-                        qty=qty,
-                        ref_type='SCAN_OPNAME',
-                        user=request.user
-                    )
+                    # Record movement if there's a difference
+                    if qty_diff != 0:
+                        StockMovement.objects.create(
+                            warehouse=warehouse,
+                            variant=variant,
+                            movement_type='ADJUST',
+                            qty=qty_diff,
+                            qty_before=old_qty,
+                            ref_type='OPNAME',
+                            user=request.user,
+                            notes=f'Opname via barcode scanner'
+                        )
+                    
                     processed_count += 1
             
             if processed_count == 0:
                 return JsonResponse({'success': False, 'error': f'Tidak ada SKU yang valid. SKU tidak dikenal: {", ".join(unknown_skus)}'})
 
-            msg = f'Berhasil update stok {processed_count} item.'
+            msg = f'Berhasil update opname {processed_count} item.'
             if unknown_skus:
                 msg += f' SKU tidak dikenal: {", ".join(unknown_skus)}'
             return JsonResponse({'success': True, 'message': msg})
@@ -1678,3 +1691,269 @@ def api_variant_detail(request, variant_id):
         })
     except Variant.DoesNotExist:
         return JsonResponse({'error': 'Variant not found'}, status=404)
+
+# 📊 STOCK OPNAME
+
+@method_decorator(login_required, name='dispatch')
+class StockOpnameCreateView(AdminRequiredMixin, FormView):
+    """Create/Update stock opname (physical count) dengan recording ke StockMovement"""
+    template_name = 'inventory/stock_opname_form.html'
+    form_class = StockOpnameForm
+    success_url = reverse_lazy('inventory_list')
+
+    def form_valid(self, form):
+        warehouse = form.cleaned_data['warehouse']
+        variant = form.cleaned_data['variant']
+        qty_opname = form.cleaned_data['qty_opname']
+        notes = form.cleaned_data.get('notes', '')
+
+        try:
+            with transaction.atomic():
+                # Get current stock
+                stock = WarehouseStock.objects.get(warehouse=warehouse, variant=variant)
+                old_qty = stock.qty_available
+                
+                # Calculate difference
+                qty_diff = qty_opname - old_qty
+                
+                # Update stock
+                stock.qty_available = qty_opname
+                stock.save()
+                
+                # Record movement in StockMovement
+                if qty_diff != 0:
+                    StockMovement.objects.create(
+                        warehouse=warehouse,
+                        variant=variant,
+                        movement_type='ADJUST',
+                        qty=qty_diff,
+                        qty_before=old_qty,
+                        ref_type='OPNAME',
+                        user=self.request.user,
+                        notes=notes,
+                        ref_id=None  # Opname tidak punya referensi spesifik
+                    )
+                
+                messages.success(
+                    self.request, 
+                    f"Stock opname untuk {variant.sku} berhasil dicatat. "
+                    f"Perubahan stok: {old_qty} → {qty_opname} ({qty_diff:+d})"
+                )
+        except WarehouseStock.DoesNotExist:
+            messages.error(self.request, f"Stok tidak ditemukan untuk produk ini di gudang {warehouse.name}")
+            return self.form_invalid(form)
+        except Exception as e:
+            messages.error(self.request, f"Terjadi kesalahan: {str(e)}")
+            return self.form_invalid(form)
+
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Stock Opname'
+        
+        # Get variant ID from query param if present (for editing)
+        variant_id = self.request.GET.get('variant_id')
+        if variant_id:
+            try:
+                variant = Variant.objects.get(id=variant_id)
+                warehouse_id = self.request.GET.get('warehouse_id')
+                if warehouse_id:
+                    stock = WarehouseStock.objects.get(warehouse_id=warehouse_id, variant=variant)
+                    context['current_stock'] = stock
+                    context['variant'] = variant
+                    context['warehouse_id'] = warehouse_id
+            except (Variant.DoesNotExist, WarehouseStock.DoesNotExist):
+                pass
+        
+        return context
+
+@method_decorator(login_required, name='dispatch')
+class StockOpnameHistoryView(AdminRequiredMixin, ListView):
+    """Display stock opname history with filters and statistics"""
+    model = StockMovement
+    template_name = 'inventory/opname_history.html'
+    context_object_name = 'movements'
+    paginate_by = 50
+
+    def get_queryset(self):
+        # Get only OPNAME movements
+        queryset = StockMovement.objects.filter(
+            ref_type='OPNAME'
+        ).select_related('warehouse', 'variant__product', 'user').order_by('-created_at')
+        
+        # Search by product name or SKU
+        query = self.request.GET.get('q')
+        if query:
+            queryset = queryset.filter(
+                Q(variant__product__name__icontains=query) |
+                Q(variant__sku__icontains=query)
+            )
+        
+        # Filter by warehouse
+        warehouse_id = self.request.GET.get('warehouse')
+        if warehouse_id:
+            queryset = queryset.filter(warehouse_id=warehouse_id)
+        
+        # Filter by user
+        user_id = self.request.GET.get('user')
+        if user_id:
+            queryset = queryset.filter(user_id=user_id)
+        
+        # Filter by date range
+        from_date = self.request.GET.get('from_date')
+        to_date = self.request.GET.get('to_date')
+        
+        if from_date:
+            try:
+                from datetime import datetime
+                from_dt = datetime.strptime(from_date, '%Y-%m-%d')
+                queryset = queryset.filter(created_at__gte=from_dt)
+            except ValueError:
+                pass
+        
+        if to_date:
+            try:
+                from datetime import datetime
+                to_dt = datetime.strptime(to_date, '%Y-%m-%d')
+                from datetime import timedelta
+                queryset = queryset.filter(created_at__lt=to_dt + timedelta(days=1))
+            except ValueError:
+                pass
+        
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        # Get all opname movements for statistics
+        all_opnames = StockMovement.objects.filter(ref_type='OPNAME')
+        
+        # Statistics
+        context['total_opnames'] = all_opnames.count()
+        context['total_variance'] = all_opnames.aggregate(
+            total=Sum('qty')
+        )['total'] or 0
+        
+        # Positive variances (surplus)
+        positive_variance = all_opnames.filter(qty__gt=0).aggregate(
+            total=Sum('qty')
+        )['total'] or 0
+        context['positive_variance'] = positive_variance
+        
+        # Negative variances (shortage)
+        negative_variance = all_opnames.filter(qty__lt=0).aggregate(
+            total=Sum('qty')
+        )['total'] or 0
+        context['negative_variance'] = negative_variance
+        
+        # Count of opnames with notes
+        context['opnames_with_notes'] = all_opnames.exclude(notes='').exclude(notes__isnull=True).count()
+        
+        # Filter counts (for filtered view)
+        filtered_qs = self.get_queryset()
+        context['filtered_count'] = filtered_qs.count()
+        context['filtered_variance'] = filtered_qs.aggregate(
+            total=Sum('qty')
+        )['total'] or 0
+        
+        # Get lists for filter dropdowns
+        context['warehouses'] = Warehouse.objects.all()
+        context['users'] = User.objects.filter(
+            stockmovement__ref_type='OPNAME'
+        ).distinct().order_by('first_name')
+        
+        return context
+
+@method_decorator(login_required, name='dispatch')
+class StockInHistoryView(AdminRequiredMixin, ListView):
+    """Display stock in history with filters and statistics"""
+    model = StockMovement
+    template_name = 'inventory/stock_in_history.html'
+    context_object_name = 'movements'
+    paginate_by = 50
+
+    def get_queryset(self):
+        # Get only IN movements (stock masuk)
+        queryset = StockMovement.objects.filter(
+            movement_type='IN'
+        ).select_related('warehouse', 'variant__product', 'user').order_by('-created_at')
+        
+        # Search by product name or SKU
+        query = self.request.GET.get('q')
+        if query:
+            queryset = queryset.filter(
+                Q(variant__product__name__icontains=query) |
+                Q(variant__sku__icontains=query)
+            )
+        
+        # Filter by warehouse
+        warehouse_id = self.request.GET.get('warehouse')
+        if warehouse_id:
+            queryset = queryset.filter(warehouse_id=warehouse_id)
+        
+        # Filter by user
+        user_id = self.request.GET.get('user')
+        if user_id:
+            queryset = queryset.filter(user_id=user_id)
+        
+        # Filter by date range
+        from_date = self.request.GET.get('from_date')
+        to_date = self.request.GET.get('to_date')
+        
+        if from_date:
+            try:
+                from datetime import datetime
+                from_dt = datetime.strptime(from_date, '%Y-%m-%d')
+                queryset = queryset.filter(created_at__gte=from_dt)
+            except ValueError:
+                pass
+        
+        if to_date:
+            try:
+                from datetime import datetime
+                to_dt = datetime.strptime(to_date, '%Y-%m-%d')
+                from datetime import timedelta
+                queryset = queryset.filter(created_at__lt=to_dt + timedelta(days=1))
+            except ValueError:
+                pass
+        
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        # Get all IN movements for statistics
+        all_ins = StockMovement.objects.filter(movement_type='IN')
+        
+        # Statistics
+        context['total_ins'] = all_ins.count()
+        context['total_qty_in'] = all_ins.aggregate(
+            total=Sum('qty')
+        )['total'] or 0
+        
+        # total nominal all movements
+        context['total_nominal_in'] = all_ins.aggregate(
+            total=Sum(F('qty') * F('variant__default_price'))
+        )['total'] or 0
+        
+        # Count of ins with notes
+        context['ins_with_notes'] = all_ins.exclude(notes='').exclude(notes__isnull=True).count()
+        
+        # Filter counts (for filtered view)
+        filtered_qs = self.get_queryset()
+        context['filtered_count'] = filtered_qs.count()
+        context['filtered_qty'] = filtered_qs.aggregate(
+            total=Sum('qty')
+        )['total'] or 0
+        context['filtered_nominal'] = filtered_qs.aggregate(
+            total=Sum(F('qty') * F('variant__default_price'))
+        )['total'] or 0
+        
+        # Get lists for filter dropdowns
+        context['warehouses'] = Warehouse.objects.all()
+        context['users'] = User.objects.filter(
+            stockmovement__movement_type='IN'
+        ).distinct().order_by('first_name')
+        
+        return context

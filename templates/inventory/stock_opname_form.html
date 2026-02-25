@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+
+{% block title %}Stock Opname{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <div class="bg-base-100 shadow-xl rounded-box p-6">
+        <h2 class="text-2xl font-bold mb-2 text-center">Stock Opname</h2>
+        <p class="text-center text-sm opacity-60 mb-6">Catat hasil pemeriksaan fisik stok di gudang</p>
+
+        <form method="post">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+            <div class="alert alert-error mb-4">
+                {{ form.non_field_errors }}
+            </div>
+            {% endif %}
+
+            {% if messages %}
+            <div class="mb-4">
+                {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %} mb-2">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Current Stock Info -->
+            {% if current_stock %}
+            <div class="alert alert-info mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <div>
+                    <h3 class="font-bold">Stok Saat Ini</h3>
+                    <div class="text-sm">
+                        <div><strong>Produk:</strong> {{ current_stock.variant.product.name }}</div>
+                        <div><strong>SKU:</strong> {{ current_stock.variant.sku }}</div>
+                        <div><strong>Varian:</strong> {{ current_stock.variant.color }} / {{ current_stock.variant.size }}</div>
+                        <div><strong>Gudang:</strong> {{ current_stock.warehouse.name }}</div>
+                        <div><strong>Stok Sistem:</strong> <span class="badge badge-lg">{{ current_stock.qty_available }}</span></div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Warehouse -->
+            <div class="form-control w-full mb-4">
+                <label class="label">
+                    <span class="label-text font-semibold">
+                        <i data-lucide="warehouse" class="w-4 h-4 inline mr-1"></i>
+                        Gudang
+                    </span>
+                </label>
+                {{ form.warehouse }}
+                <div class="text-error text-sm">{{ form.warehouse.errors }}</div>
+            </div>
+
+            <!-- Variant -->
+            <div class="form-control w-full mb-4">
+                <label class="label">
+                    <span class="label-text font-semibold">
+                        <i data-lucide="package" class="w-4 h-4 inline mr-1"></i>
+                        Produk Varian
+                    </span>
+                </label>
+                {{ form.variant }}
+                <div class="text-error text-sm">{{ form.variant.errors }}</div>
+                <p class="text-xs opacity-60 mt-1">💡 Ketik untuk mencari SKU atau nama produk</p>
+            </div>
+
+            <!-- Qty Opname -->
+            <div class="form-control w-full mb-4">
+                <label class="label">
+                    <span class="label-text font-semibold">
+                        <i data-lucide="check-circle" class="w-4 h-4 inline mr-1"></i>
+                        Jumlah Stok (Hasil Opname)
+                    </span>
+                </label>
+                {{ form.qty_opname }}
+                <div class="text-error text-sm">{{ form.qty_opname.errors }}</div>
+                <p class="text-xs opacity-60 mt-1">📝 Masukkan jumlah stok sesuai hasil pemeriksaan fisik</p>
+            </div>
+
+            <!-- Notes -->
+            <div class="form-control w-full mb-6">
+                <label class="label">
+                    <span class="label-text font-semibold">
+                        <i data-lucide="message-square" class="w-4 h-4 inline mr-1"></i>
+                        Catatan
+                    </span>
+                </label>
+                {{ form.notes }}
+                <div class="text-error text-sm">{{ form.notes.errors }}</div>
+                <p class="text-xs opacity-60 mt-1">📌 Opsional: Catat alasan perbedaan atau kondisi khusus</p>
+            </div>
+
+            <!-- Info Box -->
+            <div class="bg-base-200 p-4 rounded-lg mb-6 text-sm">
+                <p class="font-semibold mb-2">💡 Catatan Penting:</p>
+                <ul class="list-disc list-inside opacity-80">
+                    <li>Perbedaan stok akan dicatat sebagai adjustment di StockMovement</li>
+                    <li>Tipe pergerakan: ADJUST dengan referensi OPNAME</li>
+                    <li>Nama pengguna akan terekam secara otomatis</li>
+                </ul>
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex gap-2">
+                <a href="{% url 'inventory_list' %}" class="btn btn-ghost flex-1">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                    Batal
+                </a>
+                <button type="submit" class="btn btn-success flex-1">
+                    <i data-lucide="check" class="w-4 h-4"></i>
+                    Simpan Opname
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize TomSelect on variant field
+        const variantField = document.getElementById('{{ form.variant.id_for_label }}');
+        if (variantField) {
+            new TomSelect('#{{ form.variant.id_for_label }}', {
+                placeholder: 'Cari produk (SKU / Nama)...',
+                allowClear: true,
+                create: false,
+                highlight: true,
+                diacritics: true,
+                minInputLength: 1,
+                render: {
+                    option: function(data, escape) {
+                        return '<div class="p-2">' +
+                            '<div class="font-semibold">' + escape(data.text) + '</div>' +
+                            '</div>';
+                    },
+                    item: function(data, escape) {
+                        return '<div>' + escape(data.text) + '</div>';
+                    }
+                },
+                onInitialize: function() {
+                    this.control_input.style.width = '100%';
+                }
+            });
+        }
+
+        // Initialize TomSelect on warehouse field
+        const warehouseField = document.getElementById('{{ form.warehouse.id_for_label }}');
+        if (warehouseField) {
+            new TomSelect('#{{ form.warehouse.id_for_label }}', {
+                placeholder: 'Pilih gudang',
+                allowClear: true,
+                create: false,
+                highlight: true,
+                diacritics: true,
+                render: {
+                    option: function(data, escape) {
+                        return '<div class="p-2">' + escape(data.text) + '</div>';
+                    },
+                    item: function(data, escape) {
+                        return '<div>' + escape(data.text) + '</div>';
+                    }
+                }
+            });
+        }
+
+        // Auto-populate warehouse and variant from URL params if available
+        const urlParams = new URLSearchParams(window.location.search);
+        const warehouseId = urlParams.get('warehouse_id');
+        const variantId = urlParams.get('variant_id');
+
+        if (warehouseId && warehouseField) {
+            warehouseField.value = warehouseId;
+            warehouseField.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+
+        if (variantId && variantField) {
+            variantField.value = variantId;
+            variantField.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+    });
+</script>
+
+<style>
+    .ts-wrapper.form-control .ts-input {
+        min-height: 48px;
+        padding: 0.5rem 1rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+    }
+
+    .ts-wrapper.focus .ts-input {
+        border-color: #8b5cf6;
+        box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.1);
+    }
+
+    .ts-dropdown {
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        z-index: 50;
+        margin-top: 4px;
+    }
+
+    .ts-dropdown .option {
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+    }
+
+    .ts-dropdown .option.highlighted {
+        background-color: #8b5cf6;
+        color: white;
+    }
+
+    .ts-dropdown .option.selected {
+        background-color: #f3f4f6;
+    }
+
+    .ts-wrapper .ts-input {
+        cursor: pointer;
+    }
+
+    .ts-wrapper .ts-input .item {
+        background-color: #f3f4f6;
+        border-radius: 0.25rem;
+        padding: 0.25rem 0.5rem;
+        margin-right: 0.5rem;
+    }
+</style>
+{% endblock %}

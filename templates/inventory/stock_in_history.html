@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+
+{% block title %}Riwayat Stock Masuk{% endblock %}
+
+{% block content %}
+<div class="flex flex-col gap-4 mb-6">
+    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+        <h1 class="text-2xl font-bold">Riwayat Stock Masuk</h1>
+        <a href="{% url 'stock_in' %}" class="btn btn-primary">
+            <i data-lucide="plus"></i> Tambah Stock Masuk
+        </a>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="stats shadow w-full bg-base-100 border border-base-200">
+        <div class="stat">
+            <div class="stat-figure text-primary">
+                <i data-lucide="arrow-down-circle" class="w-8 h-8"></i>
+            </div>
+            <div class="stat-title text-sm opacity-70">Total Stock Masuk</div>
+            <div class="stat-value text-primary text-2xl">{{ total_ins }}</div>
+            <div class="stat-desc text-xs">transaksi</div>
+        </div>
+        <div class="stat">
+            <div class="stat-figure text-info">
+                <i data-lucide="package" class="w-8 h-8"></i>
+            </div>
+            <div class="stat-title text-sm opacity-70">Total Qty Masuk</div>
+            <div class="stat-value text-info text-2xl">{{ total_qty_in }}</div>
+            <div class="stat-desc text-xs">unit</div>
+        </div>
+        <div class="stat">
+            <div class="stat-figure text-secondary">
+                <i data-lucide="dollar-sign" class="w-8 h-8"></i>
+            </div>
+            <div class="stat-title text-sm opacity-70">Total Nominal Masuk</div>
+            <div class="stat-value text-secondary text-2xl">Rp {{ total_nominal_in|floatformat:0 }}</div>
+            <div class="stat-desc text-xs">(harga default)</div>
+        </div>
+        <div class="stat">
+            <div class="stat-figure text-warning">
+                <i data-lucide="message-square" class="w-8 h-8"></i>
+            </div>
+            <div class="stat-title text-sm opacity-70">Ada Catatan</div>
+            <div class="stat-value text-warning text-2xl">{{ ins_with_notes }}</div>
+            <div class="stat-desc text-xs">catatan</div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <form method="get" class="bg-base-100 p-4 rounded-box shadow-sm border border-base-200">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 items-end">
+            <!-- Search -->
+            <div class="form-control lg:col-span-2">
+                <label class="label"><span class="label-text-alt">Pencarian Produk / SKU</span></label>
+                <div class="join w-full">
+                    <input type="text" name="q" placeholder="Cari..." class="input input-bordered join-item w-full" value="{{ request.GET.q|default:'' }}">
+                    <button class="btn join-item"><i data-lucide="search"></i></button>
+                </div>
+            </div>
+
+            <!-- Warehouse Filter -->
+            <div class="form-control">
+                <label class="label"><span class="label-text-alt">Gudang</span></label>
+                <select name="warehouse" class="select select-bordered w-full" onchange="this.form.submit()">
+                    <option value="">Semua Gudang</option>
+                    {% for w in warehouses %}
+                    <option value="{{ w.id }}" {% if request.GET.warehouse == w.id|stringformat:"s" %}selected{% endif %}>{{ w.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- User Filter -->
+            <div class="form-control">
+                <label class="label"><span class="label-text-alt">Petugas</span></label>
+                <select name="user" class="select select-bordered w-full" onchange="this.form.submit()">
+                    <option value="">Semua Petugas</option>
+                    {% for u in users %}
+                    <option value="{{ u.id }}" {% if request.GET.user == u.id|stringformat:"s" %}selected{% endif %}>{{ u.get_full_name|default:u.username }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Date Range -->
+            <div class="form-control">
+                <label class="label"><span class="label-text-alt">Dari Tanggal</span></label>
+                <input type="date" name="from_date" class="input input-bordered" value="{{ request.GET.from_date|default:'' }}" onchange="this.form.submit()">
+            </div>
+
+            <div class="form-control">
+                <label class="label"><span class="label-text-alt">Sampai Tanggal</span></label>
+                <input type="date" name="to_date" class="input input-bordered" value="{{ request.GET.to_date|default:'' }}" onchange="this.form.submit()">
+            </div>
+
+            <!-- Reset Button -->
+            <div class="form-control">
+                <a href="{% url 'stock_in_history' %}" class="btn btn-outline">
+                    <i data-lucide="rotate-ccw"></i> Reset
+                </a>
+            </div>
+        </div>
+    </form>
+
+    <!-- Filtered Statistics -->
+    {% if filtered_count != total_ins %}
+    <div class="bg-info bg-opacity-10 border border-info rounded-lg p-4">
+        <div class="flex items-center gap-2">
+            <i data-lucide="filter" class="w-5 h-5 text-info"></i>
+            <div>
+                <div class="font-semibold">Filter Aktif</div>
+                <div class="text-sm opacity-70">Menampilkan {{ filtered_count }} dari {{ total_ins }} transaksi ({{ filtered_qty }} unit, Rp {{ filtered_nominal|floatformat:0 }})</div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Table -->
+<div class="overflow-x-auto">
+    <table class="table w-full">
+        <thead>
+            <tr>
+                <th class="w-24">Tanggal</th>
+                <th class="w-20">Gudang</th>
+                <th>Produk</th>
+                <th class="w-20">SKU</th>
+                <th class="w-16 text-center">Qty</th>
+                <th class="w-24">Petugas</th>
+                <th>Catatan</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for movement in movements %}
+            <tr class="hover">
+                <td class="font-mono text-sm">
+                    {{ movement.created_at|date:"d/m/Y H:i" }}
+                </td>
+                <td>
+                    <span class="badge badge-primary">{{ movement.warehouse.name }}</span>
+                </td>
+                <td class="font-semibold">
+                    {{ movement.variant.product.name }}
+                </td>
+                <td>
+                    <span class="badge badge-ghost">{{ movement.variant.sku }}</span>
+                </td>
+                <td class="text-center">
+                    <span class="badge badge-success badge-lg">+{{ movement.qty }}</span>
+                </td>
+                <td>
+                    <div class="text-sm">{{ movement.user.get_full_name|default:movement.user.username }}</div>
+                </td>
+                <td>
+                    {% if movement.notes %}
+                        <div class="text-sm opacity-70 max-w-xs truncate" title="{{ movement.notes }}">
+                            {{ movement.notes }}
+                        </div>
+                    {% else %}
+                        <span class="opacity-50 text-sm">—</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" class="text-center py-8">
+                    {% if request.GET.q %}
+                        <div class="flex flex-col items-center gap-2">
+                            <i data-lucide="inbox" class="w-8 h-8 opacity-50"></i>
+                            <p class="opacity-70">Tidak ada data stock masuk yang cocok dengan pencarian "{{ request.GET.q }}".</p>
+                        </div>
+                    {% else %}
+                        <div class="flex flex-col items-center gap-2">
+                            <i data-lucide="inbox" class="w-8 h-8 opacity-50"></i>
+                            <p class="opacity-70">Belum ada data stock masuk.</p>
+                        </div>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% include 'partials/pagination.html' %}
+
+<script>
+    // Initialize lucide icons if available
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+</script>
+{% endblock %}

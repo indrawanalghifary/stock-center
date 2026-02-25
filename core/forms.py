@@ -166,3 +166,26 @@ class ResellerPriceForm(forms.ModelForm):
             'custom_price': forms.NumberInput(attrs={'class': 'input input-bordered w-full'}),
         }
 
+class StockOpnameForm(forms.Form):
+    """Form untuk update stock opname (physical count)"""
+    warehouse = forms.ModelChoiceField(
+        queryset=Warehouse.objects.all(), 
+        empty_label="Pilih Gudang",
+        widget=forms.Select(attrs={'class': 'select select-bordered w-full'})
+    )
+    variant = forms.ModelChoiceField(
+        queryset=Variant.objects.select_related('product'),
+        empty_label="Pilih Produk Variant",
+        widget=forms.Select(attrs={'class': 'select searchable-select w-full'})
+    )
+    qty_opname = forms.IntegerField(
+        label="Jumlah Stok (Hasil Opname)",
+        min_value=0,
+        widget=forms.NumberInput(attrs={'class': 'input input-bordered w-full', 'step': '1'})
+    )
+    notes = forms.CharField(
+        label="Catatan",
+        widget=forms.Textarea(attrs={'class': 'textarea textarea-bordered w-full', 'rows': 2}),
+        required=False
+    )
+

@@ -54,7 +54,7 @@
                     <li><a href="{% url 'transaction_list' %}">Transaksi</a></li>
                     <li><a href="{% url 'invoice_list' %}">Keuangan</a></li>
                     <li><a href="{% url 'return_list' %}">Retur Barang</a></li>
-                    <li><a href="{% url 'packing_list' %}">Tenaga Packing</a></li>
+                    {% if user.is_staff %}<li><a href="{% url 'packing_list' %}">Tenaga Packing</a></li>{% endif %}
                     
                     {% if user.is_superuser or user.reseller_profile == None %}
                         <li><a href="{% url 'master_dashboard' %}" class="font-bold text-accent"><i data-lucide="database"></i> Master Data</a></li>

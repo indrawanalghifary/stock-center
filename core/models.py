@@ -75,9 +75,11 @@ class StockMovement(models.Model):
     variant = models.ForeignKey(Variant, on_delete=models.CASCADE)
     movement_type = models.CharField(max_length=10, choices=MOVEMENT_TYPES)
     qty = models.IntegerField(help_text="Positive for IN/RETURN, Negative for OUT/ADJUST")
+    qty_before = models.IntegerField(null=True, blank=True, help_text="Stock quantity before this movement")
     ref_type = models.CharField(max_length=50, help_text="TRX, RETURN, OPNAME")
     ref_id = models.IntegerField(null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    notes = models.TextField(blank=True, null=True, help_text="Additional notes for this movement")
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

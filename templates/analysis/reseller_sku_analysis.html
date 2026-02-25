@@ -47,6 +47,7 @@
             </div>
         </div>
 
+        {% if user.is_staff %}
         <div class="stats shadow bg-base-100">
             <div class="stat p-4">
                 <div class="stat-title opacity-70">Total Nominal</div>
@@ -54,6 +55,7 @@
                 <div class="stat-desc">Nilai transaksi</div>
             </div>
         </div>
+        {% endif %}
 
         <div class="stats shadow bg-base-100">
             <div class="stat p-4">
@@ -81,7 +83,7 @@
                             <th>Kategori</th>
                             <th class="text-center">Reseller</th>
                             <th class="text-right">Qty</th>
-                            <th class="text-right">Total Nilai</th>
+                            {% if user.is_staff %}<th class="text-right">Total Nilai</th>{% endif %}
                         </tr>
                     </thead>
                     <tbody>
@@ -102,10 +104,10 @@
                                 <div class="badge badge-ghost badge-sm">{{ sku.reseller_count }} reseller</div>
                             </td>
                             <td class="text-right font-mono font-bold text-primary">{{ sku.total_qty }}</td>
-                            <td class="text-right">Rp {{ sku.total_nominal|floatformat:0|intcomma }}</td>
+                            {% if user.is_staff %}<td class="text-right">Rp {{ sku.total_nominal|floatformat:0|intcomma }}</td>{% endif %}
                         </tr>
                         {% empty %}
-                        <tr><td colspan="7" class="text-center py-4 opacity-50">Tidak ada data SKU</td></tr>
+                        <tr><td colspan="{% if user.is_staff %}7{% else %}6{% endif %}" class="text-center py-4 opacity-50">Tidak ada data SKU</td></tr>
                         {% endfor %}
                     </tbody>
                 </table>
@@ -127,7 +129,7 @@
                             <th class="w-12">Rank</th>
                             <th>Reseller</th>
                             <th class="text-right">Total Qty</th>
-                            <th class="text-right">Total Nominal</th>
+                            {% if user.is_staff %}<th class="text-right">Total Nominal</th>{% endif %}
                             <th class="text-center">Aksi</th>
                         </tr>
                     </thead>
@@ -142,7 +144,7 @@
                             </td>
                             <td class="font-bold">{{ r.transaction__reseller__name }}</td>
                             <td class="text-right font-mono font-bold">{{ r.total_qty }}</td>
-                            <td class="text-right font-bold text-secondary">Rp {{ r.total_nominal|floatformat:0|intcomma }}</td>
+                            {% if user.is_staff %}<td class="text-right font-bold text-secondary">Rp {{ r.total_nominal|floatformat:0|intcomma }}</td>{% endif %}
                             <td class="text-center">
                                 <a href="?reseller_id={{ r.transaction__reseller__id }}{% if start_date %}&start_date={{ start_date }}{% endif %}{% if end_date %}&end_date={{ end_date }}{% endif %}" 
                                    class="btn btn-xs btn-ghost">
@@ -151,7 +153,7 @@
                             </td>
                         </tr>
                         {% empty %}
-                        <tr><td colspan="5" class="text-center py-4 opacity-50">Tidak ada data reseller</td></tr>
+                        <tr><td colspan="{% if user.is_staff %}5{% else %}4{% endif %}" class="text-center py-4 opacity-50">Tidak ada data reseller</td></tr>
                         {% endfor %}
                     </tbody>
                 </table>
@@ -174,8 +176,8 @@
                             <th>SKU</th>
                             <th>Produk</th>
                             <th class="text-right">Qty</th>
-                            <th class="text-right">Harga Avg</th>
-                            <th class="text-right">Total Nilai</th>
+                            {% if user.is_staff %}<th class="text-right">Harga Avg</th>{% endif %}
+                            {% if user.is_staff %}<th class="text-right">Total Nilai</th>{% endif %}
                         </tr>
                     </thead>
                     <tbody>
@@ -187,11 +189,11 @@
                             </td>
                             <td>{{ item.variant__product__name }}</td>
                             <td class="text-right font-mono font-bold">{{ item.total_qty }}</td>
-                            <td class="text-right">Rp {{ item.avg_price|floatformat:0|intcomma }}</td>
-                            <td class="text-right font-bold text-accent">Rp {{ item.total_nominal|floatformat:0|intcomma }}</td>
+                            {% if user.is_staff %}<td class="text-right">Rp {{ item.avg_price|floatformat:0|intcomma }}</td>{% endif %}
+                            {% if user.is_staff %}<td class="text-right font-bold text-accent">Rp {{ item.total_nominal|floatformat:0|intcomma }}</td>{% endif %}
                         </tr>
                         {% empty %}
-                        <tr><td colspan="6" class="text-center py-4 opacity-50">Tidak ada data pengambilan</td></tr>
+                        <tr><td colspan="{% if user.is_staff %}6{% else %}4{% endif %}" class="text-center py-4 opacity-50">Tidak ada data pengambilan</td></tr>
                         {% endfor %}
                     </tbody>
                 </table>

@@ -10,6 +10,9 @@ urlpatterns = [
     # Inventory
     path('inventory/', views.InventoryListView.as_view(), name='inventory_list'),
     path('inventory/in/', views.StockInView.as_view(), name='stock_in'),
+    path('inventory/in-history/', views.StockInHistoryView.as_view(), name='stock_in_history'),
+    path('inventory/opname/', views.StockOpnameCreateView.as_view(), name='stock_opname'),
+    path('inventory/opname-history/', views.StockOpnameHistoryView.as_view(), name='opname_history'),
 
     # Transaction
     path('transactions/', views.TransactionListView.as_view(), name='transaction_list'),

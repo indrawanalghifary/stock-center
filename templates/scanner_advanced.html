@@ -19,9 +19,13 @@
                 <div class="form-control">
                     <label class="label"><span class="label-text font-semibold">Pilih Mode</span></label>
                     <select id="scan-mode" class="select select-bordered w-full">
-                        <option value="PACKING">Tenaga Packing (Hitung Saja)</option>
-                        <option value="STOCK">Update Real Stock (Opname)</option>
-                        <option value="ORDER">Pesanan Reseller (Buat TRX)</option>
+                        {% if is_reseller %}
+                            <option value="ORDER">Pesanan Reseller (Buat TRX)</option>
+                        {% else %}
+                            <option value="PACKING">Tenaga Packing (Hitung Saja)</option>
+                            <option value="OPNAME">Update Real Stock (Opname)</option>
+                            <option value="ORDER">Pesanan Reseller (Buat TRX)</option>
+                        {% endif %}
                     </select>
                 </div>
 
@@ -132,6 +136,19 @@
     let isTorchOn = false;
     let lastScannedCode = "";
     let lastScannedTime = 0;
+
+    // Initialize Reseller Selection visibility on page load
+    function initializeResellerVisibility() {
+        const mode = scanMode.value;
+        if (mode === 'ORDER') {
+            resellerContainer.classList.remove('hidden');
+        } else {
+            resellerContainer.classList.add('hidden');
+        }
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', initializeResellerVisibility);
 
     // Toggle Reseller Selection based on mode
     scanMode.addEventListener('change', (e) => {
@@ -312,7 +329,11 @@
     });
 
     submitBtn.addEventListener('click', () => {
-        const mode = scanMode.value;
+        let mode = scanMode.value;
+        // previous versions used 'STOCK' keyword, normalize it to OPNAME
+        if (mode === 'STOCK') {
+            mode = 'OPNAME';
+        }
         const warehouseId = document.getElementById('warehouse-id').value;
         const resellerId = document.getElementById('reseller-id') ? document.getElementById('reseller-id').value : null;
 
